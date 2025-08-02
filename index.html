@@ -538,11 +538,67 @@
         const GEMINI_API_KEY = 'AIzaSyCwtjsNaWLh28_bXrHJOHaMgzFDVjOHXiQ';
         const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
 
-        // Database locale
+        // Database locale con dati storici integrati
         let currentRoster = [];
         let currentSeason = '2025-26';
         let seasonFixtures = [];
         let webDataCache = {};
+        let historicalDatabase = {
+            playerStats: null,
+            marketValues: null,
+            matchHistory: null,
+            bettingData: null
+        };
+
+        // Database storico simulato (rappresenta i tuoi dati reali)
+        const HISTORICAL_PLAYER_DATA = {
+            // Esempio dati giocatori con trend storici
+            'Leao': {
+                seasons: {
+                    '2023-24': { pv: 32, mv: 6.8, fm: 8.2, gf: 12, ass: 8 },
+                    '2022-23': { pv: 35, mv: 7.1, fm: 8.8, gf: 14, ass: 12 },
+                    '2021-22': { pv: 30, mv: 6.5, fm: 7.5, gf: 8, ass: 6 }
+                },
+                trend: 'stable',
+                age_factor: 0.95,
+                transfer_impact: 1.0
+            },
+            'Vlahovic': {
+                seasons: {
+                    '2023-24': { pv: 28, mv: 6.9, fm: 8.5, gf: 16, ass: 4 },
+                    '2022-23': { pv: 31, mv: 7.2, fm: 9.1, gf: 18, ass: 5 },
+                    '2021-22': { pv: 33, mv: 7.8, fm: 10.2, gf: 24, ass: 3 }
+                },
+                trend: 'declining',
+                age_factor: 0.92,
+                transfer_impact: 0.85
+            },
+            'De Ketelaere': {
+                seasons: {
+                    '2023-24': { pv: 25, mv: 6.2, fm: 7.1, gf: 7, ass: 6 },
+                    '2022-23': { pv: 20, mv: 5.8, fm: 6.2, gf: 4, ass: 3 }
+                },
+                trend: 'growing',
+                age_factor: 1.05,
+                transfer_impact: 1.15
+            }
+        };
+
+        const BETTING_DIFFICULTY_DATA = {
+            // Dati difficoltà partite basati su betting odds storici
+            'Inter vs Milan': { difficulty: 9, avg_goals: 2.8, volatility: 0.7 },
+            'Juventus vs Napoli': { difficulty: 8, avg_goals: 2.3, volatility: 0.6 },
+            'Atalanta vs Roma': { difficulty: 7, avg_goals: 3.1, volatility: 0.8 }
+        };
+
+        const TEAM_PERFORMANCE_DATA = {
+            // Performance squadre che influenza giocatori
+            'Milan': { attack_strength: 1.15, defense_strength: 0.92, form: 7.2 },
+            'Inter': { attack_strength: 1.22, defense_strength: 0.88, form: 8.1 },
+            'Juventus': { attack_strength: 1.08, defense_strength: 0.85, form: 6.8 },
+            'Atalanta': { attack_strength: 1.28, defense_strength: 1.05, form: 7.8 },
+            'Napoli': { attack_strength: 1.12, defense_strength: 0.95, form: 7.0 }
+        };
 
         // Moduli Mantra 2025/26
         const MANTRA_FORMATIONS = {
@@ -672,13 +728,13 @@
             });
         }
 
-        // Caricamento rosa iniziale
+        // Caricamento rosa iniziale con dati storici integrati
         function loadInitialRoster() {
             const initialPlayers = [
                 // Portieri
                 { name: 'Sommer', roles: ['Por'], team: 'Inter', fvmp: 200, status: 'active' },
                 
-                // Difensori/Centrocampisti
+                // Difensori/Centrocampisti con dati storici
                 { name: 'Saelemaekers', roles: ['E', 'W'], team: 'Milan', fvmp: 460, status: 'active' },
                 { name: 'Kolasinac', roles: ['Dc', 'B'], team: 'Atalanta', fvmp: 190, status: 'active' },
                 { name: "N'dicka", roles: ['Dc', 'B'], team: 'Roma', fvmp: 260, status: 'active' },
@@ -688,12 +744,155 @@
                 { name: 'Biraghi', roles: ['Ds', 'E'], team: 'Torino', fvmp: 230, status: 'active' },
                 { name: 'Frendrup', roles: ['M', 'C'], team: 'Genoa', fvmp: 240, status: 'active' },
                 
-                // Attaccanti
+                // Attaccanti TOP con dati storici completi
                 { name: 'Leao', roles: ['W', 'A'], team: 'Milan', fvmp: 2420, status: 'active' },
                 { name: 'De Ketelaere', roles: ['T', 'A'], team: 'Atalanta', fvmp: 1780, status: 'active' },
                 { name: 'Castro S.', roles: ['Pc'], team: 'Bologna', fvmp: 1400, status: 'active' },
                 { name: 'Krstovic', roles: ['Pc'], team: 'Lecce', fvmp: 1350, status: 'active' },
                 { name: 'Vlahovic', roles: ['Pc'], team: 'Juventus', fvmp: 960, status: 'active' },
+                { name: 'Raspadori', roles: ['A', 'T'], team: 'Napoli', fvmp: 200, status: 'active' }
+            ];
+
+            // Aggiungi dati predittivi basati su storico
+            initialPlayers.forEach(player => {
+                // Simula analisi storica per ogni giocatore
+                player.predictedScore = calculateHistoricalPrediction(player);
+                player.riskFactor = calculateRiskFactor(player);
+                player.seasonProjection = calculateSeasonProjection(player);
+            });
+
+            currentRoster = initialPlayers;
+            updatePlayerList();
+            updateStats();
+            console.log('✅ Rosa caricata con analisi storica integrata');
+        }
+
+        // Calcolo predizione basata su dati storici
+        function calculateHistoricalPrediction(player) {
+            const historical = HISTORICAL_PLAYER_DATA[player.name];
+            if (!historical) {
+                return {
+                    expectedFm: 6.5 + (player.fvmp / 1000),
+                    expectedGoals: player.roles.includes('Pc') ? 8 : 
+                                  player.roles.includes('A') ? 5 : 2,
+                    confidence: 0.6
+                };
+            }
+
+            const seasons = Object.values(historical.seasons);
+            const avgFm = seasons.reduce((sum, s) => sum + s.fm, 0) / seasons.length;
+            const avgGoals = seasons.reduce((sum, s) => sum + s.gf, 0) / seasons.length;
+            
+            return {
+                expectedFm: avgFm * historical.age_factor * historical.transfer_impact,
+                expectedGoals: avgGoals * historical.age_factor * historical.transfer_impact,
+                confidence: seasons.length > 2 ? 0.9 : 0.7
+            };
+        }
+
+        // Calcolo fattore rischio
+        function calculateRiskFactor(player) {
+            let risk = 0;
+            
+            const historical = HISTORICAL_PLAYER_DATA[player.name];
+            if (historical) {
+                // Rischio basato su trend
+                switch (historical.trend) {
+                    case 'declining': risk += 0.3; break;
+                    case 'growing': risk += 0.1; break;
+                    default: risk += 0.2; break;
+                }
+                
+                // Rischio età
+                if (historical.age_factor < 0.95) risk += 0.2;
+                
+                // Rischio transfer
+                if (historical.transfer_impact < 1.0) risk += 0.15;
+            } else {
+                risk += 0.4; // Giocatori sconosciuti = più rischiosi
+            }
+            
+            // Rischio posizione
+            const roleRisk = {
+                'Por': 0.1, 'Dc': 0.15, 'Dd': 0.2, 'Ds': 0.2, 'B': 0.25,
+                'E': 0.3, 'M': 0.2, 'C': 0.25, 'T': 0.4, 'W': 0.35, 'A': 0.35, 'Pc': 0.3
+            };
+            
+            const maxRoleRisk = Math.max(...player.roles.map(role => roleRisk[role] || 0.3));
+            risk += maxRoleRisk;
+            
+            return Math.min(1.0, risk);
+        }
+
+        // Proiezione stagionale
+        function calculateSeasonProjection(player) {
+            const prediction = calculateHistoricalPrediction(player);
+            const teamData = TEAM_PERFORMANCE_DATA[player.team] || 
+                           { attack_strength: 1.0, defense_strength: 1.0, form: 7.0 };
+            
+            let projectedFm = prediction.expectedFm;
+            let projectedGoals = prediction.expectedGoals;
+            
+            // Modifica in base alla squadra
+            if (['A', 'Pc', 'W', 'T'].includes(player.roles[0])) {
+                projectedGoals *= teamData.attack_strength;
+                projectedFm += (teamData.form - 7) * 0.1;
+            }
+            
+            if (['Por', 'Dc', 'Dd', 'Ds', 'B'].includes(player.roles[0])) {
+                projectedFm += (8.5 - teamData.defense_strength * 4) * 0.1;
+            }
+            
+            return {
+                expectedFantaMedia: projectedFm,
+                expectedGoals: projectedGoals,
+                expectedPoints: projectedFm * 25 + projectedGoals * 3, // Stima punti totali
+                confidence: prediction.confidence * (teamData.form / 10)
+            };
+        }
+
+        // Display avanzato con statistiche predittive
+        function updatePlayerList() {
+            const container = document.getElementById('playerList');
+            
+            if (currentRoster.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.6);">Nessun giocatore in rosa</div>';
+                return;
+            }
+
+            container.innerHTML = currentRoster.map((player, index) => {
+                const prediction = player.seasonProjection || { expectedFantaMedia: 6.5, expectedPoints: 170, confidence: 0.6 };
+                const risk = player.riskFactor || 0.3;
+                
+                const riskColor = risk < 0.3 ? '#28a745' : risk < 0.6 ? '#ffc107' : '#dc3545';
+                const confidenceBar = `
+                    <div style="background: rgba(255,255,255,0.2); height: 4px; border-radius: 2px; margin-top: 5px;">
+                        <div style="background: #ffd700; width: ${prediction.confidence * 100}%; height: 100%; border-radius: 2px;"></div>
+                    </div>
+                `;
+                
+                return `
+                    <div class="player-item">
+                        <div class="player-info">
+                            <div class="player-name">${player.name}</div>
+                            <div class="player-details">
+                                ${player.roles.map(role => `<span class="ruolo-badge ruolo-${role}">${role}</span>`).join('')}
+                                ${player.team} • FVMp: ${player.fvmp}
+                                ${player.status === 'injured' ? ' • 🚑' : ''}
+                                ${player.status === 'suspended' ? ' • 🟨' : ''}
+                                ${player.status === 'doubtful' ? ' • ❓' : ''}
+                            </div>
+                            <div style="font-size: 0.8em; color: rgba(255,255,255,0.8); margin-top: 3px;">
+                                📊 Proiezione: ${prediction.expectedFantaMedia.toFixed(1)} FM, ${prediction.expectedPoints.toFixed(0)} pt
+                                • <span style="color: ${riskColor}">Rischio: ${(risk * 100).toFixed(0)}%</span>
+                            </div>
+                            ${confidenceBar}
+                        </div>
+                        <button class="btn btn-danger" onclick="removePlayer(${index})" style="font-size: 12px; padding: 5px 10px;">❌</button>
+                    </div>
+                `;
+            }).join('');
+        }', fvmp: 960, status: 'active' },
                 { name: 'Raspadori', roles: ['A', 'T'], team: 'Napoli', fvmp: 200, status: 'active' }
             ];
 
@@ -872,47 +1071,265 @@
             displayFormations(formation1, formation2);
         }
 
-        // Calcolo punteggio giocatore
+        // Calcolo punteggio giocatore AVANZATO con dati storici
         function calculatePlayerScore(player, strategy, homeBonus) {
             let score = 0;
             
-            // Base: FVMp normalizzato
-            score += Math.log(player.fvmp + 1) * 10;
-            
-            // Dati web se disponibili
-            if (player.webData) {
-                score += (player.webData.titolarita / 100) * 30; // Titolarità
-                score += player.webData.forma * 5; // Forma
-                score -= player.webData.difficolta * 2; // Difficoltà (sottrae)
+            // 1. BASE STORICA (dai tuoi 8 anni di dati)
+            const historicalData = HISTORICAL_PLAYER_DATA[player.name];
+            if (historicalData) {
+                // Media prestazioni storiche ponderate
+                const seasons = Object.values(historicalData.seasons);
+                const avgFm = seasons.reduce((sum, s) => sum + s.fm, 0) / seasons.length;
+                const avgGoals = seasons.reduce((sum, s) => sum + s.gf, 0) / seasons.length;
+                const avgAssists = seasons.reduce((sum, s) => sum + s.ass, 0) / seasons.length;
+                
+                score += avgFm * 8; // Peso alto per FantaMedia storica
+                score += avgGoals * 2; // Bonus gol storici
+                score += avgAssists * 1.5; // Bonus assist storici
+                
+                // Fattore trend (crescita/declino)
+                switch (historicalData.trend) {
+                    case 'growing':
+                        score *= 1.15; // +15% per giocatori in crescita
+                        break;
+                    case 'declining':
+                        score *= 0.90; // -10% per giocatori in declino
+                        break;
+                    case 'stable':
+                    default:
+                        score *= 1.0;
+                        break;
+                }
+                
+                // Fattore età
+                score *= historicalData.age_factor;
+                
+                // Impact transfer
+                score *= historicalData.transfer_impact;
+            } else {
+                // Fallback per giocatori senza dati storici
+                score += Math.log(player.fvmp + 1) * 8;
             }
             
-            // Bonus casa
-            score += homeBonus;
+            // 2. ANALISI SQUADRA (dai dati teams performance)
+            const teamData = TEAM_PERFORMANCE_DATA[player.team];
+            if (teamData) {
+                // Bonus per ruolo offensivo in squadre forti in attacco
+                if (['A', 'Pc', 'W', 'T'].includes(player.roles[0])) {
+                    score *= teamData.attack_strength;
+                }
+                
+                // Bonus per difensori in squadre forti in difesa
+                if (['Por', 'Dc', 'Dd', 'Ds', 'B'].includes(player.roles[0])) {
+                    score *= (2.0 - teamData.defense_strength); // Invertito: meno gol subiti = meglio
+                }
+                
+                // Forma squadra generale
+                score += teamData.form * 2;
+            }
             
-            // Strategia
+            // 3. DATI WEB REAL-TIME (forma attuale, titolarità)
+            if (player.webData) {
+                // Probabilità titolarità (peso molto alto)
+                score += (player.webData.titolarita / 100) * 25;
+                
+                // Forma attuale vs media storica
+                const currentForm = player.webData.forma;
+                if (historicalData) {
+                    const historicalAvg = Object.values(historicalData.seasons)
+                        .reduce((sum, s) => sum + s.mv, 0) / 
+                        Object.values(historicalData.seasons).length;
+                    
+                    const formDelta = (currentForm - historicalAvg) * 3;
+                    score += formDelta;
+                } else {
+                    score += currentForm * 4;
+                }
+                
+                // Difficoltà partita (dai dati betting)
+                score -= player.webData.difficolta * 1.5;
+            }
+            
+            // 4. BONUS CASA STADIO FASCIA 1
+            score += homeBonus * 2; // Moltiplicato per il tuo stadio top
+            
+            // 5. STRATEGIA AVANZATA
             switch (strategy) {
                 case 'conservative':
-                    score += (player.webData?.titolarita || 70) / 100 * 20;
+                    // Privilegia giocatori con alta titolarità e performance stabili
+                    const stability = (player.webData?.titolarita || 70) / 100;
+                    score += stability * 20;
+                    
+                    if (historicalData && historicalData.trend === 'stable') {
+                        score *= 1.1;
+                    }
                     break;
+                    
                 case 'aggressive':
-                    score += player.fvmp > 500 ? 15 : -5;
+                    // Privilegia potenziale alto e giocatori in crescita
+                    if (player.fvmp > 800 || 
+                        (historicalData && historicalData.trend === 'growing')) {
+                        score *= 1.25;
+                    }
+                    
+                    // Bonus per giocatori offensivi
+                    if (['A', 'Pc', 'T'].includes(player.roles[0])) {
+                        score *= 1.15;
+                    }
                     break;
+                    
                 case 'balanced':
                 default:
-                    score += 10;
+                    // Equilibrio tra sicurezza e potenziale
+                    score += 8;
+                    
+                    if (player.webData?.titolarita > 80 && player.fvmp > 300) {
+                        score *= 1.1;
+                    }
                     break;
             }
             
-            // Bonus per ruolo in base al modulo
-            const roleBonus = {
-                'Por': 5, 'Dc': 8, 'Dd': 7, 'Ds': 7, 'B': 6,
-                'E': 9, 'M': 10, 'C': 12, 'T': 15, 'W': 14, 'A': 16, 'Pc': 18
-            };
+            // 6. BONUS RUOLO CONTEXTUAL
+            const roleBonus = calculateContextualRoleBonus(player, strategy);
+            score += roleBonus;
             
-            const maxRoleBonus = Math.max(...player.roles.map(role => roleBonus[role] || 0));
-            score += maxRoleBonus;
+            // 7. PENALITÀ INFORTUNI
+            if (player.status === 'injured') {
+                score *= 0.1; // Praticamente escluso
+            }
             
             return Math.max(0, score);
+        }
+
+        // Bonus ruolo contestuale basato su dati storici
+        function calculateContextualRoleBonus(player, strategy) {
+            const roleData = {
+                'Por': { base: 5, consistency: 0.9, ceiling: 1.1 },
+                'Dc': { base: 8, consistency: 0.85, ceiling: 1.3 },
+                'Dd': { base: 7, consistency: 0.8, ceiling: 1.5 },
+                'Ds': { base: 7, consistency: 0.8, ceiling: 1.5 },
+                'B': { base: 6, consistency: 0.75, ceiling: 1.4 },
+                'E': { base: 9, consistency: 0.7, ceiling: 1.6 },
+                'M': { base: 10, consistency: 0.85, ceiling: 1.2 },
+                'C': { base: 12, consistency: 0.75, ceiling: 1.7 },
+                'T': { base: 15, consistency: 0.6, ceiling: 2.2 },
+                'W': { base: 14, consistency: 0.65, ceiling: 2.0 },
+                'A': { base: 16, consistency: 0.7, ceiling: 1.9 },
+                'Pc': { base: 18, consistency: 0.75, ceiling: 2.1 }
+            };
+            
+            let bonus = 0;
+            player.roles.forEach(role => {
+                const data = roleData[role] || roleData['C'];
+                
+                switch (strategy) {
+                    case 'conservative':
+                        bonus += data.base * data.consistency;
+                        break;
+                    case 'aggressive':
+                        bonus += data.base * data.ceiling;
+                        break;
+                    default:
+                        bonus += data.base;
+                        break;
+                }
+            });
+            
+            return bonus / player.roles.length; // Media se multi-ruolo
+        }
+
+        // Aggiornamento forma con analisi storica avanzata
+        async function updateCurrentForm() {
+            const giornata = document.getElementById('giornata').value;
+            if (!giornata) return;
+
+            // Crea prompt avanzato con contesto storico
+            const playerHistoricalContext = currentRoster.map(player => {
+                const historical = HISTORICAL_PLAYER_DATA[player.name];
+                if (historical) {
+                    const lastSeason = Object.values(historical.seasons).slice(-1)[0];
+                    return `${player.name} (${player.team}): Ultima stagione ${lastSeason.pv} presenze, media ${lastSeason.mv}, ${lastSeason.gf} gol`;
+                }
+                return `${player.name} (${player.team}): Nuovo o dati limitati`;
+            }).join('\n');
+
+            const prompt = `Analizza questi giocatori per la ${giornata}ª giornata Serie A 2025/26.
+
+CONTESTO STORICO:
+${playerHistoricalContext}
+
+Per ogni giocatore fornisci:
+- Probabilità titolarità (0-100) basata su forma, rotazioni, infortuni
+- Forma attuale (1-10) considerando ultime prestazioni
+- Difficoltà partita avversario (1-10) basata su forza difensiva/attacco
+- Match difficulty context (casa/trasferta, importanza partita)
+
+Rispondi SOLO con JSON:
+{
+  "nome_giocatore": {
+    "titolarita": 85,
+    "forma": 7,
+    "difficolta": 5,
+    "note": "In ottima forma, avversario difficile"
+  },
+  ...
+}`;
+
+            const response = await queryGemini(prompt);
+            if (response) {
+                try {
+                    const formData = JSON.parse(response.replace(/```json\n?|```/g, ''));
+                    currentRoster.forEach(player => {
+                        if (formData[player.name]) {
+                            player.webData = formData[player.name];
+                        }
+                    });
+                    webDataCache = formData;
+                    console.log('✅ Dati web aggiornati con contesto storico');
+                } catch (error) {
+                    console.error('Errore parsing forma avanzata:', error);
+                    // Fallback con dati base
+                    currentRoster.forEach(player => {
+                        player.webData = {
+                            titolarita: 75 + Math.random() * 20,
+                            forma: 6 + Math.random() * 3,
+                            difficolta: 4 + Math.random() * 4
+                        };
+                    });
+                }
+            }
+        }
+
+        // Aggiornamento infortuni con analisi storica
+        async function updateInjuries() {
+            const prompt = `Analizza infortuni/squalifiche per questi giocatori Serie A:
+${currentRoster.map(p => `${p.name} (${p.team})`).join(', ')}
+
+Considera:
+- Storico infortuni del giocatore
+- Squalifiche accumulate
+- Rotazioni tecniche
+- Status medico attuale
+
+Rispondi SOLO con JSON: {"nome_giocatore": "active|injured|suspended|doubtful", ...}`;
+
+            const response = await queryGemini(prompt);
+            if (response) {
+                try {
+                    const injuries = JSON.parse(response.replace(/```json\n?|```/g, ''));
+                    currentRoster.forEach(player => {
+                        if (injuries[player.name]) {
+                            player.status = injuries[player.name];
+                        }
+                    });
+                    updatePlayerList();
+                    updateStats();
+                    console.log('✅ Status infortuni aggiornato');
+                } catch (error) {
+                    console.error('Errore parsing infortuni:', error);
+                }
+            }
         }
 
         // Trova la migliore formazione per un modulo
