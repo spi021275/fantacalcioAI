@@ -104,6 +104,23 @@
             box-shadow: 0 0 0 3px rgba(255,215,0,0.3);
         }
 
+        /* Fix per i menu a tendina - opzioni scure */
+        .input-group select option {
+            background: #1a1a2e;
+            color: white;
+            padding: 10px;
+        }
+
+        .input-group select option:hover {
+            background: #16213e;
+            color: #ffd700;
+        }
+
+        .input-group select option:checked {
+            background: #ffd700;
+            color: #000;
+        }
+
         .btn {
             background: linear-gradient(45deg, #ff6b35, #f7931e);
             color: white;
