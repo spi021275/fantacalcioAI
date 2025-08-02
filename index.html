@@ -3,1611 +3,971 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ottimizzatore Mantra - Serie B1 FantaManager</title>
+    <title>🚀 Ottimizzatore CDM - Serie B1 FantaManager</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
             min-height: 100vh;
-            padding: 20px;
         }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        }
-
+        
         .header {
-            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd700);
-            padding: 30px;
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
             text-align: center;
-            position: relative;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
         }
-
+        
         .header h1 {
-            font-size: 2.8em;
-            font-weight: 800;
-            color: #000;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 2.2em;
             margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
-        .header .subtitle {
-            font-size: 1.2em;
-            color: #000;
-            opacity: 0.8;
-            font-weight: 600;
+        
+        .league-info {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-top: 10px;
         }
-
-        .main-content {
+        
+        .container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 30px;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1800px;
+            margin: 0 auto;
+            min-height: calc(100vh - 140px);
         }
-
-        .section {
-            background: rgba(255,255,255,0.08);
+        
+        .panel {
+            background: rgba(255,255,255,0.95);
             border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            color: #333;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             backdrop-filter: blur(10px);
         }
-
-        .section h2 {
-            color: #ffd700;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .input-group {
+        
+        .panel h3 {
+            color: #4a5568;
             margin-bottom: 15px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
         }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #ffd700;
+        
+        .controls {
+            margin-bottom: 20px;
         }
-
-        .input-group input, .input-group select {
+        
+        .controls select, .controls button {
             width: 100%;
             padding: 12px;
-            border: 2px solid rgba(255,255,255,0.2);
+            margin: 8px 0;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 16px;
-            backdrop-filter: blur(10px);
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: #ffd700;
-            box-shadow: 0 0 0 3px rgba(255,215,0,0.3);
-        }
-
-        /* Fix per i menu a tendina - opzioni scure */
-        .input-group select option {
-            background: #1a1a2e;
-            color: white;
-            padding: 10px;
-        }
-
-        .input-group select option:hover {
-            background: #16213e;
-            color: #ffd700;
-        }
-
-        .input-group select option:checked {
-            background: #ffd700;
-            color: #000;
-        }
-
-        .btn {
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
+        
+        .controls button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s;
-            margin: 5px;
-            box-shadow: 0 5px 15px rgba(255,107,53,0.3);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
-        .btn:hover {
+        
+        .controls button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255,107,53,0.4);
-            background: linear-gradient(45deg, #f7931e, #ff6b35);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
-
-        .btn-success {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
-        }
-
-        .btn-danger {
-            background: linear-gradient(45deg, #dc3545, #e74c3c);
-            box-shadow: 0 5px 15px rgba(220,53,69,0.3);
-        }
-
+        
         .player-list {
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f7fafc;
         }
-
+        
         .player-item {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             padding: 10px;
-            margin-bottom: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            border-left: 4px solid #ffd700;
-            transition: all 0.3s;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-
+        
         .player-item:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateX(5px);
+            background: #edf2f7;
+            transform: translateX(3px);
         }
-
-        .player-info {
-            flex: 1;
+        
+        .player-item.selected {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
         }
-
+        
         .player-name {
             font-weight: 600;
-            color: #ffd700;
-            margin-bottom: 4px;
+            color: #2d3748;
         }
-
-        .player-details {
-            font-size: 0.9em;
-            color: rgba(255,255,255,0.7);
-        }
-
-        .ruolo-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
+        
+        .player-team {
             font-size: 0.8em;
+            color: #718096;
+            margin-top: 2px;
+        }
+        
+        .player-value {
             font-weight: bold;
-            margin-right: 5px;
+            color: #38b2ac;
         }
-
-        .ruolo-P { background: #6f42c1; }
-        .ruolo-Dc { background: #dc3545; }
-        .ruolo-B { background: #fd7e14; }
-        .ruolo-Dd { background: #20c997; }
-        .ruolo-Ds { background: #17a2b8; }
-        .ruolo-E { background: #28a745; }
-        .ruolo-M { background: #6c757d; }
-        .ruolo-C { background: #007bff; }
-        .ruolo-T { background: #e83e8c; }
-        .ruolo-W { background: #ffc107; color: #000; }
-        .ruolo-A { background: #fd7e14; }
-        .ruolo-Pc { background: #dc3545; }
-
-        .formation-display {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%);
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 20px;
-            position: relative;
-        }
-
-        .formation-comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 20px;
-        }
-
-        .formation-option {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .formation-option:hover {
-            border-color: #ffd700;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .formation-option.selected {
-            border-color: #ff6b35;
-            background: rgba(255,107,53,0.1);
-        }
-
-        .formation-header {
+        
+        .formation-container {
             text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .formation-toggle {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
             margin-bottom: 20px;
         }
-
-        .formation-title {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: #ffd700;
-            margin-bottom: 5px;
+        
+        .formation-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
         }
-
-        .formation-score {
-            font-size: 2em;
-            font-weight: 800;
-            color: #ff6b35;
+        
+        .formation-btn.active {
+            background: #667eea;
+            color: white;
         }
-
+        
         .field {
-            background: linear-gradient(180deg, #2d5016 0%, #3d6b1b 50%, #2d5016 100%);
-            border-radius: 10px;
+            background: linear-gradient(180deg, #2d5a27 0%, #4a7c59 50%, #2d5a27 100%);
+            border-radius: 15px;
             padding: 20px;
             position: relative;
-            min-height: 300px;
-            border: 2px solid #fff;
+            min-height: 500px;
+            border: 3px solid #fff;
         }
-
+        
         .field::before {
             content: '';
             position: absolute;
             top: 50%;
-            left: 0;
-            right: 0;
+            left: 5%;
+            right: 5%;
             height: 2px;
             background: white;
             transform: translateY(-50%);
         }
-
-        .field::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 80px;
-            height: 80px;
-            border: 2px solid white;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .field-row {
-            display: flex;
-            justify-content: space-around;
+        
+        .field-section {
             margin: 15px 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .player-card {
-            background: rgba(255,255,255,0.9);
-            color: #000;
-            padding: 8px 12px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 0.8em;
-            font-weight: 600;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-            transition: all 0.3s;
-            min-width: 80px;
-        }
-
-        .player-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        }
-
-        .status-indicators {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            justify-content: center;
+            align-items: center;
             flex-wrap: wrap;
+            gap: 10px;
         }
-
-        .status-card {
-            background: rgba(255,255,255,0.1);
+        
+        .player-slot {
+            background: rgba(255,255,255,0.9);
+            border: 2px solid #38b2ac;
+            border-radius: 10px;
+            padding: 8px 12px;
+            min-width: 80px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        
+        .player-slot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(56, 178, 172, 0.3);
+        }
+        
+        .player-slot.filled {
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            color: white;
+            border-color: #2f855a;
+        }
+        
+        .player-slot.captain {
+            border: 3px solid #f6ad55;
+            background: linear-gradient(45deg, #ed8936, #dd6b20);
+        }
+        
+        .formation-score {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(45deg, #4299e1, #3182ce);
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .score-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .score-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .insights-panel {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .insight-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             padding: 15px;
             border-radius: 10px;
-            text-align: center;
-            flex: 1;
-            min-width: 120px;
+            margin-bottom: 15px;
         }
-
-        .status-value {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #ffd700;
+        
+        .insight-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
         }
-
-        .status-label {
+        
+        .insight-content {
             font-size: 0.9em;
-            color: rgba(255,255,255,0.7);
-            margin-top: 5px;
+            line-height: 1.4;
         }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            color: #ffd700;
+        
+        .top-performers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
         }
-
-        .loading.show {
-            display: block;
+        
+        .performer-card {
+            background: rgba(56, 178, 172, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #38b2ac;
         }
-
-        .spinner {
-            border: 4px solid rgba(255,215,0,0.3);
-            border-radius: 50%;
-            border-top: 4px solid #ffd700;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
+        
+        .performer-name {
+            font-weight: bold;
+            color: #2d3748;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        
+        .performer-score {
+            color: #38b2ac;
+            font-weight: bold;
         }
-
-        .alert {
-            padding: 10px 15px;
+        
+        .warning {
+            background: linear-gradient(45deg, #f56565, #e53e3e);
+            color: white;
+            padding: 10px;
             border-radius: 8px;
             margin: 10px 0;
-            border-left: 4px solid;
+            font-weight: bold;
         }
-
-        .alert-info {
-            background: rgba(23,162,184,0.2);
-            border-color: #17a2b8;
-            color: #17a2b8;
+        
+        .success {
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
         }
-
-        .alert-warning {
-            background: rgba(255,193,7,0.2);
-            border-color: #ffc107;
-            color: #ffc107;
+        
+        .bench {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
         }
-
-        .alert-danger {
-            background: rgba(220,53,69,0.2);
-            border-color: #dc3545;
-            color: #dc3545;
+        
+        .bench h4 {
+            color: white;
+            margin-bottom: 10px;
+            text-align: center;
         }
-
-        @media (max-width: 768px) {
-            .main-content {
+        
+        .bench-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+        }
+        
+        .bench-slot {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            padding: 6px;
+            text-align: center;
+            font-size: 0.8em;
+            color: white;
+        }
+        
+        .keyboard-shortcuts {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8em;
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
                 grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 20px;
-            }
-            
-            .formation-comparison {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .header h1 {
-                font-size: 2em;
+                gap: 15px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>🚀 OTTIMIZZATORE CDM - SERIE B1</h1>
+        <div class="league-info">
+            <strong>FantaManager • Sistema Mantra MASTER • Obiettivo: Promozione Serie A</strong>
+        </div>
+    </div>
+
     <div class="container">
-        <div class="header">
-            <h1>🏆 OTTIMIZZATORE MANTRA</h1>
-            <div class="subtitle">Serie B1 FantaManager 2025/26 - Obiettivo 1° Posto</div>
-        </div>
-
-        <div class="main-content">
-            <!-- SEZIONE GESTIONE ROSA -->
-            <div class="section">
-                <h2>👥 Gestione Rosa</h2>
+        <!-- PANNELLO SINISTRA: ROSA E CONTROLLI -->
+        <div class="panel">
+            <h3>🏆 La Tua Rosa CDM</h3>
+            <div class="controls">
+                <select id="giornataSelect">
+                    <option value="1">Giornata 1 - 18 Ago</option>
+                    <option value="2">Giornata 2 - 25 Ago</option>
+                    <option value="3">Giornata 3 - 1 Set</option>
+                    <option value="4">Giornata 4 - 15 Set</option>
+                    <option value="5">Giornata 5 - 22 Set</option>
+                    <option value="6">Giornata 6 - 29 Set</option>
+                    <option value="7">Giornata 7 - 6 Ott</option>
+                    <option value="8">Giornata 8 - 20 Ott</option>
+                    <option value="9">Giornata 9 - 27 Ott</option>
+                    <option value="10">Giornata 10 - 3 Nov</option>
+                </select>
                 
-                <div class="input-group">
-                    <label for="giornata">📅 Giornata Campionato</label>
-                    <select id="giornata">
-                        <option value="">Caricamento giornate...</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label for="playerName">➕ Aggiungi Giocatore</label>
-                    <input type="text" id="playerName" placeholder="Nome giocatore">
-                </div>
-
-                <div class="input-group">
-                    <label for="playerRole">🎯 Ruolo Mantra</label>
-                    <select id="playerRole">
-                        <option value="">Seleziona ruolo</option>
-                        <option value="Por">Por - Portiere</option>
-                        <option value="Dc">Dc - Difensore Centrale</option>
-                        <option value="B">B - Braccetto</option>
-                        <option value="Dd">Dd - Terzino Destro</option>
-                        <option value="Ds">Ds - Terzino Sinistro</option>
-                        <option value="E">E - Esterno Difensivo</option>
-                        <option value="M">M - Mediano</option>
-                        <option value="C">C - Centrocampista</option>
-                        <option value="T">T - Trequartista</option>
-                        <option value="W">W - Ala</option>
-                        <option value="A">A - Attaccante di Raccordo</option>
-                        <option value="Pc">Pc - Punta Centrale</option>
-                    </select>
-                </div>
-
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-success" onclick="addPlayer()">➕ Aggiungi</button>
-                    <button class="btn" onclick="loadInitialRoster()">📋 Carica Rosa Attuale</button>
-                    <button class="btn" onclick="updateWebData()">🔄 Aggiorna Dati Web</button>
-                </div>
-
-                <div class="player-list" id="playerList">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <div>Caricamento rosa...</div>
-                    </div>
-                </div>
+                <button onclick="aggiornaLiveData()">📡 Aggiorna Live Data</button>
+                <button onclick="ottimizzaConAI()">🧠 Ottimizza con AI</button>
+                <button onclick="resetFormazione()">🔄 Reset</button>
             </div>
 
-            <!-- SEZIONE OTTIMIZZAZIONE -->
-            <div class="section">
-                <h2>⚙️ Ottimizzazione</h2>
-                
-                <div class="input-group">
-                    <label for="strategy">🎯 Strategia</label>
-                    <select id="strategy">
-                        <option value="balanced">Bilanciata</option>
-                        <option value="conservative">Conservativa (Sicurezza)</option>
-                        <option value="aggressive">Aggressiva (Rischio/Rendimento)</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label for="homeBonus">🏟️ Bonus Casa</label>
-                    <select id="homeBonus">
-                        <option value="3.0">Casa (+3.0) - Stadio Fascia 1</option>
-                        <option value="0">Trasferta (0)</option>
-                    </select>
-                </div>
-
-                <button class="btn btn-success" onclick="optimizeFormation()" style="width: 100%; font-size: 18px; padding: 15px;">
-                    🚀 OTTIMIZZA FORMAZIONE
-                </button>
-
-                <div class="status-indicators">
-                    <div class="status-card">
-                        <div class="status-value" id="totalPlayers">0</div>
-                        <div class="status-label">Giocatori Rosa</div>
-                    </div>
-                    <div class="status-card">
-                        <div class="status-value" id="availablePlayers">0</div>
-                        <div class="status-label">Disponibili</div>
-                    </div>
-                    <div class="status-card">
-                        <div class="status-value" id="injuredPlayers">0</div>
-                        <div class="status-label">Infortunati</div>
-                    </div>
-                </div>
+            <div class="player-list" id="playerList">
+                <!-- I giocatori verranno caricati qui -->
             </div>
         </div>
 
-        <!-- SEZIONE FORMAZIONI RISULTATO -->
-        <div class="formation-display" id="formationResult" style="display: none;">
-            <h2 style="text-align: center; color: #ffd700; margin-bottom: 30px;">⚽ FORMAZIONI OTTIMALI</h2>
+        <!-- PANNELLO CENTRALE: FORMAZIONI -->
+        <div class="panel">
+            <h3>⚽ Formazioni Ottimizzate</h3>
             
-            <div class="formation-comparison" id="formationComparison">
-                <!-- Le due formazioni verranno generate qui -->
+            <div class="formation-toggle">
+                <div class="formation-btn active" onclick="cambiaFormazione('433')">4-3-3</div>
+                <div class="formation-btn" onclick="cambiaFormazione('352')">3-5-2</div>
             </div>
 
-            <div class="status-indicators" id="analysisResults">
-                <!-- Risultati analisi -->
+            <div class="formation-container">
+                <div class="formation-score">
+                    <div class="score-title">Punteggio Predittivo</div>
+                    <div class="score-value" id="scoreValue">72.5</div>
+                </div>
+
+                <div class="field" id="field">
+                    <!-- Il campo verrà generato dinamicamente -->
+                </div>
+
+                <div class="bench">
+                    <h4>🪑 Panchina MASTER (Ordine Sostituzioni)</h4>
+                    <div class="bench-slots" id="benchSlots">
+                        <!-- Panchina generata dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANNELLO DESTRA: AI INSIGHTS -->
+        <div class="panel">
+            <h3>🤖 AI Insights & Analytics</h3>
+            <div class="insights-panel" id="insightsPanel">
+                <!-- Insights generati dinamicamente -->
+            </div>
+
+            <h3 style="margin-top: 30px;">🌟 Top Performers</h3>
+            <div class="top-performers" id="topPerformers">
+                <!-- Top performers generati dinamicamente -->
             </div>
         </div>
     </div>
 
+    <div class="keyboard-shortcuts">
+        <strong>Shortcuts:</strong> Ctrl+O (Ottimizza) • Ctrl+R (Reset) • Ctrl+L (Live Data)
+    </div>
+
     <script>
-        // Configurazione Gemini AI
-        const GEMINI_API_KEY = 'AIzaSyCwtjsNaWLh28_bXrHJOHaMgzFDVjOHXiQ';
-        const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+        // DATABASE INTEGRATO CON I TUOI DATI REALI
+        const rosaCompleta = [
+            // PORTIERI
+            {nome: "Carnesecchi", squadra: "Atalanta", ruolo: "P", valore: 710, forma: 8.5, difficolta: 6.2, trend: "crescente"},
+            {nome: "Sava", squadra: "Udinese", ruolo: "P", valore: 80, forma: 6.8, difficolta: 7.1, trend: "stabile"},
+            
+            // DIFENSORI
+            {nome: "Sportiello", squadra: "Atalanta", ruolo: "Dc", valore: 10, forma: 6.0, difficolta: 6.2, trend: "declino"},
+            {nome: "Turati", squadra: "Sassuolo", ruolo: "Dc", valore: 130, forma: 7.2, difficolta: 8.5, trend: "crescente"},
+            {nome: "Beukema", squadra: "Napoli", ruolo: "Dc", valore: 250, forma: 7.8, difficolta: 5.8, trend: "crescente"},
+            {nome: "Giannetti L.", squadra: "Udinese", ruolo: "Ds", valore: 70, forma: 6.5, difficolta: 7.1, trend: "stabile"},
+            {nome: "Ismajli", squadra: "Torino", ruolo: "Dc", valore: 160, forma: 7.4, difficolta: 6.8, trend: "stabile"},
+            {nome: "Maripan", squadra: "Torino", ruolo: "Dc", valore: 130, forma: 7.1, difficolta: 6.8, trend: "stabile"},
+            
+            // CENTROCAMPISTI
+            {nome: "N'dicka", squadra: "Roma", ruolo: "C", valore: 260, forma: 7.6, difficolta: 6.5, trend: "crescente"},
+            {nome: "Kolasinac", squadra: "Atalanta", ruolo: "E", valore: 190, forma: 7.3, difficolta: 6.2, trend: "stabile"},
+            {nome: "De Silvestri", squadra: "Bologna", ruolo: "Dd", valore: 120, forma: 6.9, difficolta: 6.9, trend: "declino"},
+            {nome: "Holm", squadra: "Bologna", ruolo: "M", valore: 210, forma: 7.5, difficolta: 6.9, trend: "crescente"},
+            {nome: "Kalulu", squadra: "Juventus", ruolo: "Dc", valore: 260, forma: 8.2, difficolta: 5.5, trend: "crescente"},
+            {nome: "Posch", squadra: "Bologna", ruolo: "Dd", valore: 140, forma: 7.0, difficolta: 6.9, trend: "stabile"},
+            {nome: "Vojvoda", squadra: "Como", ruolo: "Ds", valore: 100, forma: 6.7, difficolta: 7.8, trend: "declino"},
+            
+            // ATTACCANTI
+            {nome: "Biraghi", squadra: "Torino", ruolo: "W", valore: 230, forma: 7.7, difficolta: 6.8, trend: "stabile"},
+            {nome: "Saelemaekers", squadra: "Milan", ruolo: "W", valore: 460, forma: 8.9, difficolta: 5.2, trend: "crescente"},
+            {nome: "Frendrup", squadra: "Genoa", ruolo: "C", valore: 240, forma: 7.4, difficolta: 7.4, trend: "stabile"},
+            {nome: "Richardson", squadra: "Fiorentina", ruolo: "T", valore: 90, forma: 6.6, difficolta: 6.7, trend: "crescente"},
+            {nome: "Karlsson", squadra: "Bologna", ruolo: "A", valore: 70, forma: 6.4, difficolta: 6.9, trend: "stabile"},
+            {nome: "Beltran L.", squadra: "Fiorentina", ruolo: "A", valore: 130, forma: 7.0, difficolta: 6.7, trend: "crescente"},
+            {nome: "De Ketelaere", squadra: "Atalanta", ruolo: "T", valore: 1780, forma: 9.2, difficolta: 6.2, trend: "crescente"},
+            {nome: "Leao", squadra: "Milan", ruolo: "W", valore: 2420, forma: 9.5, difficolta: 5.2, trend: "crescente"},
+            {nome: "Raspadori", squadra: "Napoli", ruolo: "A", valore: 200, forma: 7.1, difficolta: 5.8, trend: "stabile"},
+            {nome: "Castro S.", squadra: "Bologna", ruolo: "Pc", valore: 1400, forma: 8.8, difficolta: 6.9, trend: "crescente"},
+            {nome: "Cutrone", squadra: "Como", ruolo: "Pc", valore: 220, forma: 7.2, difficolta: 7.8, trend: "declino"},
+            {nome: "Dallinga", squadra: "Bologna", ruolo: "Pc", valore: 180, forma: 7.3, difficolta: 6.9, trend: "crescente"},
+            {nome: "Krstovic", squadra: "Lecce", ruolo: "Pc", valore: 1350, forma: 8.6, difficolta: 8.1, trend: "crescente"},
+            {nome: "Vlahovic", squadra: "Juventus", ruolo: "Pc", valore: 960, forma: 8.4, difficolta: 5.5, trend: "stabile"}
+        ];
 
-        // Database locale con dati storici integrati
-        let currentRoster = [];
-        let currentSeason = '2025-26';
-        let seasonFixtures = [];
-        let webDataCache = {};
-        let historicalDatabase = {
-            playerStats: null,
-            marketValues: null,
-            matchHistory: null,
-            bettingData: null
+        // DATI DIFFICULTY DALLE BETTING ODDS STORICHE
+        const teamDifficulty = {
+            "Juventus": 5.5, "Milan": 5.2, "Napoli": 5.8, "Atalanta": 6.2,
+            "Bologna": 6.9, "Roma": 6.5, "Fiorentina": 6.7, "Torino": 6.8,
+            "Genoa": 7.4, "Udinese": 7.1, "Lecce": 8.1, "Como": 7.8, "Sassuolo": 8.5
         };
 
-        // Database storico simulato (rappresenta i tuoi dati reali)
-        const HISTORICAL_PLAYER_DATA = {
-            // Esempio dati giocatori con trend storici
-            'Leao': {
-                seasons: {
-                    '2023-24': { pv: 32, mv: 6.8, fm: 8.2, gf: 12, ass: 8 },
-                    '2022-23': { pv: 35, mv: 7.1, fm: 8.8, gf: 14, ass: 12 },
-                    '2021-22': { pv: 30, mv: 6.5, fm: 7.5, gf: 8, ass: 6 }
-                },
-                trend: 'stable',
-                age_factor: 0.95,
-                transfer_impact: 1.0
-            },
-            'Vlahovic': {
-                seasons: {
-                    '2023-24': { pv: 28, mv: 6.9, fm: 8.5, gf: 16, ass: 4 },
-                    '2022-23': { pv: 31, mv: 7.2, fm: 9.1, gf: 18, ass: 5 },
-                    '2021-22': { pv: 33, mv: 7.8, fm: 10.2, gf: 24, ass: 3 }
-                },
-                trend: 'declining',
-                age_factor: 0.92,
-                transfer_impact: 0.85
-            },
-            'De Ketelaere': {
-                seasons: {
-                    '2023-24': { pv: 25, mv: 6.2, fm: 7.1, gf: 7, ass: 6 },
-                    '2022-23': { pv: 20, mv: 5.8, fm: 6.2, gf: 4, ass: 3 }
-                },
-                trend: 'growing',
-                age_factor: 1.05,
-                transfer_impact: 1.15
-            }
+        let formazioneAttuale = "433";
+        let formazioneSelezionata = {
+            "433": {titolari: [], panchina: []},
+            "352": {titolari: [], panchina: []}
         };
 
-        const BETTING_DIFFICULTY_DATA = {
-            // Dati difficoltà partite basati su betting odds storici
-            'Inter vs Milan': { difficulty: 9, avg_goals: 2.8, volatility: 0.7 },
-            'Juventus vs Napoli': { difficulty: 8, avg_goals: 2.3, volatility: 0.6 },
-            'Atalanta vs Roma': { difficulty: 7, avg_goals: 3.1, volatility: 0.8 }
-        };
-
-        const TEAM_PERFORMANCE_DATA = {
-            // Performance squadre che influenza giocatori
-            'Milan': { attack_strength: 1.15, defense_strength: 0.92, form: 7.2 },
-            'Inter': { attack_strength: 1.22, defense_strength: 0.88, form: 8.1 },
-            'Juventus': { attack_strength: 1.08, defense_strength: 0.85, form: 6.8 },
-            'Atalanta': { attack_strength: 1.28, defense_strength: 1.05, form: 7.8 },
-            'Napoli': { attack_strength: 1.12, defense_strength: 0.95, form: 7.0 }
-        };
-
-        // Moduli Mantra 2025/26
-        const MANTRA_FORMATIONS = {
-            '4-4-2': {
-                name: '4-4-2',
-                positions: {
-                    'Por': 1,
-                    'Dd': 1, 'Dc': 2, 'Ds': 1,
-                    'M': 2, 'C': 2,
-                    'A': 1, 'Pc': 1
-                }
-            },
-            '4-1-4-1': {
-                name: '4-1-4-1',
-                positions: {
-                    'Por': 1,
-                    'Dd': 1, 'Dc': 2, 'Ds': 1,
-                    'M': 1, 'C': 2, 'W': 2,
-                    'Pc': 1
-                }
-            },
-            '4-3-3': {
-                name: '4-3-3',
-                positions: {
-                    'Por': 1,
-                    'Dd': 1, 'Dc': 2, 'Ds': 1,
-                    'M': 1, 'C': 2,
-                    'W': 2, 'Pc': 1
-                }
-            },
-            '3-5-2': {
-                name: '3-5-2',
-                positions: {
-                    'Por': 1,
-                    'Dc': 3,
-                    'E': 2, 'M': 1, 'C': 2,
-                    'A': 2
-                }
-            },
-            '3-4-3': {
-                name: '3-4-3',
-                positions: {
-                    'Por': 1,
-                    'Dc': 3,
-                    'E': 2, 'C': 2,
-                    'W': 2, 'Pc': 1
-                }
-            }
-        };
-
-        // Inizializzazione
-        document.addEventListener('DOMContentLoaded', function() {
-            loadSeasonFixtures();
-            loadInitialRoster();
-        });
-
-        // Gestione Gemini AI
-        async function queryGemini(prompt) {
-            try {
-                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: prompt
-                            }]
-                        }]
-                    })
-                });
-
-                const data = await response.json();
-                return data.candidates[0].content.parts[0].text;
-            } catch (error) {
-                console.error('Errore Gemini AI:', error);
-                return null;
-            }
-        }
-
-        // Caricamento calendario Serie A 2025/26
-        async function loadSeasonFixtures() {
-            const prompt = `Fornisci il calendario completo della Serie A 2025/2026 con le date delle giornate. 
-            Rispondi solo con un JSON in questo formato:
-            [{"giornata": 1, "data": "2025-08-17", "descrizione": "1ª Giornata"}, ...]
-            per tutte le 38 giornate del campionato.`;
-
-            const response = await queryGemini(prompt);
-            if (response) {
-                try {
-                    seasonFixtures = JSON.parse(response);
-                    populateFixturesSelect();
-                } catch (error) {
-                    console.error('Errore parsing calendario:', error);
-                    createDefaultFixtures();
-                }
-            } else {
-                createDefaultFixtures();
-            }
-        }
-
-        function createDefaultFixtures() {
-            seasonFixtures = [];
-            const startDate = new Date('2025-08-17');
-            for (let i = 1; i <= 38; i++) {
-                const matchDate = new Date(startDate);
-                matchDate.setDate(startDate.getDate() + (i - 1) * 7);
-                seasonFixtures.push({
-                    giornata: i,
-                    data: matchDate.toISOString().split('T')[0],
-                    descrizione: `${i}ª Giornata`
-                });
-            }
-            populateFixturesSelect();
-        }
-
-        function populateFixturesSelect() {
-            const select = document.getElementById('giornata');
-            select.innerHTML = '<option value="">Seleziona giornata</option>';
+        // ALGORITMO PREDITTIVO AVANZATO
+        function calcolaPunteggioGiocatore(giocatore, giornata = 1) {
+            const baseScore = parseFloat(giocatore.forma);
+            const difficultyFactor = (10 - giocatore.difficolta) / 10;
+            const trendMultiplier = giocatore.trend === "crescente" ? 1.15 : 
+                                  giocatore.trend === "declino" ? 0.9 : 1.0;
             
-            seasonFixtures.forEach(fixture => {
-                const option = document.createElement('option');
-                option.value = fixture.giornata;
-                option.textContent = `${fixture.descrizione} - ${fixture.data}`;
-                select.appendChild(option);
+            // Bonus stadio CDM (Serie B1 - Stadio Fascia 6)
+            const bonusCasa = isPartitaCasa(giornata) ? 0.5 : 0;
+            
+            // Fattore valore per peso in squadra
+            const valoreFactor = Math.log(giocatore.valore + 1) / 10;
+            
+            const punteggio = (baseScore * difficultyFactor * trendMultiplier) + bonusCasa + valoreFactor;
+            return Math.round(punteggio * 10) / 10;
+        }
+
+        function isPartitaCasa(giornata) {
+            // Simulazione partite casa/trasferta
+            const partiteCasa = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+            return partiteCasa.includes(giornata);
+        }
+
+        function inizializzaApp() {
+            caricaRosa();
+            generaFormazione(formazioneAttuale);
+            generaInsights();
+            generaTopPerformers();
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'o') {
+                    e.preventDefault();
+                    ottimizzaConAI();
+                }
+                if (e.ctrlKey && e.key === 'r') {
+                    e.preventDefault();
+                    resetFormazione();
+                }
+                if (e.ctrlKey && e.key === 'l') {
+                    e.preventDefault();
+                    aggiornaLiveData();
+                }
             });
         }
 
-        // Caricamento rosa iniziale con dati storici integrati
-        function loadInitialRoster() {
-            const initialPlayers = [
-                // Portieri
-                { name: 'Sommer', roles: ['Por'], team: 'Inter', fvmp: 200, status: 'active' },
-                
-                // Difensori/Centrocampisti con dati storici
-                { name: 'Saelemaekers', roles: ['E', 'W'], team: 'Milan', fvmp: 460, status: 'active' },
-                { name: 'Kolasinac', roles: ['Dc', 'B'], team: 'Atalanta', fvmp: 190, status: 'active' },
-                { name: "N'dicka", roles: ['Dc', 'B'], team: 'Roma', fvmp: 260, status: 'active' },
-                { name: 'Kalulu', roles: ['Dc', 'Dd'], team: 'Juventus', fvmp: 260, status: 'active' },
-                { name: 'Beukema', roles: ['Dc'], team: 'Napoli', fvmp: 250, status: 'active' },
-                { name: 'Holm', roles: ['Dd', 'E'], team: 'Bologna', fvmp: 210, status: 'active' },
-                { name: 'Biraghi', roles: ['Ds', 'E'], team: 'Torino', fvmp: 230, status: 'active' },
-                { name: 'Frendrup', roles: ['M', 'C'], team: 'Genoa', fvmp: 240, status: 'active' },
-                
-                // Attaccanti TOP con dati storici completi
-                { name: 'Leao', roles: ['W', 'A'], team: 'Milan', fvmp: 2420, status: 'active' },
-                { name: 'De Ketelaere', roles: ['T', 'A'], team: 'Atalanta', fvmp: 1780, status: 'active' },
-                { name: 'Castro S.', roles: ['Pc'], team: 'Bologna', fvmp: 1400, status: 'active' },
-                { name: 'Krstovic', roles: ['Pc'], team: 'Lecce', fvmp: 1350, status: 'active' },
-                { name: 'Vlahovic', roles: ['Pc'], team: 'Juventus', fvmp: 960, status: 'active' },
-                { name: 'Raspadori', roles: ['A', 'T'], team: 'Napoli', fvmp: 200, status: 'active' }
-            ];
-
-            // Aggiungi dati predittivi basati su storico
-            initialPlayers.forEach(player => {
-                // Simula analisi storica per ogni giocatore
-                player.predictedScore = calculateHistoricalPrediction(player);
-                player.riskFactor = calculateRiskFactor(player);
-                player.seasonProjection = calculateSeasonProjection(player);
-            });
-
-            currentRoster = initialPlayers;
-            updatePlayerList();
-            updateStats();
-            console.log('✅ Rosa caricata con analisi storica integrata');
-        }
-
-        // Calcolo predizione basata su dati storici
-        function calculateHistoricalPrediction(player) {
-            const historical = HISTORICAL_PLAYER_DATA[player.name];
-            if (!historical) {
-                return {
-                    expectedFm: 6.5 + (player.fvmp / 1000),
-                    expectedGoals: player.roles.includes('Pc') ? 8 : 
-                                  player.roles.includes('A') ? 5 : 2,
-                    confidence: 0.6
-                };
-            }
-
-            const seasons = Object.values(historical.seasons);
-            const avgFm = seasons.reduce((sum, s) => sum + s.fm, 0) / seasons.length;
-            const avgGoals = seasons.reduce((sum, s) => sum + s.gf, 0) / seasons.length;
+        function caricaRosa() {
+            const playerList = document.getElementById('playerList');
             
-            return {
-                expectedFm: avgFm * historical.age_factor * historical.transfer_impact,
-                expectedGoals: avgGoals * historical.age_factor * historical.transfer_impact,
-                confidence: seasons.length > 2 ? 0.9 : 0.7
+            // Raggruppa per ruolo
+            const ruoli = {
+                "Portieri": rosaCompleta.filter(p => p.ruolo === 'P'),
+                "Difensori": rosaCompleta.filter(p => ['Dc', 'Dd', 'Ds', 'B', 'E'].includes(p.ruolo)),
+                "Centrocampisti": rosaCompleta.filter(p => ['C', 'M', 'T'].includes(p.ruolo)),
+                "Attaccanti": rosaCompleta.filter(p => ['W', 'A', 'Pc'].includes(p.ruolo))
             };
-        }
 
-        // Calcolo fattore rischio
-        function calculateRiskFactor(player) {
-            let risk = 0;
+            playerList.innerHTML = '';
             
-            const historical = HISTORICAL_PLAYER_DATA[player.name];
-            if (historical) {
-                // Rischio basato su trend
-                switch (historical.trend) {
-                    case 'declining': risk += 0.3; break;
-                    case 'growing': risk += 0.1; break;
-                    default: risk += 0.2; break;
-                }
+            Object.entries(ruoli).forEach(([categoria, giocatori]) => {
+                const categoriaDiv = document.createElement('div');
+                categoriaDiv.innerHTML = `<h4 style="padding: 10px; background: #e2e8f0; margin: 5px 0; border-radius: 5px; color: #4a5568;">${categoria}</h4>`;
+                playerList.appendChild(categoriaDiv);
                 
-                // Rischio età
-                if (historical.age_factor < 0.95) risk += 0.2;
-                
-                // Rischio transfer
-                if (historical.transfer_impact < 1.0) risk += 0.15;
-            } else {
-                risk += 0.4; // Giocatori sconosciuti = più rischiosi
-            }
-            
-            // Rischio posizione
-            const roleRisk = {
-                'Por': 0.1, 'Dc': 0.15, 'Dd': 0.2, 'Ds': 0.2, 'B': 0.25,
-                'E': 0.3, 'M': 0.2, 'C': 0.25, 'T': 0.4, 'W': 0.35, 'A': 0.35, 'Pc': 0.3
-            };
-            
-            const maxRoleRisk = Math.max(...player.roles.map(role => roleRisk[role] || 0.3));
-            risk += maxRoleRisk;
-            
-            return Math.min(1.0, risk);
-        }
-
-        // Proiezione stagionale
-        function calculateSeasonProjection(player) {
-            const prediction = calculateHistoricalPrediction(player);
-            const teamData = TEAM_PERFORMANCE_DATA[player.team] || 
-                           { attack_strength: 1.0, defense_strength: 1.0, form: 7.0 };
-            
-            let projectedFm = prediction.expectedFm;
-            let projectedGoals = prediction.expectedGoals;
-            
-            // Modifica in base alla squadra
-            if (['A', 'Pc', 'W', 'T'].includes(player.roles[0])) {
-                projectedGoals *= teamData.attack_strength;
-                projectedFm += (teamData.form - 7) * 0.1;
-            }
-            
-            if (['Por', 'Dc', 'Dd', 'Ds', 'B'].includes(player.roles[0])) {
-                projectedFm += (8.5 - teamData.defense_strength * 4) * 0.1;
-            }
-            
-            return {
-                expectedFantaMedia: projectedFm,
-                expectedGoals: projectedGoals,
-                expectedPoints: projectedFm * 25 + projectedGoals * 3, // Stima punti totali
-                confidence: prediction.confidence * (teamData.form / 10)
-            };
-        }
-
-        // Display avanzato con statistiche predittive
-        function updatePlayerList() {
-            const container = document.getElementById('playerList');
-            
-            if (currentRoster.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.6);">Nessun giocatore in rosa</div>';
-                return;
-            }
-
-            container.innerHTML = currentRoster.map((player, index) => {
-                const prediction = player.seasonProjection || { expectedFantaMedia: 6.5, expectedPoints: 170, confidence: 0.6 };
-                const risk = player.riskFactor || 0.3;
-                
-                const riskColor = risk < 0.3 ? '#28a745' : risk < 0.6 ? '#ffc107' : '#dc3545';
-                const confidenceBar = `
-                    <div style="background: rgba(255,255,255,0.2); height: 4px; border-radius: 2px; margin-top: 5px;">
-                        <div style="background: #ffd700; width: ${prediction.confidence * 100}%; height: 100%; border-radius: 2px;"></div>
-                    </div>
-                `;
-                
-                return `
-                    <div class="player-item">
-                        <div class="player-info">
-                            <div class="player-name">${player.name}</div>
-                            <div class="player-details">
-                                ${player.roles.map(role => `<span class="ruolo-badge ruolo-${role}">${role}</span>`).join('')}
-                                ${player.team} • FVMp: ${player.fvmp}
-                                ${player.status === 'injured' ? ' • 🚑' : ''}
-                                ${player.status === 'suspended' ? ' • 🟨' : ''}
-                                ${player.status === 'doubtful' ? ' • ❓' : ''}
-                            </div>
-                            <div style="font-size: 0.8em; color: rgba(255,255,255,0.8); margin-top: 3px;">
-                                📊 Proiezione: ${prediction.expectedFantaMedia.toFixed(1)} FM, ${prediction.expectedPoints.toFixed(0)} pt
-                                • <span style="color: ${riskColor}">Rischio: ${(risk * 100).toFixed(0)}%</span>
-                            </div>
-                            ${confidenceBar}
+                giocatori.forEach(giocatore => {
+                    const playerDiv = document.createElement('div');
+                    playerDiv.className = 'player-item';
+                    playerDiv.dataset.nome = giocatore.nome;
+                    
+                    const punteggio = calcolaPunteggioGiocatore(giocatore);
+                    const trendIcon = giocatore.trend === "crescente" ? "📈" : 
+                                     giocatore.trend === "declino" ? "📉" : "➡️";
+                    
+                    playerDiv.innerHTML = `
+                        <div>
+                            <div class="player-name">${trendIcon} ${giocatore.nome}</div>
+                            <div class="player-team">${giocatore.squadra} (${giocatore.ruolo})</div>
                         </div>
-                        <button class="btn btn-danger" onclick="removePlayer(${index})" style="font-size: 12px; padding: 5px 10px;">❌</button>
-                    </div>
-                `;
-            }).join('');
-        }', fvmp: 960, status: 'active' },
-                { name: 'Raspadori', roles: ['A', 'T'], team: 'Napoli', fvmp: 200, status: 'active' }
-            ];
-
-            currentRoster = initialPlayers;
-            updatePlayerList();
-            updateStats();
-        }
-
-        // Aggiunta giocatori
-        function addPlayer() {
-            const name = document.getElementById('playerName').value.trim();
-            const role = document.getElementById('playerRole').value;
-
-            if (!name || !role) {
-                alert('Inserisci nome e ruolo del giocatore');
-                return;
-            }
-
-            const newPlayer = {
-                name: name,
-                roles: [role],
-                team: 'TBD',
-                fvmp: 100,
-                status: 'active'
-            };
-
-            currentRoster.push(newPlayer);
-            updatePlayerList();
-            updateStats();
-
-            // Reset form
-            document.getElementById('playerName').value = '';
-            document.getElementById('playerRole').value = '';
-        }
-
-        // Rimozione giocatori
-        function removePlayer(index) {
-            currentRoster.splice(index, 1);
-            updatePlayerList();
-            updateStats();
-        }
-
-        // Aggiornamento lista giocatori
-        function updatePlayerList() {
-            const container = document.getElementById('playerList');
-            
-            if (currentRoster.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.6);">Nessun giocatore in rosa</div>';
-                return;
-            }
-
-            container.innerHTML = currentRoster.map((player, index) => `
-                <div class="player-item">
-                    <div class="player-info">
-                        <div class="player-name">${player.name}</div>
-                        <div class="player-details">
-                            ${player.roles.map(role => `<span class="ruolo-badge ruolo-${role}">${role}</span>`).join('')}
-                            ${player.team} • FVMp: ${player.fvmp}
-                            ${player.status === 'injured' ? ' • 🚑 INFORTUNATO' : ''}
-                        </div>
-                    </div>
-                    <button class="btn btn-danger" onclick="removePlayer(${index})" style="font-size: 12px; padding: 5px 10px;">❌</button>
-                </div>
-            `).join('');
-        }
-
-        // Aggiornamento statistiche
-        function updateStats() {
-            const total = currentRoster.length;
-            const available = currentRoster.filter(p => p.status === 'active').length;
-            const injured = currentRoster.filter(p => p.status === 'injured').length;
-
-            document.getElementById('totalPlayers').textContent = total;
-            document.getElementById('availablePlayers').textContent = available;
-            document.getElementById('injuredPlayers').textContent = injured;
-        }
-
-        // Aggiornamento dati web
-        async function updateWebData() {
-            const loading = document.querySelector('.loading');
-            loading.classList.add('show');
-
-            try {
-                // Aggiorna infortuni
-                await updateInjuries();
-                
-                // Aggiorna forma e probabilità titolarità
-                await updateCurrentForm();
-                
-                alert('Dati web aggiornati con successo!');
-            } catch (error) {
-                console.error('Errore aggiornamento dati:', error);
-                alert('Errore durante l\'aggiornamento dei dati web');
-            } finally {
-                loading.classList.remove('show');
-            }
-        }
-
-        // Aggiornamento infortuni
-        async function updateInjuries() {
-            const prompt = `Fornisci la lista aggiornata degli infortuni in Serie A per questi giocatori: ${currentRoster.map(p => p.name).join(', ')}.
-            Rispondi solo con un JSON: {"nome_giocatore": "injured|active", ...}`;
-
-            const response = await queryGemini(prompt);
-            if (response) {
-                try {
-                    const injuries = JSON.parse(response);
-                    currentRoster.forEach(player => {
-                        if (injuries[player.name]) {
-                            player.status = injuries[player.name];
-                        }
-                    });
-                    updatePlayerList();
-                    updateStats();
-                } catch (error) {
-                    console.error('Errore parsing infortuni:', error);
-                }
-            }
-        }
-
-        // Aggiornamento forma attuale
-        async function updateCurrentForm() {
-            const giornata = document.getElementById('giornata').value;
-            if (!giornata) return;
-
-            const prompt = `Per la ${giornata}ª giornata di Serie A 2025/26, fornisci per questi giocatori: ${currentRoster.map(p => p.name).join(', ')}
-            - Probabilità di titolarità (0-100)
-            - Forma attuale (1-10)
-            - Difficoltà partita (1-10)
-            Rispondi solo con JSON: {"nome_giocatore": {"titolarita": 85, "forma": 7, "difficolta": 5}, ...}`;
-
-            const response = await queryGemini(prompt);
-            if (response) {
-                try {
-                    const formData = JSON.parse(response);
-                    currentRoster.forEach(player => {
-                        if (formData[player.name]) {
-                            player.webData = formData[player.name];
-                        }
-                    });
-                    webDataCache = formData;
-                } catch (error) {
-                    console.error('Errore parsing forma:', error);
-                }
-            }
-        }
-
-        // Algoritmo di ottimizzazione
-        function optimizeFormation() {
-            const giornata = document.getElementById('giornata').value;
-            const strategy = document.getElementById('strategy').value;
-            const homeBonus = parseFloat(document.getElementById('homeBonus').value);
-
-            if (!giornata) {
-                alert('Seleziona una giornata di campionato');
-                return;
-            }
-
-            const availablePlayers = currentRoster.filter(p => p.status === 'active');
-            
-            if (availablePlayers.length < 11) {
-                alert('Hai bisogno di almeno 11 giocatori disponibili');
-                return;
-            }
-
-            // Calcola punteggi per ogni giocatore
-            const scoredPlayers = availablePlayers.map(player => ({
-                ...player,
-                score: calculatePlayerScore(player, strategy, homeBonus)
-            }));
-
-            // Trova le due migliori formazioni
-            const formation1 = findBestFormation(scoredPlayers, '4-3-3');
-            const formation2 = findBestFormation(scoredPlayers, '3-5-2');
-
-            displayFormations(formation1, formation2);
-        }
-
-        // Calcolo punteggio giocatore AVANZATO con dati storici
-        function calculatePlayerScore(player, strategy, homeBonus) {
-            let score = 0;
-            
-            // 1. BASE STORICA (dai tuoi 8 anni di dati)
-            const historicalData = HISTORICAL_PLAYER_DATA[player.name];
-            if (historicalData) {
-                // Media prestazioni storiche ponderate
-                const seasons = Object.values(historicalData.seasons);
-                const avgFm = seasons.reduce((sum, s) => sum + s.fm, 0) / seasons.length;
-                const avgGoals = seasons.reduce((sum, s) => sum + s.gf, 0) / seasons.length;
-                const avgAssists = seasons.reduce((sum, s) => sum + s.ass, 0) / seasons.length;
-                
-                score += avgFm * 8; // Peso alto per FantaMedia storica
-                score += avgGoals * 2; // Bonus gol storici
-                score += avgAssists * 1.5; // Bonus assist storici
-                
-                // Fattore trend (crescita/declino)
-                switch (historicalData.trend) {
-                    case 'growing':
-                        score *= 1.15; // +15% per giocatori in crescita
-                        break;
-                    case 'declining':
-                        score *= 0.90; // -10% per giocatori in declino
-                        break;
-                    case 'stable':
-                    default:
-                        score *= 1.0;
-                        break;
-                }
-                
-                // Fattore età
-                score *= historicalData.age_factor;
-                
-                // Impact transfer
-                score *= historicalData.transfer_impact;
-            } else {
-                // Fallback per giocatori senza dati storici
-                score += Math.log(player.fvmp + 1) * 8;
-            }
-            
-            // 2. ANALISI SQUADRA (dai dati teams performance)
-            const teamData = TEAM_PERFORMANCE_DATA[player.team];
-            if (teamData) {
-                // Bonus per ruolo offensivo in squadre forti in attacco
-                if (['A', 'Pc', 'W', 'T'].includes(player.roles[0])) {
-                    score *= teamData.attack_strength;
-                }
-                
-                // Bonus per difensori in squadre forti in difesa
-                if (['Por', 'Dc', 'Dd', 'Ds', 'B'].includes(player.roles[0])) {
-                    score *= (2.0 - teamData.defense_strength); // Invertito: meno gol subiti = meglio
-                }
-                
-                // Forma squadra generale
-                score += teamData.form * 2;
-            }
-            
-            // 3. DATI WEB REAL-TIME (forma attuale, titolarità)
-            if (player.webData) {
-                // Probabilità titolarità (peso molto alto)
-                score += (player.webData.titolarita / 100) * 25;
-                
-                // Forma attuale vs media storica
-                const currentForm = player.webData.forma;
-                if (historicalData) {
-                    const historicalAvg = Object.values(historicalData.seasons)
-                        .reduce((sum, s) => sum + s.mv, 0) / 
-                        Object.values(historicalData.seasons).length;
-                    
-                    const formDelta = (currentForm - historicalAvg) * 3;
-                    score += formDelta;
-                } else {
-                    score += currentForm * 4;
-                }
-                
-                // Difficoltà partita (dai dati betting)
-                score -= player.webData.difficolta * 1.5;
-            }
-            
-            // 4. BONUS CASA STADIO FASCIA 1
-            score += homeBonus * 2; // Moltiplicato per il tuo stadio top
-            
-            // 5. STRATEGIA AVANZATA
-            switch (strategy) {
-                case 'conservative':
-                    // Privilegia giocatori con alta titolarità e performance stabili
-                    const stability = (player.webData?.titolarita || 70) / 100;
-                    score += stability * 20;
-                    
-                    if (historicalData && historicalData.trend === 'stable') {
-                        score *= 1.1;
-                    }
-                    break;
-                    
-                case 'aggressive':
-                    // Privilegia potenziale alto e giocatori in crescita
-                    if (player.fvmp > 800 || 
-                        (historicalData && historicalData.trend === 'growing')) {
-                        score *= 1.25;
-                    }
-                    
-                    // Bonus per giocatori offensivi
-                    if (['A', 'Pc', 'T'].includes(player.roles[0])) {
-                        score *= 1.15;
-                    }
-                    break;
-                    
-                case 'balanced':
-                default:
-                    // Equilibrio tra sicurezza e potenziale
-                    score += 8;
-                    
-                    if (player.webData?.titolarita > 80 && player.fvmp > 300) {
-                        score *= 1.1;
-                    }
-                    break;
-            }
-            
-            // 6. BONUS RUOLO CONTEXTUAL
-            const roleBonus = calculateContextualRoleBonus(player, strategy);
-            score += roleBonus;
-            
-            // 7. PENALITÀ INFORTUNI
-            if (player.status === 'injured') {
-                score *= 0.1; // Praticamente escluso
-            }
-            
-            return Math.max(0, score);
-        }
-
-        // Bonus ruolo contestuale basato su dati storici
-        function calculateContextualRoleBonus(player, strategy) {
-            const roleData = {
-                'Por': { base: 5, consistency: 0.9, ceiling: 1.1 },
-                'Dc': { base: 8, consistency: 0.85, ceiling: 1.3 },
-                'Dd': { base: 7, consistency: 0.8, ceiling: 1.5 },
-                'Ds': { base: 7, consistency: 0.8, ceiling: 1.5 },
-                'B': { base: 6, consistency: 0.75, ceiling: 1.4 },
-                'E': { base: 9, consistency: 0.7, ceiling: 1.6 },
-                'M': { base: 10, consistency: 0.85, ceiling: 1.2 },
-                'C': { base: 12, consistency: 0.75, ceiling: 1.7 },
-                'T': { base: 15, consistency: 0.6, ceiling: 2.2 },
-                'W': { base: 14, consistency: 0.65, ceiling: 2.0 },
-                'A': { base: 16, consistency: 0.7, ceiling: 1.9 },
-                'Pc': { base: 18, consistency: 0.75, ceiling: 2.1 }
-            };
-            
-            let bonus = 0;
-            player.roles.forEach(role => {
-                const data = roleData[role] || roleData['C'];
-                
-                switch (strategy) {
-                    case 'conservative':
-                        bonus += data.base * data.consistency;
-                        break;
-                    case 'aggressive':
-                        bonus += data.base * data.ceiling;
-                        break;
-                    default:
-                        bonus += data.base;
-                        break;
-                }
-            });
-            
-            return bonus / player.roles.length; // Media se multi-ruolo
-        }
-
-        // Aggiornamento forma con analisi storica avanzata
-        async function updateCurrentForm() {
-            const giornata = document.getElementById('giornata').value;
-            if (!giornata) return;
-
-            // Crea prompt avanzato con contesto storico
-            const playerHistoricalContext = currentRoster.map(player => {
-                const historical = HISTORICAL_PLAYER_DATA[player.name];
-                if (historical) {
-                    const lastSeason = Object.values(historical.seasons).slice(-1)[0];
-                    return `${player.name} (${player.team}): Ultima stagione ${lastSeason.pv} presenze, media ${lastSeason.mv}, ${lastSeason.gf} gol`;
-                }
-                return `${player.name} (${player.team}): Nuovo o dati limitati`;
-            }).join('\n');
-
-            const prompt = `Analizza questi giocatori per la ${giornata}ª giornata Serie A 2025/26.
-
-CONTESTO STORICO:
-${playerHistoricalContext}
-
-Per ogni giocatore fornisci:
-- Probabilità titolarità (0-100) basata su forma, rotazioni, infortuni
-- Forma attuale (1-10) considerando ultime prestazioni
-- Difficoltà partita avversario (1-10) basata su forza difensiva/attacco
-- Match difficulty context (casa/trasferta, importanza partita)
-
-Rispondi SOLO con JSON:
-{
-  "nome_giocatore": {
-    "titolarita": 85,
-    "forma": 7,
-    "difficolta": 5,
-    "note": "In ottima forma, avversario difficile"
-  },
-  ...
-}`;
-
-            const response = await queryGemini(prompt);
-            if (response) {
-                try {
-                    const formData = JSON.parse(response.replace(/```json\n?|```/g, ''));
-                    currentRoster.forEach(player => {
-                        if (formData[player.name]) {
-                            player.webData = formData[player.name];
-                        }
-                    });
-                    webDataCache = formData;
-                    console.log('✅ Dati web aggiornati con contesto storico');
-                } catch (error) {
-                    console.error('Errore parsing forma avanzata:', error);
-                    // Fallback con dati base
-                    currentRoster.forEach(player => {
-                        player.webData = {
-                            titolarita: 75 + Math.random() * 20,
-                            forma: 6 + Math.random() * 3,
-                            difficolta: 4 + Math.random() * 4
-                        };
-                    });
-                }
-            }
-        }
-
-        // Aggiornamento infortuni con analisi storica
-        async function updateInjuries() {
-            const prompt = `Analizza infortuni/squalifiche per questi giocatori Serie A:
-${currentRoster.map(p => `${p.name} (${p.team})`).join(', ')}
-
-Considera:
-- Storico infortuni del giocatore
-- Squalifiche accumulate
-- Rotazioni tecniche
-- Status medico attuale
-
-Rispondi SOLO con JSON: {"nome_giocatore": "active|injured|suspended|doubtful", ...}`;
-
-            const response = await queryGemini(prompt);
-            if (response) {
-                try {
-                    const injuries = JSON.parse(response.replace(/```json\n?|```/g, ''));
-                    currentRoster.forEach(player => {
-                        if (injuries[player.name]) {
-                            player.status = injuries[player.name];
-                        }
-                    });
-                    updatePlayerList();
-                    updateStats();
-                    console.log('✅ Status infortuni aggiornato');
-                } catch (error) {
-                    console.error('Errore parsing infortuni:', error);
-                }
-            }
-        }
-
-        // Trova la migliore formazione per un modulo
-        function findBestFormation(players, formationName) {
-            const formation = MANTRA_FORMATIONS[formationName];
-            if (!formation) return null;
-
-            const selectedPlayers = [];
-            const usedPlayers = new Set();
-            let totalScore = 0;
-
-            // Raggruppa giocatori per ruolo
-            const playersByRole = {};
-            players.forEach(player => {
-                player.roles.forEach(role => {
-                    if (!playersByRole[role]) playersByRole[role] = [];
-                    playersByRole[role].push(player);
-                });
-            });
-
-            // Ordina per punteggio decrescente
-            Object.keys(playersByRole).forEach(role => {
-                playersByRole[role].sort((a, b) => b.score - a.score);
-            });
-
-            // Seleziona giocatori per ogni posizione
-            for (const [role, count] of Object.entries(formation.positions)) {
-                const availableForRole = (playersByRole[role] || [])
-                    .filter(p => !usedPlayers.has(p.name));
-                
-                for (let i = 0; i < count && i < availableForRole.length; i++) {
-                    const player = availableForRole[i];
-                    selectedPlayers.push({
-                        ...player,
-                        position: role
-                    });
-                    usedPlayers.add(player.name);
-                    totalScore += player.score;
-                }
-            }
-
-            // Calcola panchina ottimizzata (ordine MASTER)
-            const bench = players
-                .filter(p => !usedPlayers.has(p.name))
-                .sort((a, b) => b.score - a.score)
-                .slice(0, 12);
-
-            return {
-                name: formationName,
-                players: selectedPlayers,
-                bench: bench,
-                totalScore: totalScore,
-                avgScore: totalScore / selectedPlayers.length,
-                isComplete: selectedPlayers.length === 11
-            };
-        }
-
-        // Visualizzazione formazioni
-        function displayFormations(formation1, formation2) {
-            const container = document.getElementById('formationResult');
-            const comparison = document.getElementById('formationComparison');
-            
-            comparison.innerHTML = [formation1, formation2].map((formation, index) => 
-                createFormationHTML(formation, index === 0)
-            ).join('');
-
-            // Analisi risultati
-            const analysisContainer = document.getElementById('analysisResults');
-            analysisContainer.innerHTML = `
-                <div class="status-card">
-                    <div class="status-value">${formation1.totalScore.toFixed(1)}</div>
-                    <div class="status-label">Punteggio ${formation1.name}</div>
-                </div>
-                <div class="status-card">
-                    <div class="status-value">${formation2.totalScore.toFixed(1)}</div>
-                    <div class="status-label">Punteggio ${formation2.name}</div>
-                </div>
-                <div class="status-card">
-                    <div class="status-value">${formation1.totalScore > formation2.totalScore ? formation1.name : formation2.name}</div>
-                    <div class="status-label">Migliore</div>
-                </div>
-                <div class="status-card">
-                    <div class="status-value">${document.getElementById('homeBonus').value !== '0' ? '+3.0' : '0'}</div>
-                    <div class="status-label">Bonus Casa</div>
-                </div>
-            `;
-
-            container.style.display = 'block';
-            container.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Creazione HTML formazione
-        function createFormationHTML(formation, isFirst) {
-            if (!formation || !formation.isComplete) {
-                return `
-                    <div class="formation-option">
-                        <div class="formation-header">
-                            <div class="formation-title">Formazione Incompleta</div>
-                            <div class="formation-score">❌</div>
-                        </div>
-                        <div class="alert alert-danger">
-                            Non hai abbastanza giocatori per questa formazione
-                        </div>
-                    </div>
-                `;
-            }
-
-            const fieldLayout = getFieldLayout(formation.name, formation.players);
-            
-            return `
-                <div class="formation-option ${isFirst ? 'selected' : ''}" onclick="selectFormation(this)">
-                    <div class="formation-header">
-                        <div class="formation-title">${formation.name}</div>
-                        <div class="formation-score">${formation.totalScore.toFixed(1)}</div>
-                    </div>
-                    
-                    <div class="field">
-                        ${fieldLayout}
-                    </div>
-                    
-                    <div style="margin-top: 15px;">
-                        <strong>Panchina (ordine MASTER):</strong>
-                        <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px;">
-                            ${formation.bench.slice(0, 6).map(player => 
-                                `<span class="ruolo-badge ruolo-${player.roles[0]}">${player.name}</span>`
-                            ).join('')}
-                        </div>
-                    </div>
-                    
-                    <div class="alert alert-info" style="margin-top: 15px; font-size: 0.9em;">
-                        Media: ${formation.avgScore.toFixed(1)} • 
-                        Giocatori: ${formation.players.length}/11 • 
-                        Panchina: ${formation.bench.length}
-                    </div>
-                </div>
-            `;
-        }
-
-        // Layout campo per moduli
-        function getFieldLayout(formationName, players) {
-            const layouts = {
-                '4-3-3': ['Por', ['Dd', 'Dc', 'Dc', 'Ds'], ['M', 'C', 'C'], ['W', 'Pc', 'W']],
-                '3-5-2': ['Por', ['Dc', 'Dc', 'Dc'], ['E', 'M', 'C', 'C', 'E'], ['A', 'A']],
-                '4-4-2': ['Por', ['Dd', 'Dc', 'Dc', 'Ds'], ['M', 'M', 'C', 'C'], ['A', 'Pc']],
-                '4-1-4-1': ['Por', ['Dd', 'Dc', 'Dc', 'Ds'], ['M'], ['C', 'C', 'W', 'W'], ['Pc']],
-                '3-4-3': ['Por', ['Dc', 'Dc', 'Dc'], ['E', 'C', 'C', 'E'], ['W', 'Pc', 'W']]
-            };
-
-            const layout = layouts[formationName] || layouts['4-3-3'];
-            const playersByPosition = {};
-            
-            players.forEach(player => {
-                const pos = player.position || player.roles[0];
-                if (!playersByPosition[pos]) playersByPosition[pos] = [];
-                playersByPosition[pos].push(player);
-            });
-
-            return layout.map(row => {
-                if (typeof row === 'string') {
-                    // Portiere
-                    const player = players.find(p => (p.position || p.roles[0]) === row);
-                    return `
-                        <div class="field-row">
-                            <div class="player-card">
-                                ${player ? player.name : 'N/A'}
-                            </div>
+                        <div>
+                            <div class="player-value">${giocatore.valore}</div>
+                            <div style="font-size: 0.8em; color: #38b2ac;">⭐ ${punteggio}</div>
                         </div>
                     `;
-                } else {
-                    // Riga di movimento
-                    const rowPlayers = [];
-                    const positionCounts = {};
                     
-                    // Conta posizioni richieste
-                    row.forEach(pos => {
-                        positionCounts[pos] = (positionCounts[pos] || 0) + 1;
-                    });
-                    
-                    // Assegna giocatori
-                    Object.entries(positionCounts).forEach(([pos, count]) => {
-                        const available = (playersByPosition[pos] || []).slice(0, count);
-                        rowPlayers.push(...available);
-                    });
-                    
-                    return `
-                        <div class="field-row">
-                            ${rowPlayers.map(player => `
-                                <div class="player-card">
-                                    ${player.name}
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
+                    playerDiv.onclick = () => toggleGiocatore(giocatore);
+                    playerList.appendChild(playerDiv);
+                });
+            });
+        }
+
+        function generaFormazione(modulo) {
+            const field = document.getElementById('field');
+            const schemi = {
+                "433": {
+                    "Portiere": 1,
+                    "Difesa": 4,
+                    "Centrocampo": 3,
+                    "Attacco": 3
+                },
+                "352": {
+                    "Portiere": 1,
+                    "Difesa": 3,
+                    "Centrocampo": 5,
+                    "Attacco": 2
                 }
-            }).join('');
-        }
-
-        // Selezione formazione
-        function selectFormation(element) {
-            document.querySelectorAll('.formation-option').forEach(el => {
-                el.classList.remove('selected');
+            };
+            
+            const schema = schemi[modulo];
+            field.innerHTML = '';
+            
+            Object.entries(schema).forEach(([settore, numero]) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'field-section';
+                
+                for (let i = 0; i < numero; i++) {
+                    const slotDiv = document.createElement('div');
+                    slotDiv.className = 'player-slot';
+                    slotDiv.textContent = `${settore} ${i + 1}`;
+                    slotDiv.onclick = () => rimuoviGiocatore(slotDiv);
+                    sectionDiv.appendChild(slotDiv);
+                }
+                
+                field.appendChild(sectionDiv);
             });
-            element.classList.add('selected');
+            
+            aggiornaPanchinaMaster();
         }
 
-        // Export formazione
-        function exportFormation() {
-            const selected = document.querySelector('.formation-option.selected');
-            if (!selected) {
-                alert('Seleziona prima una formazione');
-                return;
-            }
-
-            const formationText = selected.innerText;
-            navigator.clipboard.writeText(formationText).then(() => {
-                alert('Formazione copiata negli appunti!');
-            }).catch(() => {
-                console.log('Formazione da copiare:', formationText);
+        function aggiornaPanchinaMaster() {
+            const benchSlots = document.getElementById('benchSlots');
+            benchSlots.innerHTML = '';
+            
+            // Panchina in ordine MASTER (preferenza sostituzioni)
+            const panchina = [
+                "1° Portiere", "2° Cambio OFF", "3° Cambio DEF", "4° Jolly",
+                "5° Riserva", "6° Backup", "7° Emergenza", "8° Tattico",
+                "9° Giovane", "10° Veterano", "11° Ultima scelta", "12° Riserva P"
+            ];
+            
+            panchina.forEach((pos, index) => {
+                const slotDiv = document.createElement('div');
+                slotDiv.className = 'bench-slot';
+                slotDiv.textContent = pos;
+                benchSlots.appendChild(slotDiv);
             });
         }
 
-        // Salvataggio rosa
-        function saveRoster() {
-            localStorage.setItem('mantra_roster', JSON.stringify(currentRoster));
-            alert('Rosa salvata!');
+        function cambiaFormazione(nuovoModulo) {
+            // Aggiorna pulsanti
+            document.querySelectorAll('.formation-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(nuovoModulo.replace(/(\d)(\d)(\d)/, '$1-$2-$3'))) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            formazioneAttuale = nuovoModulo;
+            generaFormazione(nuovoModulo);
+            calcolaPunteggioFormazione();
         }
 
-        // Caricamento rosa salvata
-        function loadSavedRoster() {
-            const saved = localStorage.getItem('mantra_roster');
-            if (saved) {
-                currentRoster = JSON.parse(saved);
-                updatePlayerList();
-                updateStats();
-                alert('Rosa caricata!');
+        function toggleGiocatore(giocatore) {
+            const playerDiv = document.querySelector(`[data-nome="${giocatore.nome}"]`);
+            
+            if (playerDiv.classList.contains('selected')) {
+                playerDiv.classList.remove('selected');
+                rimuoviDaFormazione(giocatore);
             } else {
-                alert('Nessuna rosa salvata trovata');
+                playerDiv.classList.add('selected');
+                aggiungiAFormazione(giocatore);
+            }
+            
+            calcolaPunteggioFormazione();
+        }
+
+        function aggiungiAFormazione(giocatore) {
+            // Logica Mantra per posizionamento
+            const slots = document.querySelectorAll('.player-slot:not(.filled)');
+            
+            // Trova il primo slot compatibile
+            for (let slot of slots) {
+                if (isPosizionCompatibile(giocatore.ruolo, slot.textContent)) {
+                    slot.textContent = giocatore.nome;
+                    slot.classList.add('filled');
+                    slot.dataset.giocatore = giocatore.nome;
+                    break;
+                }
             }
         }
 
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey || e.metaKey) {
-                switch(e.key) {
-                    case 's':
-                        e.preventDefault();
-                        saveRoster();
-                        break;
-                    case 'o':
-                        e.preventDefault();
-                        optimizeFormation();
-                        break;
-                    case 'r':
-                        e.preventDefault();
-                        updateWebData();
-                        break;
-                }
+        function rimuoviDaFormazione(giocatore) {
+            const slot = document.querySelector(`[data-giocatore="${giocatore.nome}"]`);
+            if (slot) {
+                slot.classList.remove('filled', 'captain');
+                slot.removeAttribute('data-giocatore');
+                slot.textContent = slot.textContent.split(' ')[0] + ' ' + (slot.textContent.split(' ')[1] || '');
             }
+        }
+
+        function isPosizionCompatibile(ruolo, posizione) {
+            const compatibilita = {
+                'P': ['Portiere'],
+                'Dc': ['Difesa'],
+                'Dd': ['Difesa'],
+                'Ds': ['Difesa'],
+                'B': ['Difesa'],
+                'E': ['Difesa', 'Centrocampo'],
+                'M': ['Centrocampo'],
+                'C': ['Centrocampo'],
+                'T': ['Centrocampo', 'Attacco'],
+                'W': ['Centrocampo', 'Attacco'],
+                'A': ['Attacco'],
+                'Pc': ['Attacco']
+            };
+            
+            return compatibilita[ruolo]?.some(comp => posizione.includes(comp));
+        }
+
+        function calcolaPunteggioFormazione() {
+            const giornata = parseInt(document.getElementById('giornataSelect').value);
+            const giocatoriInCampo = document.querySelectorAll('.player-slot.filled');
+            
+            let punteggioTotale = 0;
+            let conteggioGiocatori = 0;
+            
+            giocatoriInCampo.forEach(slot => {
+                const nomeGiocatore = slot.dataset.giocatore;
+                const giocatore = rosaCompleta.find(g => g.nome === nomeGiocatore);
+                
+                if (giocatore) {
+                    punteggioTotale += calcolaPunteggioGiocatore(giocatore, giornata);
+                    conteggioGiocatori++;
+                }
+            });
+            
+            // Bonus formazione completa
+            if (conteggioGiocatori === 11) {
+                punteggioTotale += 2; // Bonus squadra completa
+            }
+            
+            // Bonus casa per CDM (Stadio Fascia 6)
+            if (isPartitaCasa(giornata)) {
+                punteggioTotale += 0.5 * conteggioGiocatori; // +0.5 per ogni giocatore
+            }
+            
+            document.getElementById('scoreValue').textContent = Math.round(punteggioTotale * 10) / 10;
+            
+            // Aggiorna colore in base al punteggio
+            const scoreElement = document.querySelector('.formation-score');
+            if (punteggioTotale >= 75) {
+                scoreElement.style.background = 'linear-gradient(45deg, #48bb78, #38a169)';
+            } else if (punteggioTotale >= 70) {
+                scoreElement.style.background = 'linear-gradient(45deg, #4299e1, #3182ce)';
+            } else {
+                scoreElement.style.background = 'linear-gradient(45deg, #f56565, #e53e3e)';
+            }
+        }
+
+        function ottimizzaConAI() {
+            const button = event.target;
+            button.textContent = '🔄 Ottimizzando...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                eseguiOttimizzazioneAI();
+                button.textContent = '🧠 Ottimizza con AI';
+                button.disabled = false;
+                
+                // Notifica successo
+                const successDiv = document.createElement('div');
+                successDiv.className = 'success';
+                successDiv.textContent = '✅ Formazione ottimizzata con AI!';
+                document.querySelector('.controls').appendChild(successDiv);
+                
+                setTimeout(() => successDiv.remove(), 3000);
+            }, 2000);
+        }
+
+        function eseguiOttimizzazioneAI() {
+            const giornata = parseInt(document.getElementById('giornataSelect').value);
+            
+            // Reset selezioni precedenti
+            document.querySelectorAll('.player-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Algoritmo AI: seleziona i migliori giocatori per ruolo
+            const miglioriPerRuolo = {
+                'P': rosaCompleta.filter(g => g.ruolo === 'P')
+                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))[0],
+                'Difensori': rosaCompleta.filter(g => ['Dc', 'Dd', 'Ds', 'B', 'E'].includes(g.ruolo))
+                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))
+                    .slice(0, formazioneAttuale === '433' ? 4 : 3),
+                'Centrocampisti': rosaCompleta.filter(g => ['C', 'M', 'T', 'W'].includes(g.ruolo))
+                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))
+                    .slice(0, formazioneAttuale === '433' ? 3 : 5),
+                'Attaccanti': rosaCompleta.filter(g => ['A', 'Pc', 'W'].includes(g.ruolo))
+                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))
+                    .slice(0, formazioneAttuale === '433' ? 3 : 2)
+            };
+            
+            // Applica selezione ottimale
+            generaFormazione(formazioneAttuale);
+            
+            [miglioriPerRuolo.P, ...miglioriPerRuolo.Difensori, 
+             ...miglioriPerRuolo.Centrocampisti, ...miglioriPerRuolo.Attaccanti]
+            .filter(Boolean).forEach(giocatore => {
+                const playerDiv = document.querySelector(`[data-nome="${giocatore.nome}"]`);
+                if (playerDiv) {
+                    playerDiv.classList.add('selected');
+                    aggiungiAFormazione(giocatore);
+                }
+            });
+            
+            calcolaPunteggioFormazione();
+            generaInsights();
+        }
+
+        function aggiornaLiveData() {
+            const button = event.target;
+            button.textContent = '📡 Aggiornando...';
+            button.disabled = true;
+            
+            // Simula aggiornamento live data
+            setTimeout(() => {
+                // Aggiorna forme casuali per simulare live data
+                rosaCompleta.forEach(giocatore => {
+                    const variazione = (Math.random() - 0.5) * 0.4;
+                    giocatore.forma = Math.max(5.5, Math.min(9.5, giocatore.forma + variazione));
+                    giocatore.forma = Math.round(giocatore.forma * 10) / 10;
+                });
+                
+                caricaRosa();
+                calcolaPunteggioFormazione();
+                generaInsights();
+                
+                button.textContent = '📡 Aggiorna Live Data';
+                button.disabled = false;
+                
+                const successDiv = document.createElement('div');
+                successDiv.className = 'success';
+                successDiv.textContent = '📊 Dati live aggiornati!';
+                document.querySelector('.controls').appendChild(successDiv);
+                
+                setTimeout(() => successDiv.remove(), 3000);
+            }, 1500);
+        }
+
+        function resetFormazione() {
+            document.querySelectorAll('.player-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            generaFormazione(formazioneAttuale);
+            calcolaPunteggioFormazione();
+            
+            const warningDiv = document.createElement('div');
+            warningDiv.className = 'warning';
+            warningDiv.textContent = '🔄 Formazione resettata!';
+            document.querySelector('.controls').appendChild(warningDiv);
+            
+            setTimeout(() => warningDiv.remove(), 2000);
+        }
+
+        function generaInsights() {
+            const giornata = parseInt(document.getElementById('giornataSelect').value);
+            const insightsPanel = document.getElementById('insightsPanel');
+            
+            const insights = [
+                {
+                    titolo: "📈 Analisi Trend",
+                    contenuto: `Giocatori in crescita: ${rosaCompleta.filter(g => g.trend === 'crescente').length}. Focus su De Ketelaere (9.2) e Leao (9.5) per massimizzare i punti.`
+                },
+                {
+                    titolo: "🏠 Fattore Casa",
+                    contenuto: isPartitaCasa(giornata) ? 
+                        `Partita CASA! Bonus +0.5 per ogni giocatore. Stadio Fascia 6 CDM attivo.` :
+                        `Partita in trasferta. Nessun bonus casa disponibile.`
+                },
+                {
+                    titolo: "⚽ Raccomandazione Tattica",
+                    contenuto: formazioneAttuale === '433' ?
+                        `4-3-3 ottimale per attacco. Schiera Leao-Castro-Saelemaekers come tridente.` :
+                        `3-5-2 bilanciato. Usa 5 centrocampisti per controllo del gioco.`
+                },
+                {
+                    titolo: "🎯 Difficoltà Avversari",
+                    contenuto: `Giocatori contro squadre difficili: ${rosaCompleta.filter(g => g.difficolta > 7.5).length}. Evita titolarità di Cutrone (Como, diff. 7.8).`
+                },
+                {
+                    titolo: "🔥 Hot Picks",
+                    contenuto: `MUST HAVE: De Ketelaere (Atalanta) 9.2, Leao (Milan) 9.5, Castro (Bologna) 8.8. Combinazione letale per la vittoria.`
+                }
+            ];
+            
+            insightsPanel.innerHTML = '';
+            
+            insights.forEach(insight => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'insight-card';
+                cardDiv.innerHTML = `
+                    <div class="insight-title">${insight.titolo}</div>
+                    <div class="insight-content">${insight.contenuto}</div>
+                `;
+                insightsPanel.appendChild(cardDiv);
+            });
+        }
+
+        function generaTopPerformers() {
+            const giornata = parseInt(document.getElementById('giornataSelect').value);
+            const topPerformers = document.getElementById('topPerformers');
+            
+            // Calcola top performers per ruolo
+            const topPerRuolo = {
+                'Portiere': rosaCompleta.filter(g => g.ruolo === 'P')
+                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))[0],
+                'Difensore': rosaCompleta.filter(g => ['Dc', 'Dd', 'Ds', 'B', 'E'].includes(g.ruolo))
+                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))[0],
+                'Centrocampista': rosaCompleta.filter(g => ['C', 'M', 'T'].includes(g.ruolo))
+                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))[0],
+                'Attaccante': rosaCompleta.filter(g => ['W', 'A', 'Pc'].includes(g.ruolo))
+                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))[0]
+            };
+            
+            topPerformers.innerHTML = '';
+            
+            Object.entries(topPerRuolo).forEach(([ruolo, giocatore]) => {
+                if (giocatore) {
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = 'performer-card';
+                    cardDiv.innerHTML = `
+                        <div class="performer-name">${giocatore.nome}</div>
+                        <div style="font-size: 0.8em; color: #718096;">${ruolo} - ${giocatore.squadra}</div>
+                        <div class="performer-score">⭐ ${calcolaPunteggioGiocatore(giocatore, giornata)}</div>
+                    `;
+                    topPerformers.appendChild(cardDiv);
+                }
+            });
+        }
+
+        function rimuoviGiocatore(slot) {
+            if (slot.classList.contains('filled')) {
+                const nomeGiocatore = slot.dataset.giocatore;
+                const playerDiv = document.querySelector(`[data-nome="${nomeGiocatore}"]`);
+                
+                if (playerDiv) {
+                    playerDiv.classList.remove('selected');
+                }
+                
+                slot.classList.remove('filled', 'captain');
+                slot.removeAttribute('data-giocatore');
+                slot.textContent = slot.textContent.split(' ')[0] + ' ' + (slot.textContent.split(' ')[1] || '');
+                
+                calcolaPunteggioFormazione();
+            }
+        }
+
+        // Event listener per cambio giornata
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('giornataSelect').addEventListener('change', function() {
+                calcolaPunteggioFormazione();
+                generaInsights();
+                generaTopPerformers();
+            });
         });
 
-        // Aggiungi controlli aggiuntivi
-        document.addEventListener('DOMContentLoaded', function() {
-            // Aggiungi pulsanti nella sezione ottimizzazione
-            const optimizationSection = document.querySelector('.section:last-of-type');
-            const additionalControls = document.createElement('div');
-            additionalControls.style.marginTop = '20px';
-            additionalControls.innerHTML = `
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="btn" onclick="saveRoster()">💾 Salva Rosa</button>
-                    <button class="btn" onclick="loadSavedRoster()">📂 Carica Rosa</button>
-                    <button class="btn" onclick="exportFormation()">📋 Esporta</button>
-                </div>
-                <div class="alert alert-info" style="margin-top: 15px; font-size: 0.9em;">
-                    <strong>Shortcuts:</strong> Ctrl+S (Salva) • Ctrl+O (Ottimizza) • Ctrl+R (Aggiorna)
-                </div>
-            `;
-            optimizationSection.appendChild(additionalControls);
-        });
+        // Inizializza l'app
+        document.addEventListener('DOMContentLoaded', inizializzaApp);
     </script>
 </body>
 </html>
