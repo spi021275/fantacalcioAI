@@ -1,1 +1,1179 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ottimizzatore Mantra - Serie B1 FantaManager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd700);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            color: #000;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            color: #000;
+            opacity: 0.8;
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .section {
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .section h2 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.3);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            margin: 5px;
+            box-shadow: 0 5px 15px rgba(255,107,53,0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,53,0.4);
+            background: linear-gradient(45deg, #f7931e, #ff6b35);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #dc3545, #e74c3c);
+            box-shadow: 0 5px 15px rgba(220,53,69,0.3);
+        }
+
+        .player-list {
+            max-height: 400px;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .player-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            border-left: 4px solid #ffd700;
+            transition: all 0.3s;
+        }
+
+        .player-item:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+
+        .player-info {
+            flex: 1;
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: #ffd700;
+            margin-bottom: 4px;
+        }
+
+        .player-details {
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .ruolo-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .ruolo-P { background: #6f42c1; }
+        .ruolo-Dc { background: #dc3545; }
+        .ruolo-B { background: #fd7e14; }
+        .ruolo-Dd { background: #20c997; }
+        .ruolo-Ds { background: #17a2b8; }
+        .ruolo-E { background: #28a745; }
+        .ruolo-M { background: #6c757d; }
+        .ruolo-C { background: #007bff; }
+        .ruolo-T { background: #e83e8c; }
+        .ruolo-W { background: #ffc107; color: #000; }
+        .ruolo-A { background: #fd7e14; }
+        .ruolo-Pc { background: #dc3545; }
+
+        .formation-display {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .formation-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .formation-option {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .formation-option:hover {
+            border-color: #ffd700;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .formation-option.selected {
+            border-color: #ff6b35;
+            background: rgba(255,107,53,0.1);
+        }
+
+        .formation-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .formation-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+
+        .formation-score {
+            font-size: 2em;
+            font-weight: 800;
+            color: #ff6b35;
+        }
+
+        .field {
+            background: linear-gradient(180deg, #2d5016 0%, #3d6b1b 50%, #2d5016 100%);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            min-height: 300px;
+            border: 2px solid #fff;
+        }
+
+        .field::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: white;
+            transform: translateY(-50%);
+        }
+
+        .field::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            border: 2px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .field-row {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .player-card {
+            background: rgba(255,255,255,0.9);
+            color: #000;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.8em;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            min-width: 80px;
+        }
+
+        .player-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .status-indicators {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .status-card {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .status-value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .status-label {
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.7);
+            margin-top: 5px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #ffd700;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255,215,0,0.3);
+            border-radius: 50%;
+            border-top: 4px solid #ffd700;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background: rgba(23,162,184,0.2);
+            border-color: #17a2b8;
+            color: #17a2b8;
+        }
+
+        .alert-warning {
+            background: rgba(255,193,7,0.2);
+            border-color: #ffc107;
+            color: #ffc107;
+        }
+
+        .alert-danger {
+            background: rgba(220,53,69,0.2);
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .formation-comparison {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 OTTIMIZZATORE MANTRA</h1>
+            <div class="subtitle">Serie B1 FantaManager 2025/26 - Obiettivo 1° Posto</div>
+        </div>
+
+        <div class="main-content">
+            <!-- SEZIONE GESTIONE ROSA -->
+            <div class="section">
+                <h2>👥 Gestione Rosa</h2>
+                
+                <div class="input-group">
+                    <label for="giornata">📅 Giornata Campionato</label>
+                    <select id="giornata">
+                        <option value="">Caricamento giornate...</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="playerName">➕ Aggiungi Giocatore</label>
+                    <input type="text" id="playerName" placeholder="Nome giocatore">
+                </div>
+
+                <div class="input-group">
+                    <label for="playerRole">🎯 Ruolo Mantra</label>
+                    <select id="playerRole">
+                        <option value="">Seleziona ruolo</option>
+                        <option value="Por">Por - Portiere</option>
+                        <option value="Dc">Dc - Difensore Centrale</option>
+                        <option value="B">B - Braccetto</option>
+                        <option value="Dd">Dd - Terzino Destro</option>
+                        <option value="Ds">Ds - Terzino Sinistro</option>
+                        <option value="E">E - Esterno Difensivo</option>
+                        <option value="M">M - Mediano</option>
+                        <option value="C">C - Centrocampista</option>
+                        <option value="T">T - Trequartista</option>
+                        <option value="W">W - Ala</option>
+                        <option value="A">A - Attaccante di Raccordo</option>
+                        <option value="Pc">Pc - Punta Centrale</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-success" onclick="addPlayer()">➕ Aggiungi</button>
+                    <button class="btn" onclick="loadInitialRoster()">📋 Carica Rosa Attuale</button>
+                    <button class="btn" onclick="updateWebData()">🔄 Aggiorna Dati Web</button>
+                </div>
+
+                <div class="player-list" id="playerList">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <div>Caricamento rosa...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEZIONE OTTIMIZZAZIONE -->
+            <div class="section">
+                <h2>⚙️ Ottimizzazione</h2>
+                
+                <div class="input-group">
+                    <label for="strategy">🎯 Strategia</label>
+                    <select id="strategy">
+                        <option value="balanced">Bilanciata</option>
+                        <option value="conservative">Conservativa (Sicurezza)</option>
+                        <option value="aggressive">Aggressiva (Rischio/Rendimento)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="homeBonus">🏟️ Bonus Casa</label>
+                    <select id="homeBonus">
+                        <option value="3.0">Casa (+3.0) - Stadio Fascia 1</option>
+                        <option value="0">Trasferta (0)</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-success" onclick="optimizeFormation()" style="width: 100%; font-size: 18px; padding: 15px;">
+                    🚀 OTTIMIZZA FORMAZIONE
+                </button>
+
+                <div class="status-indicators">
+                    <div class="status-card">
+                        <div class="status-value" id="totalPlayers">0</div>
+                        <div class="status-label">Giocatori Rosa</div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-value" id="availablePlayers">0</div>
+                        <div class="status-label">Disponibili</div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-value" id="injuredPlayers">0</div>
+                        <div class="status-label">Infortunati</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEZIONE FORMAZIONI RISULTATO -->
+        <div class="formation-display" id="formationResult" style="display: none;">
+            <h2 style="text-align: center; color: #ffd700; margin-bottom: 30px;">⚽ FORMAZIONI OTTIMALI</h2>
+            
+            <div class="formation-comparison" id="formationComparison">
+                <!-- Le due formazioni verranno generate qui -->
+            </div>
+
+            <div class="status-indicators" id="analysisResults">
+                <!-- Risultati analisi -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configurazione Gemini AI
+        const GEMINI_API_KEY = 'AIzaSyCwtjsNaWLh28_bXrHJOHaMgzFDVjOHXiQ';
+        const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+
+        // Database locale
+        let currentRoster = [];
+        let currentSeason = '2025-26';
+        let seasonFixtures = [];
+        let webDataCache = {};
+
+        // Moduli Mantra 2025/26
+        const MANTRA_FORMATIONS = {
+            '4-4-2': {
+                name: '4-4-2',
+                positions: {
+                    'Por': 1,
+                    'Dd': 1, 'Dc': 2, 'Ds': 1,
+                    'M': 2, 'C': 2,
+                    'A': 1, 'Pc': 1
+                }
+            },
+            '4-1-4-1': {
+                name: '4-1-4-1',
+                positions: {
+                    'Por': 1,
+                    'Dd': 1, 'Dc': 2, 'Ds': 1,
+                    'M': 1, 'C': 2, 'W': 2,
+                    'Pc': 1
+                }
+            },
+            '4-3-3': {
+                name: '4-3-3',
+                positions: {
+                    'Por': 1,
+                    'Dd': 1, 'Dc': 2, 'Ds': 1,
+                    'M': 1, 'C': 2,
+                    'W': 2, 'Pc': 1
+                }
+            },
+            '3-5-2': {
+                name: '3-5-2',
+                positions: {
+                    'Por': 1,
+                    'Dc': 3,
+                    'E': 2, 'M': 1, 'C': 2,
+                    'A': 2
+                }
+            },
+            '3-4-3': {
+                name: '3-4-3',
+                positions: {
+                    'Por': 1,
+                    'Dc': 3,
+                    'E': 2, 'C': 2,
+                    'W': 2, 'Pc': 1
+                }
+            }
+        };
+
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSeasonFixtures();
+            loadInitialRoster();
+        });
+
+        // Gestione Gemini AI
+        async function queryGemini(prompt) {
+            try {
+                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: prompt
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                return data.candidates[0].content.parts[0].text;
+            } catch (error) {
+                console.error('Errore Gemini AI:', error);
+                return null;
+            }
+        }
+
+        // Caricamento calendario Serie A 2025/26
+        async function loadSeasonFixtures() {
+            const prompt = `Fornisci il calendario completo della Serie A 2025/2026 con le date delle giornate. 
+            Rispondi solo con un JSON in questo formato:
+            [{"giornata": 1, "data": "2025-08-17", "descrizione": "1ª Giornata"}, ...]
+            per tutte le 38 giornate del campionato.`;
+
+            const response = await queryGemini(prompt);
+            if (response) {
+                try {
+                    seasonFixtures = JSON.parse(response);
+                    populateFixturesSelect();
+                } catch (error) {
+                    console.error('Errore parsing calendario:', error);
+                    createDefaultFixtures();
+                }
+            } else {
+                createDefaultFixtures();
+            }
+        }
+
+        function createDefaultFixtures() {
+            seasonFixtures = [];
+            const startDate = new Date('2025-08-17');
+            for (let i = 1; i <= 38; i++) {
+                const matchDate = new Date(startDate);
+                matchDate.setDate(startDate.getDate() + (i - 1) * 7);
+                seasonFixtures.push({
+                    giornata: i,
+                    data: matchDate.toISOString().split('T')[0],
+                    descrizione: `${i}ª Giornata`
+                });
+            }
+            populateFixturesSelect();
+        }
+
+        function populateFixturesSelect() {
+            const select = document.getElementById('giornata');
+            select.innerHTML = '<option value="">Seleziona giornata</option>';
+            
+            seasonFixtures.forEach(fixture => {
+                const option = document.createElement('option');
+                option.value = fixture.giornata;
+                option.textContent = `${fixture.descrizione} - ${fixture.data}`;
+                select.appendChild(option);
+            });
+        }
+
+        // Caricamento rosa iniziale
+        function loadInitialRoster() {
+            const initialPlayers = [
+                // Portieri
+                { name: 'Sommer', roles: ['Por'], team: 'Inter', fvmp: 200, status: 'active' },
+                
+                // Difensori/Centrocampisti
+                { name: 'Saelemaekers', roles: ['E', 'W'], team: 'Milan', fvmp: 460, status: 'active' },
+                { name: 'Kolasinac', roles: ['Dc', 'B'], team: 'Atalanta', fvmp: 190, status: 'active' },
+                { name: "N'dicka", roles: ['Dc', 'B'], team: 'Roma', fvmp: 260, status: 'active' },
+                { name: 'Kalulu', roles: ['Dc', 'Dd'], team: 'Juventus', fvmp: 260, status: 'active' },
+                { name: 'Beukema', roles: ['Dc'], team: 'Napoli', fvmp: 250, status: 'active' },
+                { name: 'Holm', roles: ['Dd', 'E'], team: 'Bologna', fvmp: 210, status: 'active' },
+                { name: 'Biraghi', roles: ['Ds', 'E'], team: 'Torino', fvmp: 230, status: 'active' },
+                { name: 'Frendrup', roles: ['M', 'C'], team: 'Genoa', fvmp: 240, status: 'active' },
+                
+                // Attaccanti
+                { name: 'Leao', roles: ['W', 'A'], team: 'Milan', fvmp: 2420, status: 'active' },
+                { name: 'De Ketelaere', roles: ['T', 'A'], team: 'Atalanta', fvmp: 1780, status: 'active' },
+                { name: 'Castro S.', roles: ['Pc'], team: 'Bologna', fvmp: 1400, status: 'active' },
+                { name: 'Krstovic', roles: ['Pc'], team: 'Lecce', fvmp: 1350, status: 'active' },
+                { name: 'Vlahovic', roles: ['Pc'], team: 'Juventus', fvmp: 960, status: 'active' },
+                { name: 'Raspadori', roles: ['A', 'T'], team: 'Napoli', fvmp: 200, status: 'active' }
+            ];
+
+            currentRoster = initialPlayers;
+            updatePlayerList();
+            updateStats();
+        }
+
+        // Aggiunta giocatori
+        function addPlayer() {
+            const name = document.getElementById('playerName').value.trim();
+            const role = document.getElementById('playerRole').value;
+
+            if (!name || !role) {
+                alert('Inserisci nome e ruolo del giocatore');
+                return;
+            }
+
+            const newPlayer = {
+                name: name,
+                roles: [role],
+                team: 'TBD',
+                fvmp: 100,
+                status: 'active'
+            };
+
+            currentRoster.push(newPlayer);
+            updatePlayerList();
+            updateStats();
+
+            // Reset form
+            document.getElementById('playerName').value = '';
+            document.getElementById('playerRole').value = '';
+        }
+
+        // Rimozione giocatori
+        function removePlayer(index) {
+            currentRoster.splice(index, 1);
+            updatePlayerList();
+            updateStats();
+        }
+
+        // Aggiornamento lista giocatori
+        function updatePlayerList() {
+            const container = document.getElementById('playerList');
+            
+            if (currentRoster.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.6);">Nessun giocatore in rosa</div>';
+                return;
+            }
+
+            container.innerHTML = currentRoster.map((player, index) => `
+                <div class="player-item">
+                    <div class="player-info">
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-details">
+                            ${player.roles.map(role => `<span class="ruolo-badge ruolo-${role}">${role}</span>`).join('')}
+                            ${player.team} • FVMp: ${player.fvmp}
+                            ${player.status === 'injured' ? ' • 🚑 INFORTUNATO' : ''}
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" onclick="removePlayer(${index})" style="font-size: 12px; padding: 5px 10px;">❌</button>
+                </div>
+            `).join('');
+        }
+
+        // Aggiornamento statistiche
+        function updateStats() {
+            const total = currentRoster.length;
+            const available = currentRoster.filter(p => p.status === 'active').length;
+            const injured = currentRoster.filter(p => p.status === 'injured').length;
+
+            document.getElementById('totalPlayers').textContent = total;
+            document.getElementById('availablePlayers').textContent = available;
+            document.getElementById('injuredPlayers').textContent = injured;
+        }
+
+        // Aggiornamento dati web
+        async function updateWebData() {
+            const loading = document.querySelector('.loading');
+            loading.classList.add('show');
+
+            try {
+                // Aggiorna infortuni
+                await updateInjuries();
+                
+                // Aggiorna forma e probabilità titolarità
+                await updateCurrentForm();
+                
+                alert('Dati web aggiornati con successo!');
+            } catch (error) {
+                console.error('Errore aggiornamento dati:', error);
+                alert('Errore durante l\'aggiornamento dei dati web');
+            } finally {
+                loading.classList.remove('show');
+            }
+        }
+
+        // Aggiornamento infortuni
+        async function updateInjuries() {
+            const prompt = `Fornisci la lista aggiornata degli infortuni in Serie A per questi giocatori: ${currentRoster.map(p => p.name).join(', ')}.
+            Rispondi solo con un JSON: {"nome_giocatore": "injured|active", ...}`;
+
+            const response = await queryGemini(prompt);
+            if (response) {
+                try {
+                    const injuries = JSON.parse(response);
+                    currentRoster.forEach(player => {
+                        if (injuries[player.name]) {
+                            player.status = injuries[player.name];
+                        }
+                    });
+                    updatePlayerList();
+                    updateStats();
+                } catch (error) {
+                    console.error('Errore parsing infortuni:', error);
+                }
+            }
+        }
+
+        // Aggiornamento forma attuale
+        async function updateCurrentForm() {
+            const giornata = document.getElementById('giornata').value;
+            if (!giornata) return;
+
+            const prompt = `Per la ${giornata}ª giornata di Serie A 2025/26, fornisci per questi giocatori: ${currentRoster.map(p => p.name).join(', ')}
+            - Probabilità di titolarità (0-100)
+            - Forma attuale (1-10)
+            - Difficoltà partita (1-10)
+            Rispondi solo con JSON: {"nome_giocatore": {"titolarita": 85, "forma": 7, "difficolta": 5}, ...}`;
+
+            const response = await queryGemini(prompt);
+            if (response) {
+                try {
+                    const formData = JSON.parse(response);
+                    currentRoster.forEach(player => {
+                        if (formData[player.name]) {
+                            player.webData = formData[player.name];
+                        }
+                    });
+                    webDataCache = formData;
+                } catch (error) {
+                    console.error('Errore parsing forma:', error);
+                }
+            }
+        }
+
+        // Algoritmo di ottimizzazione
+        function optimizeFormation() {
+            const giornata = document.getElementById('giornata').value;
+            const strategy = document.getElementById('strategy').value;
+            const homeBonus = parseFloat(document.getElementById('homeBonus').value);
+
+            if (!giornata) {
+                alert('Seleziona una giornata di campionato');
+                return;
+            }
+
+            const availablePlayers = currentRoster.filter(p => p.status === 'active');
+            
+            if (availablePlayers.length < 11) {
+                alert('Hai bisogno di almeno 11 giocatori disponibili');
+                return;
+            }
+
+            // Calcola punteggi per ogni giocatore
+            const scoredPlayers = availablePlayers.map(player => ({
+                ...player,
+                score: calculatePlayerScore(player, strategy, homeBonus)
+            }));
+
+            // Trova le due migliori formazioni
+            const formation1 = findBestFormation(scoredPlayers, '4-3-3');
+            const formation2 = findBestFormation(scoredPlayers, '3-5-2');
+
+            displayFormations(formation1, formation2);
+        }
+
+        // Calcolo punteggio giocatore
+        function calculatePlayerScore(player, strategy, homeBonus) {
+            let score = 0;
+            
+            // Base: FVMp normalizzato
+            score += Math.log(player.fvmp + 1) * 10;
+            
+            // Dati web se disponibili
+            if (player.webData) {
+                score += (player.webData.titolarita / 100) * 30; // Titolarità
+                score += player.webData.forma * 5; // Forma
+                score -= player.webData.difficolta * 2; // Difficoltà (sottrae)
+            }
+            
+            // Bonus casa
+            score += homeBonus;
+            
+            // Strategia
+            switch (strategy) {
+                case 'conservative':
+                    score += (player.webData?.titolarita || 70) / 100 * 20;
+                    break;
+                case 'aggressive':
+                    score += player.fvmp > 500 ? 15 : -5;
+                    break;
+                case 'balanced':
+                default:
+                    score += 10;
+                    break;
+            }
+            
+            // Bonus per ruolo in base al modulo
+            const roleBonus = {
+                'Por': 5, 'Dc': 8, 'Dd': 7, 'Ds': 7, 'B': 6,
+                'E': 9, 'M': 10, 'C': 12, 'T': 15, 'W': 14, 'A': 16, 'Pc': 18
+            };
+            
+            const maxRoleBonus = Math.max(...player.roles.map(role => roleBonus[role] || 0));
+            score += maxRoleBonus;
+            
+            return Math.max(0, score);
+        }
+
+        // Trova la migliore formazione per un modulo
+        function findBestFormation(players, formationName) {
+            const formation = MANTRA_FORMATIONS[formationName];
+            if (!formation) return null;
+
+            const selectedPlayers = [];
+            const usedPlayers = new Set();
+            let totalScore = 0;
+
+            // Raggruppa giocatori per ruolo
+            const playersByRole = {};
+            players.forEach(player => {
+                player.roles.forEach(role => {
+                    if (!playersByRole[role]) playersByRole[role] = [];
+                    playersByRole[role].push(player);
+                });
+            });
+
+            // Ordina per punteggio decrescente
+            Object.keys(playersByRole).forEach(role => {
+                playersByRole[role].sort((a, b) => b.score - a.score);
+            });
+
+            // Seleziona giocatori per ogni posizione
+            for (const [role, count] of Object.entries(formation.positions)) {
+                const availableForRole = (playersByRole[role] || [])
+                    .filter(p => !usedPlayers.has(p.name));
+                
+                for (let i = 0; i < count && i < availableForRole.length; i++) {
+                    const player = availableForRole[i];
+                    selectedPlayers.push({
+                        ...player,
+                        position: role
+                    });
+                    usedPlayers.add(player.name);
+                    totalScore += player.score;
+                }
+            }
+
+            // Calcola panchina ottimizzata (ordine MASTER)
+            const bench = players
+                .filter(p => !usedPlayers.has(p.name))
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 12);
+
+            return {
+                name: formationName,
+                players: selectedPlayers,
+                bench: bench,
+                totalScore: totalScore,
+                avgScore: totalScore / selectedPlayers.length,
+                isComplete: selectedPlayers.length === 11
+            };
+        }
+
+        // Visualizzazione formazioni
+        function displayFormations(formation1, formation2) {
+            const container = document.getElementById('formationResult');
+            const comparison = document.getElementById('formationComparison');
+            
+            comparison.innerHTML = [formation1, formation2].map((formation, index) => 
+                createFormationHTML(formation, index === 0)
+            ).join('');
+
+            // Analisi risultati
+            const analysisContainer = document.getElementById('analysisResults');
+            analysisContainer.innerHTML = `
+                <div class="status-card">
+                    <div class="status-value">${formation1.totalScore.toFixed(1)}</div>
+                    <div class="status-label">Punteggio ${formation1.name}</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value">${formation2.totalScore.toFixed(1)}</div>
+                    <div class="status-label">Punteggio ${formation2.name}</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value">${formation1.totalScore > formation2.totalScore ? formation1.name : formation2.name}</div>
+                    <div class="status-label">Migliore</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value">${document.getElementById('homeBonus').value !== '0' ? '+3.0' : '0'}</div>
+                    <div class="status-label">Bonus Casa</div>
+                </div>
+            `;
+
+            container.style.display = 'block';
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Creazione HTML formazione
+        function createFormationHTML(formation, isFirst) {
+            if (!formation || !formation.isComplete) {
+                return `
+                    <div class="formation-option">
+                        <div class="formation-header">
+                            <div class="formation-title">Formazione Incompleta</div>
+                            <div class="formation-score">❌</div>
+                        </div>
+                        <div class="alert alert-danger">
+                            Non hai abbastanza giocatori per questa formazione
+                        </div>
+                    </div>
+                `;
+            }
+
+            const fieldLayout = getFieldLayout(formation.name, formation.players);
+            
+            return `
+                <div class="formation-option ${isFirst ? 'selected' : ''}" onclick="selectFormation(this)">
+                    <div class="formation-header">
+                        <div class="formation-title">${formation.name}</div>
+                        <div class="formation-score">${formation.totalScore.toFixed(1)}</div>
+                    </div>
+                    
+                    <div class="field">
+                        ${fieldLayout}
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <strong>Panchina (ordine MASTER):</strong>
+                        <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px;">
+                            ${formation.bench.slice(0, 6).map(player => 
+                                `<span class="ruolo-badge ruolo-${player.roles[0]}">${player.name}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info" style="margin-top: 15px; font-size: 0.9em;">
+                        Media: ${formation.avgScore.toFixed(1)} • 
+                        Giocatori: ${formation.players.length}/11 • 
+                        Panchina: ${formation.bench.length}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Layout campo per moduli
+        function getFieldLayout(formationName, players) {
+            const layouts = {
+                '4-3-3': ['Por', ['Dd', 'Dc', 'Dc', 'Ds'], ['M', 'C', 'C'], ['W', 'Pc', 'W']],
+                '3-5-2': ['Por', ['Dc', 'Dc', 'Dc'], ['E', 'M', 'C', 'C', 'E'], ['A', 'A']],
+                '4-4-2': ['Por', ['Dd', 'Dc', 'Dc', 'Ds'], ['M', 'M', 'C', 'C'], ['A', 'Pc']],
+                '4-1-4-1': ['Por', ['Dd', 'Dc', 'Dc', 'Ds'], ['M'], ['C', 'C', 'W', 'W'], ['Pc']],
+                '3-4-3': ['Por', ['Dc', 'Dc', 'Dc'], ['E', 'C', 'C', 'E'], ['W', 'Pc', 'W']]
+            };
+
+            const layout = layouts[formationName] || layouts['4-3-3'];
+            const playersByPosition = {};
+            
+            players.forEach(player => {
+                const pos = player.position || player.roles[0];
+                if (!playersByPosition[pos]) playersByPosition[pos] = [];
+                playersByPosition[pos].push(player);
+            });
+
+            return layout.map(row => {
+                if (typeof row === 'string') {
+                    // Portiere
+                    const player = players.find(p => (p.position || p.roles[0]) === row);
+                    return `
+                        <div class="field-row">
+                            <div class="player-card">
+                                ${player ? player.name : 'N/A'}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Riga di movimento
+                    const rowPlayers = [];
+                    const positionCounts = {};
+                    
+                    // Conta posizioni richieste
+                    row.forEach(pos => {
+                        positionCounts[pos] = (positionCounts[pos] || 0) + 1;
+                    });
+                    
+                    // Assegna giocatori
+                    Object.entries(positionCounts).forEach(([pos, count]) => {
+                        const available = (playersByPosition[pos] || []).slice(0, count);
+                        rowPlayers.push(...available);
+                    });
+                    
+                    return `
+                        <div class="field-row">
+                            ${rowPlayers.map(player => `
+                                <div class="player-card">
+                                    ${player.name}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        // Selezione formazione
+        function selectFormation(element) {
+            document.querySelectorAll('.formation-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // Export formazione
+        function exportFormation() {
+            const selected = document.querySelector('.formation-option.selected');
+            if (!selected) {
+                alert('Seleziona prima una formazione');
+                return;
+            }
+
+            const formationText = selected.innerText;
+            navigator.clipboard.writeText(formationText).then(() => {
+                alert('Formazione copiata negli appunti!');
+            }).catch(() => {
+                console.log('Formazione da copiare:', formationText);
+            });
+        }
+
+        // Salvataggio rosa
+        function saveRoster() {
+            localStorage.setItem('mantra_roster', JSON.stringify(currentRoster));
+            alert('Rosa salvata!');
+        }
+
+        // Caricamento rosa salvata
+        function loadSavedRoster() {
+            const saved = localStorage.getItem('mantra_roster');
+            if (saved) {
+                currentRoster = JSON.parse(saved);
+                updatePlayerList();
+                updateStats();
+                alert('Rosa caricata!');
+            } else {
+                alert('Nessuna rosa salvata trovata');
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 's':
+                        e.preventDefault();
+                        saveRoster();
+                        break;
+                    case 'o':
+                        e.preventDefault();
+                        optimizeFormation();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        updateWebData();
+                        break;
+                }
+            }
+        });
+
+        // Aggiungi controlli aggiuntivi
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aggiungi pulsanti nella sezione ottimizzazione
+            const optimizationSection = document.querySelector('.section:last-of-type');
+            const additionalControls = document.createElement('div');
+            additionalControls.style.marginTop = '20px';
+            additionalControls.innerHTML = `
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn" onclick="saveRoster()">💾 Salva Rosa</button>
+                    <button class="btn" onclick="loadSavedRoster()">📂 Carica Rosa</button>
+                    <button class="btn" onclick="exportFormation()">📋 Esporta</button>
+                </div>
+                <div class="alert alert-info" style="margin-top: 15px; font-size: 0.9em;">
+                    <strong>Shortcuts:</strong> Ctrl+S (Salva) • Ctrl+O (Ottimizza) • Ctrl+R (Aggiorna)
+                </div>
+            `;
+            optimizationSection.appendChild(additionalControls);
+        });
+    </script>
+</body>
+</html>
