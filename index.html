@@ -889,13 +889,17 @@ console.log("DEBUG Attaccanti:", ruoli.Attaccanti.length);
         }
 
         function isPosizionCompatibile(ruolo, posizione) {
-    const compatibilita = {
-        'P': ['Portiere'],
-        'Dc': ['Difesa'], 'Dd': ['Difesa'], 'Ds': ['Difesa'], 'B': ['Difesa'],
-        'E': ['Difesa', 'Centrocampo'], 'M': ['Centrocampo'], 'C': ['Centrocampo'],
-        'T': ['Centrocampo', 'Attacco'], 'W': ['Centrocampo', 'Attacco'],
-        'A': ['Attacco'], 'Pc': ['Attacco']
-    };
+    // Divide ruoli multipli (es: "Dd/E" -> ["Dd", "E"])
+    const ruoliGiocatore = ruolo.split('/');
+    
+    // Divide posizioni richieste (es: "M/C" -> ["M", "C"])  
+    const posizioniRichieste = posizione.split('/');
+    
+    // Verifica se almeno un ruolo del giocatore match con una posizione richiesta
+    return ruoliGiocatore.some(rGiocatore => 
+        posizioniRichieste.includes(rGiocatore)
+    );
+}
     
     // Gestisce ruoli multipli (es: "Dd/E", "C/T", "W/A")
     const ruoli = ruolo.split('/');
