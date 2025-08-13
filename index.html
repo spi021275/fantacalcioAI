@@ -612,6 +612,11 @@
     // Usa i dati live reali del giocatore
     return giocatore.casaTrasferta === "C";
 }
+        // FUNZIONE TEMPORANEA per gli insights
+function isPartitaCasaOld(giornata) {
+    const partiteCasa = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+    return partiteCasa.includes(giornata);
+}
         // NUOVA FUNZIONE: Calcola media forma ultime 5 giornate
 function calcolaFormaUltime5Giornate(giocatore) {
     if (!giocatore.formaUltime5 || giocatore.formaUltime5.length === 0) {
