@@ -1002,10 +1002,8 @@ console.log("DEBUG Attaccanti:", ruoli.Attaccanti.length);
                 punteggioTotale += 2; // Bonus squadra completa
             }
             
-            // Bonus casa per CDM (Stadio Fascia 6)
-            if (isPartitaCasa(giornata)) {
-                punteggioTotale += 0.5 * conteggioGiocatori; // +0.5 per ogni giocatore
-            }
+           // Bonus casa per CDM (Stadio Fascia 6) - ora calcolato per singolo giocatore
+// (Il bonus è già incluso nel calcolo individuale, rimuovi questo)
             
             document.getElementById('scoreValue').textContent = Math.round(punteggioTotale * 10) / 10;
             
