@@ -587,31 +587,26 @@ rosaCompleta.forEach(p => console.log(p.nome, p.ruolo));
 
 const ruoli = {
     "Portieri": rosaCompleta.filter(p => p.ruolo === 'P'),
-    "Difensori": rosaCompleta.filter(p => 
-        !p.ruolo.includes('P') && 
-        !p.ruolo.includes('Pc') && 
-        (p.ruolo.includes('Dc') || p.ruolo.includes('Dd') || p.ruolo.includes('Ds') || p.ruolo.includes('B') || p.ruolo.includes('E'))
-    ),
-    "Centrocampisti": rosaCompleta.filter(p => 
-        !p.ruolo.includes('P') && 
-        !p.ruolo.includes('Pc') && 
-        !p.ruolo.includes('Dc') && 
-        !p.ruolo.includes('Dd') && 
-        !p.ruolo.includes('Ds') && 
-        !p.ruolo.includes('B') && 
-        (p.ruolo.includes('C') || p.ruolo.includes('M') || p.ruolo.includes('T') || p.ruolo.includes('W') || p.ruolo.includes('E'))
-    ),
-    "Attaccanti": rosaCompleta.filter(p => 
-        !p.ruolo.includes('P') && 
-        !p.ruolo.includes('Dc') && 
-        !p.ruolo.includes('Dd') && 
-        !p.ruolo.includes('Ds') && 
-        !p.ruolo.includes('B') && 
-        !p.ruolo.includes('E') && 
-        !p.ruolo.includes('M') && 
-        !p.ruolo.includes('C') && 
-        (p.ruolo.includes('A') || p.ruolo.includes('Pc') || p.ruolo.includes('T') || p.ruolo.includes('W'))
-    )
+    "Difensori": rosaCompleta.filter(p => {
+        const ruoliGiocatore = p.ruolo.split('/');
+        return ruoliGiocatore.some(r => ['Dc', 'Dd', 'Ds', 'B', 'E'].includes(r)) && 
+               !ruoliGiocatore.includes('P');
+    }),
+    "Centrocampisti": rosaCompleta.filter(p => {
+        const ruoliGiocatore = p.ruolo.split('/');
+        // È centrocampista se ha C, M, T, W ma NON ha ruoli difensivi puri o attaccanti puri
+        const haCentrocampo = ruoliGiocatore.some(r => ['C', 'M', 'T', 'W', 'E'].includes(r));
+        const haDifesa = ruoliGiocatore.some(r => ['Dc', 'Dd', 'Ds', 'B'].includes(r));
+        const haAttacco = ruoliGiocatore.some(r => ['A', 'Pc'].includes(r));
+        const haPortiere = ruoliGiocatore.includes('P');
+        
+        return haCentrocampo && !haDifesa && !haAttacco && !haPortiere;
+    }),
+    "Attaccanti": rosaCompleta.filter(p => {
+        const ruoliGiocatore = p.ruolo.split('/');
+        return ruoliGiocatore.some(r => ['A', 'Pc'].includes(r)) && 
+               !ruoliGiocatore.includes('P');
+    })
 };
 // Debug: controlla filtri
 console.log("DEBUG Portieri:", ruoli.Portieri.length);
