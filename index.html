@@ -735,23 +735,18 @@
         }
 
         function isPosizionCompatibile(ruolo, posizione) {
-            const compatibilita = {
-                'P': ['Portiere'],
-                'Dc': ['Difesa'],
-                'Dd': ['Difesa'],
-                'Ds': ['Difesa'],
-                'B': ['Difesa'],
-                'E': ['Difesa', 'Centrocampo'],
-                'M': ['Centrocampo'],
-                'C': ['Centrocampo'],
-                'T': ['Centrocampo', 'Attacco'],
-                'W': ['Centrocampo', 'Attacco'],
-                'A': ['Attacco'],
-                'Pc': ['Attacco']
-            };
-            
-            return compatibilita[ruolo]?.some(comp => posizione.includes(comp));
-        }
+    const compatibilita = {
+        'P': ['Portiere'],
+        'Dc': ['Difesa'], 'Dd': ['Difesa'], 'Ds': ['Difesa'], 'B': ['Difesa'],
+        'E': ['Difesa', 'Centrocampo'], 'M': ['Centrocampo'], 'C': ['Centrocampo'],
+        'T': ['Centrocampo', 'Attacco'], 'W': ['Centrocampo', 'Attacco'],
+        'A': ['Attacco'], 'Pc': ['Attacco']
+    };
+    
+    // Gestisce ruoli multipli (es: "Dd/E", "C/T", "W/A")
+    const ruoli = ruolo.split('/');
+    return ruoli.some(r => compatibilita[r]?.some(comp => posizione.includes(comp)));
+}
 
         function calcolaPunteggioFormazione() {
             const giornata = parseInt(document.getElementById('giornataSelect').value);
