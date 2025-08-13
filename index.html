@@ -566,9 +566,6 @@
     // Reliability factor (quanto ci fidiamo della predizione)
     const reliabilityBonus = giocatore.reliability || 0.8;
     
-    // Bonus stadio CDM (Serie B1 - Stadio Fascia 6)
-    const bonusCasa = giocatore.casaTrasferta === "C" ? 0.5 : 0;
-    
     // Value factor (giocatori più costosi = più peso)
     const valueFactor = Math.log(giocatore.valore + 1) / 15;
     
