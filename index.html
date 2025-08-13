@@ -586,12 +586,33 @@ console.log("DEBUG: Totale giocatori:", rosaCompleta.length);
 rosaCompleta.forEach(p => console.log(p.nome, p.ruolo));
 
 const ruoli = {
-    "Portieri": rosaCompleta.filter(p => p.ruolo.includes('P')),
-    "Difensori": rosaCompleta.filter(p => p.ruolo.includes('Dc') || p.ruolo.includes('Dd') || p.ruolo.includes('Ds') || p.ruolo.includes('B') || p.ruolo.includes('E')),
-    "Centrocampisti": rosaCompleta.filter(p => p.ruolo.includes('C') || p.ruolo.includes('M') || p.ruolo.includes('T') || p.ruolo.includes('W')),
-    "Attaccanti": rosaCompleta.filter(p => p.ruolo.includes('A') || p.ruolo.includes('Pc'))
+    "Portieri": rosaCompleta.filter(p => p.ruolo === 'P'),
+    "Difensori": rosaCompleta.filter(p => 
+        !p.ruolo.includes('P') && 
+        !p.ruolo.includes('Pc') && 
+        (p.ruolo.includes('Dc') || p.ruolo.includes('Dd') || p.ruolo.includes('Ds') || p.ruolo.includes('B') || p.ruolo.includes('E'))
+    ),
+    "Centrocampisti": rosaCompleta.filter(p => 
+        !p.ruolo.includes('P') && 
+        !p.ruolo.includes('Pc') && 
+        !p.ruolo.includes('Dc') && 
+        !p.ruolo.includes('Dd') && 
+        !p.ruolo.includes('Ds') && 
+        !p.ruolo.includes('B') && 
+        (p.ruolo.includes('C') || p.ruolo.includes('M') || p.ruolo.includes('T') || p.ruolo.includes('W') || p.ruolo.includes('E'))
+    ),
+    "Attaccanti": rosaCompleta.filter(p => 
+        !p.ruolo.includes('P') && 
+        !p.ruolo.includes('Dc') && 
+        !p.ruolo.includes('Dd') && 
+        !p.ruolo.includes('Ds') && 
+        !p.ruolo.includes('B') && 
+        !p.ruolo.includes('E') && 
+        !p.ruolo.includes('M') && 
+        !p.ruolo.includes('C') && 
+        (p.ruolo.includes('A') || p.ruolo.includes('Pc') || p.ruolo.includes('T') || p.ruolo.includes('W'))
+    )
 };
-
 // Debug: controlla filtri
 console.log("DEBUG Portieri:", ruoli.Portieri.length);
 console.log("DEBUG Difensori:", ruoli.Difensori.length); 
