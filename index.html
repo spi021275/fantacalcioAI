@@ -900,11 +900,6 @@ console.log("DEBUG Attaccanti:", ruoli.Attaccanti.length);
         posizioniRichieste.includes(rGiocatore)
     );
 }
-    
-    // Gestisce ruoli multipli (es: "Dd/E", "C/T", "W/A")
-    const ruoli = ruolo.split('/');
-    return ruoli.some(r => compatibilita[r]?.some(comp => posizione.includes(comp)));
-}
 
         function calcolaPunteggioFormazione() {
             const giornata = parseInt(document.getElementById('giornataSelect').value);
