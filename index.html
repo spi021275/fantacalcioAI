@@ -889,16 +889,21 @@ console.log("DEBUG Attaccanti:", ruoli.Attaccanti.length);
         }
 
         function isPosizionCompatibile(ruolo, posizione) {
-    // Divide ruoli multipli (es: "Dd/E" -> ["Dd", "E"])
-    const ruoliGiocatore = ruolo.split('/');
+    const compatibilita = {
+        'P': ['P'],
+        'Dc': ['Dc'], 'Dd': ['Dd'], 'Ds': ['Ds'], 'B': ['B', 'Dc'],
+        'E': ['E'], 'M': ['M'], 'C': ['C'], 'T': ['T'],
+        'W': ['W'], 'A': ['A'], 'Pc': ['Pc']
+    };
     
-    // Divide posizioni richieste (es: "M/C" -> ["M", "C"])  
-    const posizioniRichieste = posizione.split('/');
+    // Gestisce ruoli multipli (es: "Dd/E", "C/T", "W/A")
+    const ruoli = ruolo.split('/');
+    const posizioni = posizione.split('/');
     
-    // Verifica se almeno un ruolo del giocatore match con una posizione richiesta
-    return ruoliGiocatore.some(rGiocatore => 
-        posizioniRichieste.includes(rGiocatore)
-    );
+    return ruoli.some(r => {
+        const ruoliCompatibili = compatibilita[r] || [r];
+        return posizioni.some(p => ruoliCompatibili.includes(p) || p === r);
+    });
 }
 
         function calcolaPunteggioFormazione() {
