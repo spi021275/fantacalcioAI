@@ -579,15 +579,15 @@
         }
 
         function caricaRosa() {
-            const playerList = document.getElementById('playerList');
-            
-            // Raggruppa per ruolo
-            const ruoli = {
-                "Portieri": rosaCompleta.filter(p => p.ruolo === 'P'),
-                "Difensori": rosaCompleta.filter(p => ['Dc', 'Dd', 'Ds', 'B', 'E'].includes(p.ruolo)),
-                "Centrocampisti": rosaCompleta.filter(p => ['C', 'M', 'T'].includes(p.ruolo)),
-                "Attaccanti": rosaCompleta.filter(p => ['W', 'A', 'Pc'].includes(p.ruolo))
-            };
+    const playerList = document.getElementById('playerList');
+    
+    // Raggruppa per ruolo - GESTISCE RUOLI MULTIPLI
+    const ruoli = {
+        "Portieri": rosaCompleta.filter(p => p.ruolo.includes('P')),
+        "Difensori": rosaCompleta.filter(p => p.ruolo.includes('Dc') || p.ruolo.includes('Dd') || p.ruolo.includes('Ds') || p.ruolo.includes('B') || p.ruolo.includes('E')),
+        "Centrocampisti": rosaCompleta.filter(p => p.ruolo.includes('C') || p.ruolo.includes('M') || p.ruolo.includes('T') || (p.ruolo.includes('W') && !p.ruolo.includes('A'))),
+        "Attaccanti": rosaCompleta.filter(p => p.ruolo.includes('A') || p.ruolo.includes('Pc') || (p.ruolo.includes('W') && p.ruolo.includes('A')))
+    };
 
             playerList.innerHTML = '';
             
