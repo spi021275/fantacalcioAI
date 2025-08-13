@@ -967,45 +967,71 @@ console.log("DEBUG Attaccanti:", ruoli.Attaccanti.length);
         }
 
         function eseguiOttimizzazioneAI() {
-            const giornata = parseInt(document.getElementById('giornataSelect').value);
+    const giornata = parseInt(document.getElementById('giornataSelect').value);
+    
+    // Reset selezioni precedenti
+    document.querySelectorAll('.player-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    
+    // Reset formazione
+    generaFormazione(formazioneAttuale);
+    
+    // NUOVO ALGORITMO: MATCHING RUOLI SPECIFICI
+    const slots = document.querySelectorAll('.player-slot');
+    
+    slots.forEach(slot => {
+        const posizioneRichiesta = slot.dataset.posizione;
+        if (!posizioneRichiesta || posizioneRichiesta === 'P') return;
+        
+        // Trova giocatori compatibili per questa posizione specifica
+        const giocatoriCompatibili = rosaCompleta.filter(giocatore => {
+            return isPosizionCompatibile(giocatore.ruolo, posizioneRichiesta);
+        });
+        
+        // Ordina per punteggio e prendi il migliore disponibile
+        const giocatoriOrdinati = giocatoriCompatibili
+            .filter(g => !document.querySelector(`[data-giocatore="${g.nome}"]`)) // Non già schierato
+            .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata));
+        
+        if (giocatoriOrdinati.length > 0) {
+            const migliorGiocatore = giocatoriOrdinati[0];
             
-            // Reset selezioni precedenti
-            document.querySelectorAll('.player-item').forEach(item => {
-                item.classList.remove('selected');
-            });
+            // Schiera il giocatore
+            slot.textContent = migliorGiocatore.nome;
+            slot.classList.add('filled');
+            slot.dataset.giocatore = migliorGiocatore.nome;
             
-            // Algoritmo AI: seleziona i migliori giocatori per ruolo
-            const miglioriPerRuolo = {
-                'P': rosaCompleta.filter(g => g.ruolo === 'P')
-                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))[0],
-                'Difensori': rosaCompleta.filter(g => ['Dc', 'Dd', 'Ds', 'B', 'E'].includes(g.ruolo))
-                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))
-                    .slice(0, formazioneAttuale === '433' ? 4 : 3),
-                'Centrocampisti': rosaCompleta.filter(g => ['C', 'M', 'T', 'W'].includes(g.ruolo))
-                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))
-                    .slice(0, formazioneAttuale === '433' ? 3 : 5),
-                'Attaccanti': rosaCompleta.filter(g => ['A', 'Pc', 'W'].includes(g.ruolo))
-                    .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata))
-                    .slice(0, formazioneAttuale === '433' ? 3 : 2)
-            };
-            
-            // Applica selezione ottimale
-            generaFormazione(formazioneAttuale);
-            
-            [miglioriPerRuolo.P, ...miglioriPerRuolo.Difensori, 
-             ...miglioriPerRuolo.Centrocampisti, ...miglioriPerRuolo.Attaccanti]
-            .filter(Boolean).forEach(giocatore => {
-                const playerDiv = document.querySelector(`[data-nome="${giocatore.nome}"]`);
-                if (playerDiv) {
-                    playerDiv.classList.add('selected');
-                    aggiungiAFormazione(giocatore);
-                }
-            });
-            
-            calcolaPunteggioFormazione();
-            generaInsights();
+            // Marca come selezionato nella rosa
+            const playerDiv = document.querySelector(`[data-nome="${migliorGiocatore.nome}"]`);
+            if (playerDiv) {
+                playerDiv.classList.add('selected');
+            }
         }
-
+    });
+    
+    // Gestisci portiere separatamente
+    const portiereSlot = document.querySelector('[data-posizione="P"]');
+    if (portiereSlot) {
+        const portieri = rosaCompleta.filter(g => g.ruolo === 'P')
+            .sort((a, b) => calcolaPunteggioGiocatore(b, giornata) - calcolaPunteggioGiocatore(a, giornata));
+        
+        if (portieri.length > 0) {
+            const migliorPortiere = portieri[0];
+            portiereSlot.textContent = migliorPortiere.nome;
+            portiereSlot.classList.add('filled');
+            portiereSlot.dataset.giocatore = migliorPortiere.nome;
+            
+            const playerDiv = document.querySelector(`[data-nome="${migliorPortiere.nome}"]`);
+            if (playerDiv) {
+                playerDiv.classList.add('selected');
+            }
+        }
+    }
+    
+    calcolaPunteggioFormazione();
+    generaInsights();
+}
         function aggiornaLiveData() {
             const button = event.target;
             button.textContent = '📡 Aggiornando...';
