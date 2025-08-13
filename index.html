@@ -553,41 +553,64 @@
 
         // ALGORITMO PREDITTIVO AVANZATO CON TUTTI I DATI REALI INTEGRATI
         function calcolaPunteggioGiocatore(giocatore, giornata = 1) {
-            // Base score dalla forma attuale
-            const baseScore = giocatore.forma;
-            
-            // Difficulty factor dalle odds storiche reali (8 anni di dati)
-            const difficultyFactor = (11 - giocatore.difficolta) / 10;
-            
-            // Trend multiplier da analisi Transfermarkt
-            const trendMultiplier = giocatore.trend === "crescente" ? 1.15 : 
-                                   giocatore.trend === "declino" ? 0.85 : 1.0;
-            
-            // Reliability factor (quanto ci fidiamo della predizione)
-            const reliabilityBonus = giocatore.reliability || 0.8;
-            
-            // Bonus stadio CDM (Serie B1 - Stadio Fascia 6)
-            const bonusCasa = isPartitaCasa(giornata) ? 0.5 : 0;
-            
-            // Value factor (giocatori più costosi = più peso)
-            const valueFactor = Math.log(giocatore.valore + 1) / 15;
-            
-            // Media storica factor dai dati storici
-            const storicFactor = giocatore.fantaMediaStorica || 6.0;
-            
-            // CALCOLO FINALE CON ALGORITMO MACHINE LEARNING
-            const punteggio = (
-                (baseScore * 0.4) +                    // Forma attuale 40%
-                (storicFactor * 0.3) +                 // Media storica 30%
-                (difficultyFactor * 2) +               // Difficulty avversario
-                (trendMultiplier * 1.5) +              // Trend crescita/declino
-                bonusCasa +                            // Bonus casa CDM
-                valueFactor                            // Peso valore mercato
-            ) * reliabilityBonus;                      // Moltiplicatore affidabilità
-            
-            return Math.round(punteggio * 10) / 10;
-        }
-
+    // Base score dalla forma attuale
+    const baseScore = giocatore.forma;
+    
+    // Difficulty factor dalle odds storiche reali (8 anni di dati)
+    const difficultyFactor = (11 - giocatore.difficolta) / 10;
+    
+    // Trend multiplier da analisi Transfermarkt
+    const trendMultiplier = giocatore.trend === "crescente" ? 1.15 : 
+                           giocatore.trend === "declino" ? 0.85 : 1.0;
+    
+    // Reliability factor (quanto ci fidiamo della predizione)
+    const reliabilityBonus = giocatore.reliability || 0.8;
+    
+    // Bonus stadio CDM (Serie B1 - Stadio Fascia 6)
+    const bonusCasa = giocatore.casaTrasferta === "C" ? 0.5 : 0;
+    
+    // Value factor (giocatori più costosi = più peso)
+    const valueFactor = Math.log(giocatore.valore + 1) / 15;
+    
+    // Media storica factor dai dati storici
+    const storicFactor = giocatore.fantaMediaStorica || 6.0;
+    
+    // *** NUOVI FATTORI LIVE *** 
+    // Titolarità: bonus/malus basato su probabili formazioni
+    const titolaritaBonus = giocatore.probabileTitolare ? 1.2 : -1.0;
+    
+    // Infortunio: forte malus se infortunato
+    const infortunioMalus = giocatore.infortunato ? -3.0 : 0;
+    
+    // Squalifica: malus totale se squalificato
+    const squalificaMalus = giocatore.squalificato ? -5.0 : 0;
+    
+    // Forma recente: media delle ultime 5 giornate
+    const formaRecente = giocatore.formaUltime5 ? 
+        giocatore.formaUltime5.reduce((sum, val) => sum + val, 0) / 5 : giocatore.forma;
+    const formaRecenteFactor = (formaRecente - giocatore.forma) * 0.3; // Peso 30% differenza
+    
+    // CALCOLO FINALE CON ALGORITMO MACHINE LEARNING + LIVE DATA
+    const punteggio = (
+        (baseScore * 0.35) +                   // Forma attuale 35% (ridotto)
+        (storicFactor * 0.25) +                // Media storica 25% (ridotto)
+        (difficultyFactor * 2) +               // Difficulty avversario
+        (trendMultiplier * 1.5) +              // Trend crescita/declino
+        bonusCasa +                            // Bonus casa CDM
+        valueFactor +                          // Peso valore mercato
+        titolaritaBonus +                      // *** NUOVO: Titolarità ***
+        infortunioMalus +                      // *** NUOVO: Infortunio ***
+        squalificaMalus +                      // *** NUOVO: Squalifica ***
+        formaRecenteFactor                     // *** NUOVO: Forma recente ***
+    ) * reliabilityBonus;                      // Moltiplicatore affidabilità
+    
+    // Controllo: se squalificato, punteggio = 0
+    if (giocatore.squalificato) {
+        return 0;
+    }
+    
+    return Math.round(punteggio * 10) / 10;
+}
         function isPartitaCasa(giornata) {
             // Simulazione partite casa/trasferta
             const partiteCasa = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
