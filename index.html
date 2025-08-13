@@ -615,6 +615,61 @@
     // Usa i dati live reali del giocatore
     return giocatore.casaTrasferta === "C";
 }
+        // NUOVA FUNZIONE: Calcola media forma ultime 5 giornate
+function calcolaFormaUltime5Giornate(giocatore) {
+    if (!giocatore.formaUltime5 || giocatore.formaUltime5.length === 0) {
+        return giocatore.forma; // Fallback alla forma attuale
+    }
+    
+    const somma = giocatore.formaUltime5.reduce((acc, valore) => acc + valore, 0);
+    return Math.round((somma / giocatore.formaUltime5.length) * 10) / 10;
+}
+
+// NUOVA FUNZIONE: Aggiorna difficoltà in base all'avversario specifico
+function aggiornaDifficoltaAvversario(giocatore) {
+    const teamDifficultyMapping = {
+        "Inter": 4.4, "Juventus": 4.7, "Atalanta": 5.1, "Napoli": 4.3, 
+        "Milan": 5.2, "Roma": 5.5, "Lazio": 6.0, "Fiorentina": 6.5, 
+        "Sassuolo": 8.2, "Bologna": 7.0, "Torino": 7.5, "Udinese": 7.8,
+        "Genoa": 8.0, "Cagliari": 8.1, "Lecce": 8.1, "Como": 7.5, "Parma": 8.0, 
+        "Verona": 8.1, "Cremonese": 8.5, "Pisa": 8.5
+    };
+    
+    if (giocatore.avversarioGiornata && giocatore.avversarioGiornata !== "TBD") {
+        return teamDifficultyMapping[giocatore.avversarioGiornata] || giocatore.difficolta;
+    }
+    
+    return giocatore.difficolta; // Fallback alla difficoltà base
+}
+
+// NUOVA FUNZIONE: Valuta status del giocatore (titolarità, infortuni, etc)
+function valutaStatusGiocatore(giocatore) {
+    let statusInfo = [];
+    
+    if (giocatore.squalificato) {
+        statusInfo.push("🚫 SQUALIFICATO");
+    }
+    
+    if (giocatore.infortunato) {
+        statusInfo.push("🏥 INFORTUNATO");
+    }
+    
+    if (!giocatore.probabileTitolare && !giocatore.squalificato && !giocatore.infortunato) {
+        statusInfo.push("🪑 PANCHINA");
+    }
+    
+    if (giocatore.probabileTitolare && !giocatore.squalificato && !giocatore.infortunato) {
+        statusInfo.push("✅ TITOLARE");
+    }
+    
+    if (giocatore.casaTrasferta === "C") {
+        statusInfo.push("🏠 CASA");
+    } else {
+        statusInfo.push("✈️ TRASFERTA");
+    }
+    
+    return statusInfo.join(" • ");
+}
 
         function inizializzaApp() {
             caricaRosa();
