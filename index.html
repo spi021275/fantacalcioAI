@@ -433,9 +433,20 @@
             <h3>⚽ Formazioni Ottimizzate</h3>
             
             <div class="formation-toggle">
-                <div class="formation-btn active" onclick="cambiaFormazione('433')">4-3-3</div>
-                <div class="formation-btn" onclick="cambiaFormazione('352')">3-5-2</div>
-            </div>
+    <select id="moduloSelect" onchange="cambiaFormazione(this.value)">
+        <option value="343">3-4-3</option>
+        <option value="3412">3-4-1-2</option>
+        <option value="3421">3-4-2-1</option>
+        <option value="352">3-5-2</option>
+        <option value="3511">3-5-1-1</option>
+        <option value="433" selected>4-3-3</option>
+        <option value="4312">4-3-1-2</option>
+        <option value="442">4-4-2</option>
+        <option value="4141">4-1-4-1</option>
+        <option value="4411">4-4-1-1</option>
+        <option value="4231">4-2-3-1</option>
+    </select>
+</div>
 
             <div class="formation-container">
                 <div class="formation-score">
@@ -679,43 +690,133 @@ console.log("DEBUG Attaccanti:", ruoli.Attaccanti.length);
         }
 
         function generaFormazione(modulo) {
-            const field = document.getElementById('field');
-            const schemi = {
-                "433": {
-                    "Portiere": 1,
-                    "Difesa": 4,
-                    "Centrocampo": 3,
-                    "Attacco": 3
-                },
-                "352": {
-                    "Portiere": 1,
-                    "Difesa": 3,
-                    "Centrocampo": 5,
-                    "Attacco": 2
-                }
-            };
-            
-            const schema = schemi[modulo];
-            field.innerHTML = '';
-            
-            Object.entries(schema).forEach(([settore, numero]) => {
-                const sectionDiv = document.createElement('div');
-                sectionDiv.className = 'field-section';
-                
-                for (let i = 0; i < numero; i++) {
-                    const slotDiv = document.createElement('div');
-                    slotDiv.className = 'player-slot';
-                    slotDiv.textContent = `${settore} ${i + 1}`;
-                    slotDiv.onclick = () => rimuoviGiocatore(slotDiv);
-                    sectionDiv.appendChild(slotDiv);
-                }
-                
-                field.appendChild(sectionDiv);
-            });
-            
-            aggiornaPanchinaMaster();
+    const formazioniMantra = {
+        "343": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dc", "Dc", "Dc/B"]},
+                {nome: "Centrocampo", posizioni: ["E", "M/C", "C", "E"]},
+                {nome: "Attacco", posizioni: ["W/A", "A/Pc", "W/A"]}
+            ]
+        },
+        "3412": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dc", "Dc", "Dc/B"]},
+                {nome: "Centrocampo", posizioni: ["E", "M/C", "C", "E"]},
+                {nome: "Trequarti", posizioni: ["T"]},
+                {nome: "Attacco", posizioni: ["A/Pc", "A/Pc"]}
+            ]
+        },
+        "3421": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dc", "Dc", "Dc/B"]},
+                {nome: "Centrocampo", posizioni: ["M", "E"]},
+                {nome: "Centrocampo2", posizioni: ["M/C"]},
+                {nome: "Trequarti", posizioni: ["E/W", "T"]},
+                {nome: "Attacco", posizioni: ["T/A", "A/Pc"]}
+            ]
+        },
+        "352": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dc", "Dc", "Dc/B"]},
+                {nome: "Centrocampo", posizioni: ["M", "M/C", "C", "E", "E/W"]},
+                {nome: "Attacco", posizioni: ["A/Pc", "A/Pc"]}
+            ]
+        },
+        "3511": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dc", "Dc", "Dc/B"]},
+                {nome: "Centrocampo", posizioni: ["M", "M", "C"]},
+                {nome: "Fasce", posizioni: ["E/W", "E/W"]},
+                {nome: "Trequarti", posizioni: ["T/A"]},
+                {nome: "Attacco", posizioni: ["A/Pc"]}
+            ]
+        },
+        "433": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dd", "Dc", "Dc", "Ds"]},
+                {nome: "Centrocampo", posizioni: ["M/C", "M", "C"]},
+                {nome: "Attacco", posizioni: ["W/A", "A/Pc", "W/A"]}
+            ]
+        },
+        "4312": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dd", "Dc", "Dc", "Ds"]},
+                {nome: "Centrocampo", posizioni: ["M/C", "M", "C"]},
+                {nome: "Trequarti", posizioni: ["T"]},
+                {nome: "Attacco", posizioni: ["T/A/Pc", "A/Pc"]}
+            ]
+        },
+        "442": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dd", "Dc", "Dc", "Ds"]},
+                {nome: "Centrocampo", posizioni: ["M/C", "C", "E"]},
+                {nome: "Fasce", posizioni: ["E/W"]},
+                {nome: "Attacco", posizioni: ["A/Pc", "A/Pc"]}
+            ]
+        },
+        "4141": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dd", "Dc", "Dc", "Ds"]},
+                {nome: "Mediano", posizioni: ["M"]},
+                {nome: "Centrocampo", posizioni: ["C/T", "T"]},
+                {nome: "Fasce", posizioni: ["E/W", "W"]},
+                {nome: "Attacco", posizioni: ["A/Pc"]}
+            ]
+        },
+        "4411": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dd", "Dc", "Dc", "Ds"]},
+                {nome: "Centrocampo", posizioni: ["M", "C"]},
+                {nome: "Fasce", posizioni: ["E/W", "E/W"]},
+                {nome: "Trequarti", posizioni: ["T/A"]},
+                {nome: "Attacco", posizioni: ["A/Pc"]}
+            ]
+        },
+        "4231": {
+            settori: [
+                {nome: "Portiere", posizioni: ["P"]},
+                {nome: "Difesa", posizioni: ["Dd", "Dc", "Dc", "Ds"]},
+                {nome: "Mediani", posizioni: ["M", "M/C"]},
+                {nome: "Trequarti", posizioni: ["W/A", "T", "W/A"]},
+                {nome: "Attacco", posizioni: ["A/Pc"]}
+            ]
         }
-
+    };
+    
+    const schema = formazioniMantra[modulo];
+    const field = document.getElementById('field');
+    field.innerHTML = '';
+    
+    schema.settori.forEach((settore, settoreIndex) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'field-section';
+        
+        settore.posizioni.forEach((posizione, posIndex) => {
+            const slotDiv = document.createElement('div');
+            slotDiv.className = 'player-slot';
+            slotDiv.textContent = posizione;
+            slotDiv.dataset.posizione = posizione;
+            slotDiv.dataset.settore = settore.nome;
+            slotDiv.onclick = () => rimuoviGiocatore(slotDiv);
+            sectionDiv.appendChild(slotDiv);
+        });
+        
+        field.appendChild(sectionDiv);
+    });
+    
+    formazioneAttuale = modulo;
+    aggiornaPanchinaMaster();
+}
         function aggiornaPanchinaMaster() {
             const benchSlots = document.getElementById('benchSlots');
             benchSlots.innerHTML = '';
