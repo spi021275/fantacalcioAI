@@ -1,1 +1,919 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2B Sales Strategist AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React e React DOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel per trasformare JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    
+    <!-- Recharts -->
+    <script src="https://unpkg.com/recharts@2.8.0/umd/Recharts.js"></script>
+    
+    <!-- Lucide React Icons -->
+    <script src="https://unpkg.com/lucide-react@0.263.1/dist/umd/lucide-react.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .prose {
+            color: #374151;
+            max-width: none;
+        }
+        
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+            color: #111827;
+            font-weight: 600;
+        }
+        
+        .prose p {
+            margin-bottom: 1rem;
+        }
+        
+        .prose ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        // Importa le librerie dalle versioni globali
+        const { useState, useCallback, useEffect, useRef, memo } = React;
+        const { motion, AnimatePresence } = window.FramerMotion;
+        const { 
+            ChevronRight, ChevronLeft, Upload, Loader2, FileText, CheckCircle, Target, Users, Briefcase, 
+            AlertCircle, Info, Copy, Check, Star, Activity, DollarSign, Download, Search, UserCheck, 
+            FileType, Mail, FileQuestion, MessageSquareQuote, Eye, Code, Trash2, PlusCircle, Link2, 
+            Gavel, ClipboardCheck, Handshake, BarChart2, Lightbulb, Shield, Award, UploadCloud, 
+            RefreshCw, Bot, FileCheck, FileX, FileSignature, Wrench, Euro, BookOpen, Sparkles, 
+            HelpCircle, Milestone, ClipboardList, Send, Paperclip, Calendar, Building, FilePenLine, 
+            UsersRound, BrainCircuit
+        } = window.LucideReact;
+        
+        const { 
+            Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, 
+            ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid 
+        } = window.Recharts;
 
+        // =================================================================================
+        // COSTANTI GLOBALI E CONFIGURAZIONE
+        // =================================================================================
+
+        const API_KEY = "AIzaSyCwtjsNaWLh28_bXrHJOHaMgzFDVjOHXiQ";
+
+        const VAR_GROUP_CONTEXT = `
+# Indice del documento - Panoramica su Var Group
+
+## 1. Identità, Visione e Valori
+    - Missione
+    - Visione e Tagline ('Digital Soul')
+    - Manifesto dei Valori ('Essere Var Group')
+
+## 2. Struttura Societaria e Dati Chiave
+    - Appartenenza al Gruppo SeSa e Ruolo nel Settore SSI
+    - Dati Finanziari Aggiornati (Var Group e Gruppo SeSa)
+    - Dati Operativi (Dipendenti, Clienti, Presenza Geografica)
+    - Principali Operazioni di M&A Recenti
+
+## 3. Strategia Corporate e Posizionamento
+    - Pilastri Strategici (Specializzazione, Integrazione, Internazionalizzazione, Innovazione, ESG)
+    - Obiettivi Chiave Recenti (ultimi 12-18 mesi)
+    - Approccio all'Innovazione e Focus Tecnologici
+    - Iniziative ESG e Sostenibilità
+
+## 4. Struttura Organizzativa e Leadership
+    - 4.1. Leadership Apicale e Figure Chiave
+    - 4.2. Business Unit (Centri di Competenza)
+        - Breve descrizione per ogni BU (es. 7Circle, Yarix, Data Science, etc.) e leader associato.
+    - 4.3. Piattaforme di Supporto (Shared Service Platform)
+
+## 5. Offerta e Partnership Tecnologiche
+    - 5.1. Macro-Aree di Offerta
+    - 5.2. Partnership Tecnologiche Strategiche (Microsoft, SAP, IBM, HPE, AWS, etc.)
+
+# 1. Identità, Visione e Valori
+
+Questa sezione delinea l'essenza strategica e culturale di Var Group. Definisce lo scopo dell'azienda (Missione), la sua aspirazione a lungo termine (Visione) e i principi guida che ne orientano i comportamenti e le decisioni (Valori). Questi elementi costituiscono la "bussola" che guida l'intera organizzazione.
+
+## 1.1 Missione
+
+La missione di Var Group è **creare valore per le aziende clienti**, agendo come partner strategico nel loro percorso di evoluzione. Questo obiettivo si realizza attraverso tre pilastri fondamentali:
+
+*   **Supporto all'Evoluzione Tecnologica e all'Innovazione dei Processi:** Assistere le imprese nell'adottare le tecnologie più avanzate e nel reingegnerizzare i propri processi per rimanere competitive sul mercato.
+*   **Realizzazione della Trasformazione Digitale:** Non solo fornire tecnologia, ma aiutare attivamente le aziende a implementare e completare la propria trasformazione digitale in modo efficace e sostenibile.
+*   **Valorizzazione delle Persone:** Porre **le persone al centro di ogni processo come asset principale**, sia all'interno di Var Group che nelle aziende clienti, riconoscendo che il successo della tecnologia dipende dalla capacità umana di utilizzarla e valorizzarla.
+
+## 1.2 Visione e Tagline ('Digital Soul')
+
+La visione di Var Group è promuovere un futuro in cui il mondo digitale e il business si integrano in modo armonico e sinergico. Questo concetto è sintetizzato nella visione strategica e tagline **"Digital Soul"**, coniata dalla CEO Francesca Moriani.
+
+Il "Digital Soul" rappresenta l'idea che l'anima di un'azienda, la sua essenza, possa diventare realmente digitale. Questo non avviene semplicemente adottando nuove tecnologie, ma attraverso la **condivisione profonda di conoscenze ed esperienze** all'interno e all'esterno dell'organizzazione, abilitata dal digitale.
+`;
+
+        // =================================================================================
+        // HOOKS & UTILITIES FONDAMENTALI
+        // =================================================================================
+
+        function useGeminiGenerator() {
+            const [isGenerating, setIsGenerating] = useState(false);
+            const [error, setError] = useState(null);
+
+            const generateContent = useCallback(async (prompt, isJson = false) => {
+                setIsGenerating(true);
+                setError(null);
+                
+                const retries = 3;
+                let lastError = null;
+
+                for (let i = 0; i < retries; i++) {
+                    try {
+                        const modelName = "gemini-2.5-pro";
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`;
+
+                        const requestBody = {
+                            contents: [{ role: "user", parts: [{ text: prompt }] }],
+                            generationConfig: isJson ? { responseMimeType: "application/json" } : {},
+                        };
+
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(requestBody),
+                        });
+                        
+                        if (!response.ok) {
+                            const errorBody = await response.text();
+                            if (response.status === 429 || response.status >= 500) {
+                                lastError = new Error(`API Error (${response.status}): ${errorBody || response.statusText}. Tentativo ${i + 1} di ${retries}.`);
+                                console.warn(lastError.message);
+                                if (i < retries - 1) {
+                                    await new Promise(res => setTimeout(res, 1000 * Math.pow(2, i)));
+                                    continue;
+                                }
+                            }
+                            throw new Error(`API Error (${response.status}): ${errorBody || response.statusText}`);
+                        }
+
+                        const result = await response.json();
+                        
+                        if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
+                            let rawText = result.candidates[0].content.parts[0].text;
+                            rawText = rawText.replace(/^\s*```(json|html|markdown)?\n?/, '').replace(/\n?```\s*$/, '');
+                            setIsGenerating(false);
+                            return rawText;
+                        } else if (result.promptFeedback?.blockReason) {
+                             throw new Error(`Request blocked for: ${result.promptFeedback.blockReason}.`);
+                        } else {
+                            throw new Error("The AI response did not have the expected format.");
+                        }
+                    } catch (err) {
+                        lastError = err;
+                    }
+                }
+                
+                console.error("Error during generation with Gemini:", lastError);
+                setError(lastError ? lastError.message : "Si è verificato un errore sconosciuto.");
+                setIsGenerating(false);
+                throw lastError || new Error("Errore sconosciuto dopo tutti i tentativi.");
+            }, []);
+
+            return { isGenerating, error, generateContent };
+        }
+
+        const useFileParser = () => {
+            useEffect(() => {
+                const scripts = [
+                    { id: 'mammoth-script', src: 'https://unpkg.com/mammoth@1.7.0/mammoth.browser.min.js' },
+                    { id: 'pdfjs-script', src: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js' }
+                ];
+                scripts.forEach(scriptInfo => {
+                    if (!document.getElementById(scriptInfo.id)) {
+                        const script = document.createElement('script');
+                        script.id = scriptInfo.id;
+                        script.src = scriptInfo.src;
+                        script.async = true;
+                        if (scriptInfo.id === 'pdfjs-script') {
+                            script.onload = () => {
+                                if(window.pdfjsLib) {
+                                   window.pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js`;
+                                }
+                            };
+                        }
+                        document.body.appendChild(script);
+                    }
+                });
+            }, []);
+
+            const parseFile = useCallback(async (file) => {
+                if (!file) return null;
+                try {
+                    if (file.type.includes('text') || file.name.endsWith('.md')) {
+                        return file.text();
+                    } else if (file.type.includes('wordprocessingml') || file.name.endsWith('.docx')) {
+                        if (!window.mammoth) throw new Error('Libreria DOCX non pronta. Riprova tra qualche istante.');
+                        const result = await window.mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
+                        return result.value;
+                    } else if (file.type === 'application/pdf') {
+                        if (!window.pdfjsLib) throw new Error('Libreria PDF non pronta. Riprova tra qualche istante.');
+                        const arrayBuffer = await file.arrayBuffer();
+                        const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                        let pdfText = '';
+                        for (let i = 0; i < pdf.numPages; i++) {
+                            const page = await pdf.getPage(i + 1);
+                            const textContent = await page.getTextContent();
+                            pdfText += textContent.items.map(item => item.str).join(' ') + '\n\n';
+                        }
+                        return pdfText;
+                    } else {
+                        throw new Error(`Formato non supportato: ${file.name}`);
+                    }
+                } catch (error) {
+                    console.error("Errore nel parsing del file:", error);
+                    alert(`Errore nel caricamento del file ${file.name}: ${error.message}`);
+                    return null;
+                }
+            }, []);
+            
+            return { parseFile };
+        };
+
+        function usePersistentState(key, defaultValue) {
+            const [state, setState] = useState(() => {
+                try {
+                    const persistentState = localStorage.getItem(key);
+                    return persistentState ? JSON.parse(persistentState) : defaultValue;
+                } catch (error) {
+                    console.warn(`Errore nel leggere lo stato persistente per la chiave "${key}":`, error);
+                    return defaultValue;
+                }
+            });
+
+            useEffect(() => {
+                try {
+                    localStorage.setItem(key, JSON.stringify(state));
+                } catch (error) {
+                    console.warn(`Errore nel salvare lo stato persistente per la chiave "${key}":`, error);
+                }
+            }, [key, state]);
+
+            return [state, setState];
+        }
+
+        const sanitizeHtml = (htmlString) => {
+            if (typeof window === 'undefined' || !htmlString) return '';
+            const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+            const scripts = doc.querySelectorAll('script, [onerror], [onload]');
+            scripts.forEach(el => el.remove());
+            
+            const allElements = doc.body.querySelectorAll('*');
+            allElements.forEach(el => {
+                for (const attr of el.attributes) {
+                    if (attr.name.startsWith('on')) {
+                        el.removeAttribute(attr.name);
+                    }
+                }
+            });
+
+            return doc.body.innerHTML;
+        };
+
+        const htmlToMarkdown = (htmlContent) => {
+            if (!htmlContent) return '';
+            let markdown = htmlContent
+                .replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1\n\n').replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1\n\n').replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1\n\n')
+                .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n').replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**').replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*')
+                .replace(/<ul[^>]*>(.*?)<\/ul>/gi, '$1').replace(/<ol[^>]*>(.*?)<\/ol>/gi, '$1').replace(/<li[^>]*>(.*?)<\/li>/gi, '* $1\n')
+                .replace(/<br\s*\/?>/gi, '\n').replace(/<\/?[^>]+(>|$)/g, "").replace(/(\n\s*){3,}/g, '\n\n').trim();
+            return markdown;
+        };
+
+        const simpleMarkdownToHtml = (markdown) => {
+            if (!markdown) return '';
+            const html = markdown
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/^\s*[\-\*] (.*)/gim, '<li>$1</li>')
+                .replace(/<li>(.*?)<\/li>\s*(?=<li>)/g, '<li>$1</li>')
+                .replace(/(<li>.*?<\/li>)/g, '<ul>$1</ul>')
+                .replace(/<\/ul>\s*<ul>/g, '')
+                .replace(/---/g, '<hr/>')
+                .replace(/\n/g, '<br />');
+            return sanitizeHtml(html);
+        };
+
+        // =================================================================================
+        // COMPONENTI UI RIUTILIZZABILI E GENERALI
+        // =================================================================================
+
+        const GeneratingPlaceholder = memo(({ text = "L'AI sta lavorando per te..." }) => (
+            <div className="w-full min-h-[15rem] flex flex-col items-center justify-center bg-gray-500/10 rounded-lg p-8 text-center border border-gray-200">
+                <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-4" />
+                <p className="text-lg font-medium text-gray-700">{text}</p>
+                <p className="text-sm text-gray-500 mt-1">Questa operazione potrebbe richiedere qualche istante.</p>
+            </div>
+        ));
+
+        const CopyButton = memo(({ text, label = "Copia" }) => {
+            const [copied, setCopied] = useState(false);
+
+            const handleCopy = useCallback(() => {
+                if (!text) return;
+
+                let plainText = text;
+
+                if (/<[a-z][\s\S]*>/i.test(text)) {
+                    try {
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = text;
+                        tempDiv.querySelectorAll('br').forEach(br => br.parentNode.replaceChild(document.createTextNode('\n'), br));
+                        tempDiv.querySelectorAll('p, h1, h2, h3, h4, li').forEach(el => el.appendChild(document.createTextNode('\n')));
+                        plainText = tempDiv.textContent || tempDiv.innerText || "";
+                    } catch (e) {
+                        console.error("Errore durante la conversione da HTML a testo:", e);
+                        plainText = text;
+                    }
+                }
+
+                const textArea = document.createElement("textarea");
+                textArea.value = plainText.trim();
+                
+                textArea.style.position = "fixed";
+                textArea.style.top = "-9999px";
+                textArea.style.left = "-9999px";
+                textArea.style.width = "2em";
+                textArea.style.height = "2em";
+                textArea.style.padding = "0";
+                textArea.style.border = "none";
+                textArea.style.outline = "none";
+                textArea.style.boxShadow = "none";
+                textArea.style.background = "transparent";
+
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                    } else {
+                        console.error('Fallback di copia fallito: document.execCommand ha restituito false.');
+                        alert('Impossibile copiare il testo. Potrebbe essere necessario farlo manualmente.');
+                    }
+                } catch (err) {
+                    console.error('Errore durante il fallback di copia:', err);
+                    alert('Impossibile copiare il testo. Potrebbe essere necessario farlo manualmente.');
+                }
+
+                document.body.removeChild(textArea);
+
+            }, [text]);
+
+            return (
+                <button onClick={handleCopy} className="inline-flex items-center px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50">
+                    {copied ? <Check className="w-4 h-4 mr-1.5 text-green-600" /> : <Copy className="w-4 h-4 mr-1.5" />}
+                    {copied ? 'Copiato!' : label}
+                </button>
+            );
+        });
+
+        const DownloadButton = memo(({ content, filename, filetype = 'text/markdown' }) => {
+            const handleDownload = useCallback(() => {
+                if(!content) return;
+                const blob = new Blob([content], { type: filetype });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, [content, filename, filetype]);
+
+            return (
+                <button onClick={handleDownload} className="inline-flex items-center px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-300 transition-colors">
+                    <Download className="w-4 h-4 mr-1.5" />
+                    Scarica
+                </button>
+            );
+        });
+
+        // =================================================================================
+        // COMPONENTE PRINCIPALE (App)
+        // =================================================================================
+
+        const IntroSection = memo(({ onStartWizard, onStartPQP, onStartValueChain, onStartBusinessCase, onStartPostMeeting, onStartRfqAnalyzer, onStartNegotiation }) => {
+            const cardColors = {
+                indigo: { bg: 'bg-indigo-600', hoverBg: 'hover:bg-indigo-700', border: 'hover:border-indigo-300', text: 'text-indigo-600' },
+                sky: { bg: 'bg-sky-600', hoverBg: 'hover:bg-sky-700', border: 'hover:border-sky-300', text: 'text-sky-600' },
+                teal: { bg: 'bg-teal-600', hoverBg: 'hover:bg-teal-700', border: 'hover:border-teal-300', text: 'text-teal-600' },
+                fuchsia: { bg: 'bg-fuchsia-600', hoverBg: 'hover:bg-fuchsia-700', border: 'hover:border-fuchsia-300', text: 'text-fuchsia-600' },
+                amber: { bg: 'bg-amber-600', hoverBg: 'hover:bg-amber-700', border: 'hover:border-amber-300', text: 'text-amber-600' },
+                rose: { bg: 'bg-rose-600', hoverBg: 'hover:bg-rose-700', border: 'hover:border-rose-300', text: 'text-rose-600' },
+                emerald: { bg: 'bg-emerald-600', hoverBg: 'hover:bg-emerald-700', border: 'hover:border-emerald-300', text: 'text-emerald-600' }
+            };
+
+            const modules = [
+                { icon: UserCheck, title: "Prepara un Incontro", text: "Usa il wizard per trasformare informazioni in una strategia d'incontro vincente (C-SWOT, One-Pager, etc.).", action: onStartWizard, buttonText: "Inizia", color: "indigo" },
+                { icon: MessageSquareQuote, title: "Sintesi Post-Incontro", text: "Carica appunti o trascrizioni per generare un Memo Meeting per il cliente o un Report interno per il CRM.", action: onStartPostMeeting, buttonText: "Inizia", color: "sky" },
+                { icon: FileQuestion, title: "Analizza Gara (RFQ)", text: "Carica la documentazione di gara per estrarre checklist, scheletri di risposta e analisi strategiche.", action: onStartRfqAnalyzer, buttonText: "Inizia", color: "rose" },
+                { icon: Activity, title: "Qualifica (PQP)", text: "Usa il Profilo di Qualificazione Progetto per analizzare la solidità della trattativa e decidere i prossimi passi.", action: onStartPQP, buttonText: "Inizia", color: "teal" },
+                { icon: Link2, title: "Analizza Catena del Valore", text: "Mappa il valore della tua offerta in relazione alle esigenze del cliente per creare argomenti di vendita potenti.", action: onStartValueChain, buttonText: "Inizia", color: "fuchsia" },
+                { icon: DollarSign, title: "Crea un Business Case", text: "Traduci la tua offerta in un business case quantificato e persuasivo per il C-level.", action: onStartBusinessCase, buttonText: "Inizia", color: "emerald" },
+                { icon: Gavel, title: "Prepara una Negoziazione", text: "Costruisci la tua architettura di potere definendo ZOPA, MAAN, variabili di scambio e strategia per la trattativa.", action: onStartNegotiation, buttonText: "Inizia", color: "amber" }
+            ];
+
+            return (
+                <div className="max-w-7xl mx-auto px-4 py-12">
+                    <div className="bg-white rounded-xl shadow-lg p-8">
+                        <div className="flex items-start mb-6">
+                            <Info className="w-10 h-10 text-indigo-600 mt-1 mr-6 flex-shrink-0" />
+                            <div>
+                                <h2 className="text-3xl font-bold text-gray-900 mb-4">Benvenuto in B2B Sales Strategist AI</h2>
+                                <p className="text-lg text-gray-700 mb-8">Il tuo partner strategico basato sulla metodologia Var Group Way of Selling</p>
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {modules.map((card, i) => {
+                                        const colors = cardColors[card.color];
+                                        return (
+                                            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+                                                className={`border border-gray-200 rounded-lg p-6 flex flex-col hover:shadow-md ${colors.border} transition-all`}>
+                                                <card.icon className={`w-10 h-10 ${colors.text} mb-3`} />
+                                                <h3 className="text-xl font-semibold text-gray-800 mb-2">{card.title}</h3>
+                                                <p className="text-gray-600 mb-4 flex-grow">{card.text}</p>
+                                                <button onClick={card.action} className={`mt-auto w-full inline-flex items-center justify-center px-6 py-2.5 ${colors.bg} text-white font-medium rounded-lg ${colors.hoverBg}`}>{card.buttonText} <ChevronRight className="w-5 h-5 ml-2" /></button>
+                                            </motion.div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        // Modulo semplificato per dimostrare il funzionamento
+        const SimpleWizardModule = memo(({ onBack }) => {
+            const { isGenerating, generateContent } = useGeminiGenerator();
+            const [input, setInput] = useState('');
+            const [output, setOutput] = useState('');
+
+            const handleGenerate = async () => {
+                if (!input.trim()) return;
+                
+                const prompt = `Agisci come un consulente strategico di Var Group. Analizza la seguente richiesta e fornisci consigli strategici per migliorare l'approccio di vendita B2B:
+
+${input}
+
+Fornisci una risposta strutturata con:
+1. Analisi della situazione
+2. Raccomandazioni strategiche
+3. Prossimi passi concreti`;
+
+                try {
+                    const result = await generateContent(prompt);
+                    setOutput(result);
+                } catch (error) {
+                    alert('Errore nella generazione: ' + error.message);
+                }
+            };
+
+            return (
+                <div className="max-w-4xl mx-auto px-4 py-8">
+                    <button onClick={onBack} className="inline-flex items-center mb-6 px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300">
+                        <ChevronLeft className="w-5 h-5 mr-1" />Torna alla Homepage
+                    </button>
+                    
+                    <div className="bg-white rounded-xl shadow-lg p-8">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-6">Consulente Strategico AI</h2>
+                        
+                        <div className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Descrivi la tua situazione commerciale o strategica
+                                </label>
+                                <textarea
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    rows="6"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    placeholder="Es: Sto preparando un incontro con un cliente nel settore manifatturiero che ha problemi di supply chain..."
+                                />
+                            </div>
+                            
+                            <button 
+                                onClick={handleGenerate}
+                                disabled={!input.trim() || isGenerating}
+                                className="w-full inline-flex items-center justify-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                            >
+                                {isGenerating ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                        Analisi in corso...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Target className="w-5 h-5 mr-2" />
+                                        Genera Strategia
+                                    </>
+                                )}
+                            </button>
+                            
+                            {output && (
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center">
+                                        <h3 className="text-lg font-semibold text-gray-800">Analisi Strategica</h3>
+                                        <CopyButton text={output} />
+                                    </div>
+                                    <div className="bg-gray-50 p-4 rounded-lg border">
+                                        <div className="whitespace-pre-wrap text-sm">{output}</div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        // Modulo PQP semplificato
+        const SimplePQPModule = memo(({ onBack }) => {
+            const { isGenerating, generateContent } = useGeminiGenerator();
+            const [formData, setFormData] = useState({
+                companyName: '',
+                serviceName: '',
+                meetingNotes: ''
+            });
+            const [pqpResult, setPqpResult] = useState(null);
+
+            const handleGenerate = async () => {
+                if (!formData.companyName || !formData.meetingNotes) {
+                    alert('Compila almeno il nome azienda e le note del meeting');
+                    return;
+                }
+
+                const prompt = `Agisci come un Sales Director di Var Group. Analizza questa opportunità commerciale e fornisci una valutazione PQP (Profilo di Qualificazione Progetto).
+
+DATI:
+- Azienda: ${formData.companyName}
+- Servizio: ${formData.serviceName}
+- Note meeting: ${formData.meetingNotes}
+
+Fornisci una valutazione con:
+1. PUNTEGGIO COMPLESSIVO (1-5)
+2. RACCOMANDAZIONE (GO/NO-GO/GO CON CAUTELA)
+3. PUNTI DI FORZA dell'opportunità
+4. PUNTI DI DEBOLEZZA da mitigare
+5. PROSSIMI PASSI CONCRETI
+
+Sii specifico e orientato all'azione.`;
+
+                try {
+                    const result = await generateContent(prompt);
+                    setPqpResult(result);
+                } catch (error) {
+                    alert('Errore nella generazione: ' + error.message);
+                }
+            };
+
+            return (
+                <div className="max-w-4xl mx-auto px-4 py-8">
+                    <button onClick={onBack} className="inline-flex items-center mb-6 px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300">
+                        <ChevronLeft className="w-5 h-5 mr-1" />Torna alla Homepage
+                    </button>
+                    
+                    <div className="bg-white rounded-xl shadow-lg p-8">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-6">Analisi PQP - Qualificazione Progetto</h2>
+                        
+                        <div className="space-y-6">
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Nome Azienda Cliente</label>
+                                    <input
+                                        type="text"
+                                        value={formData.companyName}
+                                        onChange={(e) => setFormData(prev => ({...prev, companyName: e.target.value}))}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                                        placeholder="Es. Acme Corporation"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Servizio/Soluzione</label>
+                                    <input
+                                        type="text"
+                                        value={formData.serviceName}
+                                        onChange={(e) => setFormData(prev => ({...prev, serviceName: e.target.value}))}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                                        placeholder="Es. Digital Transformation"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Note dal Meeting</label>
+                                <textarea
+                                    value={formData.meetingNotes}
+                                    onChange={(e) => setFormData(prev => ({...prev, meetingNotes: e.target.value}))}
+                                    rows="6"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                                    placeholder="Inserisci le note del meeting, feedback del cliente, budget discusso, timeline, decisori coinvolti..."
+                                />
+                            </div>
+                            
+                            <button 
+                                onClick={handleGenerate}
+                                disabled={isGenerating}
+                                className="w-full inline-flex items-center justify-center px-6 py-3 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 disabled:opacity-50"
+                            >
+                                {isGenerating ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                        Analisi in corso...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Activity className="w-5 h-5 mr-2" />
+                                        Analizza Opportunità
+                                    </>
+                                )}
+                            </button>
+                            
+                            {pqpResult && (
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center">
+                                        <h3 className="text-lg font-semibold text-gray-800">Risultati PQP</h3>
+                                        <CopyButton text={pqpResult} />
+                                    </div>
+                                    <div className="bg-gray-50 p-4 rounded-lg border">
+                                        <div className="whitespace-pre-wrap text-sm">{pqpResult}</div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        // Modulo Business Case semplificato
+        const SimpleBusinessCaseModule = memo(({ onBack }) => {
+            const { isGenerating, generateContent } = useGeminiGenerator();
+            const [formData, setFormData] = useState({
+                companyName: '',
+                problemDescription: '',
+                solutionDescription: '',
+                audience: 'C-Level'
+            });
+            const [businessCase, setBusinessCase] = useState('');
+
+            const handleGenerate = async () => {
+                if (!formData.companyName || !formData.problemDescription) {
+                    alert('Compila almeno il nome azienda e la descrizione del problema');
+                    return;
+                }
+
+                const prompt = `Agisci come un consulente strategico di Var Group. Crea un Business Case persuasivo per il ${formData.audience}.
+
+CONTESTO:
+- Azienda: ${formData.companyName}
+- Problema: ${formData.problemDescription}
+- Soluzione proposta: ${formData.solutionDescription}
+- Audience: ${formData.audience}
+
+Crea un Business Case strutturato con:
+1. SINTESI ESECUTIVA (2-3 righe impact-oriented)
+2. SITUAZIONE ATTUALE (il problema e il suo costo)
+3. SOLUZIONE PROPOSTA (come risolviamo)
+4. BENEFICI ATTESI (quantificati dove possibile)
+5. INVESTIMENTO RICHIESTO (struttura generale)
+6. RACCOMANDAZIONE FINALE
+
+Usa un linguaggio diretto e orientato ai risultati. Includi numeri e benefici tangibili.`;
+
+                try {
+                    const result = await generateContent(prompt);
+                    setBusinessCase(result);
+                } catch (error) {
+                    alert('Errore nella generazione: ' + error.message);
+                }
+            };
+
+            return (
+                <div className="max-w-4xl mx-auto px-4 py-8">
+                    <button onClick={onBack} className="inline-flex items-center mb-6 px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300">
+                        <ChevronLeft className="w-5 h-5 mr-1" />Torna alla Homepage
+                    </button>
+                    
+                    <div className="bg-white rounded-xl shadow-lg p-8">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-6">Generatore Business Case</h2>
+                        
+                        <div className="space-y-6">
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Nome Azienda</label>
+                                    <input
+                                        type="text"
+                                        value={formData.companyName}
+                                        onChange={(e) => setFormData(prev => ({...prev, companyName: e.target.value}))}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                                        placeholder="Es. Acme Corporation"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Audience Target</label>
+                                    <select
+                                        value={formData.audience}
+                                        onChange={(e) => setFormData(prev => ({...prev, audience: e.target.value}))}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                                    >
+                                        <option>C-Level</option>
+                                        <option>IT Manager</option>
+                                        <option>CFO</option>
+                                        <option>Operations</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Descrizione del Problema</label>
+                                <textarea
+                                    value={formData.problemDescription}
+                                    onChange={(e) => setFormData(prev => ({...prev, problemDescription: e.target.value}))}
+                                    rows="4"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                                    placeholder="Descrivi il problema/dolore del cliente che vogliamo risolvere..."
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Soluzione Proposta</label>
+                                <textarea
+                                    value={formData.solutionDescription}
+                                    onChange={(e) => setFormData(prev => ({...prev, solutionDescription: e.target.value}))}
+                                    rows="4"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                                    placeholder="Descrivi la soluzione che proponi..."
+                                />
+                            </div>
+                            
+                            <button 
+                                onClick={handleGenerate}
+                                disabled={isGenerating}
+                                className="w-full inline-flex items-center justify-center px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50"
+                            >
+                                {isGenerating ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                        Generazione in corso...
+                                    </>
+                                ) : (
+                                    <>
+                                        <DollarSign className="w-5 h-5 mr-2" />
+                                        Genera Business Case
+                                    </>
+                                )}
+                            </button>
+                            
+                            {businessCase && (
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center">
+                                        <h3 className="text-lg font-semibold text-gray-800">Business Case Generato</h3>
+                                        <CopyButton text={businessCase} />
+                                    </div>
+                                    <div className="bg-gray-50 p-4 rounded-lg border">
+                                        <div className="whitespace-pre-wrap text-sm">{businessCase}</div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        // App principale
+        const App = () => {
+            const [currentView, setCurrentView] = usePersistentState('b2b-sales-ai-currentView', 'intro');
+
+            const goToHome = () => setCurrentView('intro');
+
+            const renderCurrentView = () => {
+                switch (currentView) {
+                    case 'intro': 
+                        return <IntroSection 
+                            onStartWizard={() => setCurrentView('wizard')} 
+                            onStartPostMeeting={() => alert('Modulo Post-Meeting - In sviluppo')}
+                            onStartRfqAnalyzer={() => alert('Modulo RFQ Analyzer - In sviluppo')}
+                            onStartPQP={() => setCurrentView('pqp')} 
+                            onStartValueChain={() => alert('Modulo Value Chain - In sviluppo')}
+                            onStartBusinessCase={() => setCurrentView('businessCase')}
+                            onStartNegotiation={() => alert('Modulo Negoziazione - In sviluppo')}
+                        />;
+                    
+                    case 'wizard': 
+                        return <SimpleWizardModule onBack={goToHome} />;
+                    
+                    case 'pqp': 
+                        return <SimplePQPModule onBack={goToHome} />;
+                    
+                    case 'businessCase': 
+                        return <SimpleBusinessCaseModule onBack={goToHome} />;
+
+                    default: 
+                        return <IntroSection onStartWizard={() => setCurrentView('wizard')} />;
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-50 font-sans">
+                    <div className="bg-white shadow-sm border-b">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                            <div>
+                                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">B2B Sales Strategist AI</h1>
+                                <p className="text-gray-600 mt-1 text-sm sm:text-base">Il tuo partner strategico basato sulla metodologia Var Group Way of Selling</p>
+                            </div>
+                            {currentView !== 'intro' && (
+                                <button onClick={goToHome} className="text-sm font-medium text-indigo-600 hover:text-indigo-800">
+                                    Torna alla Homepage
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                    
+                    <AnimatePresence mode="wait">
+                        <motion.div 
+                            key={currentView} 
+                            initial={{ opacity: 0, y: 20 }} 
+                            animate={{ opacity: 1, y: 0 }} 
+                            exit={{ opacity: 0, y: -20 }} 
+                            transition={{ duration: 0.3 }}
+                        >
+                            {renderCurrentView()}
+                        </motion.div>
+                    </AnimatePresence>
+                    
+                    <div className="mt-16 pb-8 text-center text-sm text-gray-500">
+                        <p>
+                            Questo strumento è una creazione originale di{' '}
+                            <a
+                                href="https://www.linkedin.com/in/alessandrodigrazia/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-semibold text-indigo-600 hover:text-indigo-700"
+                            >
+                                Alessandro Di Grazia
+                            </a>.
+                        </p>
+                        <p className="mt-3 text-sm text-gray-400 max-w-3xl mx-auto px-4">
+                            La logica sottostante fonde il framework metodologico Var Group Way of Selling sviluppato con{' '}
+                            <a
+                                href="https://www.blackship.it/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-medium text-indigo-500 hover:text-indigo-700"
+                            >
+                                BlackShip
+                            </a>{' '}
+                            con innovative tecniche di vendita strategica supportata dall'AI.
+                        </p>
+                    </div>
+                </div>
+            );
+        };
+
+        // Renderizza l'app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
