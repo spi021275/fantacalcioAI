@@ -820,99 +820,99 @@ Supporto tecnico di altissima qualità con **tecnici certificati da oltre 35 ann
         // Hardware Database
         const HARDWARE_DB = {
 yealink: {
-    A40: { name: "Yealink A40", type: "Small/Huddle", modes: ["BYOD", "MTR", "ZOOM"], capacity: "1-6 persone", maxPickup: "3m" },
-    A50: { name: "Yealink A50", type: "Medium", modes: ["BYOD", "MTR", "ZOOM"], capacity: "6-12 persone", maxPickup: "5m" },
-    MeetingBoard: { name: "Yealink MeetingBoard", type: "Small/Huddle", modes: ["BYOD", "MTR", "ZOOM"], capacity: "1-6 persone", maxPickup: "3m" },
-    VMC36W: { name: "Yealink VMC36-W Package", type: "Additional Microphone", modes: ["Wireless"], capacity: "Expansion", maxPickup: "2m" },
-    PA20: { name: "Yealink PA20", type: "Wireless Sharing", modes: ["BYOD"], capacity: "Content Sharing", maxPickup: "N/A" }
+    A40: { name: "Yealink A40", type: "Small/Huddle", modes: ["BYOD", "MTR", "ZOOM"], capacity: "1-6 persone", maxPickup: "3m", cost: "€TBD" },
+    A50: { name: "Yealink A50", type: "Medium", modes: ["BYOD", "MTR", "ZOOM"], capacity: "6-12 persone", maxPickup: "5m", cost: "€TBD" },
+    MeetingBoard: { name: "Yealink MeetingBoard", type: "Small/Huddle", modes: ["BYOD", "MTR", "ZOOM"], capacity: "1-6 persone", maxPickup: "3m", cost: "€TBD" },
+    VMC36W: { name: "Yealink VMC36-W Package", type: "Additional Microphone", modes: ["Wireless"], capacity: "Expansion", maxPickup: "2m", cost: "€TBD" },
+    PA20: { name: "Yealink PA20", type: "Wireless Sharing", modes: ["BYOD"], capacity: "Content Sharing", maxPickup: "N/A", cost: "€TBD" }
 },
 logitech: {
-    Meetup2: { name: "Logitech Meetup 2", type: "Huddle/Small", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "1-6 persone", maxPickup: "2.4m" },
-    RallyBarHuddle: { name: "Logitech Rally Bar Huddle", type: "Huddle/Small", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "1-6 persone", maxPickup: "3m" },
-    RallyBar: { name: "Logitech Rally Bar", type: "Medium/Large", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "6-16 persone", maxPickup: "5.5m" },
-    RallyPlus: { name: "Logitech Rally Plus", type: "Large", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "12+ persone", maxPickup: "7m" },
-    MicExpansion: { name: "Logitech Microfono Espansione", type: "Additional Microphone", modes: ["Wired"], capacity: "Expansion", maxPickup: "2.2m" }
+    Meetup2: { name: "Logitech Meetup 2", type: "Huddle/Small", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "1-6 persone", maxPickup: "2.4m", cost: "€614.25" },
+    RallyBarHuddle: { name: "Logitech Rally Bar Huddle", type: "Huddle/Small", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "1-6 persone", maxPickup: "3m", cost: "€1229.25" },
+    RallyBar: { name: "Logitech Rally Bar", type: "Medium/Large", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "6-16 persone", maxPickup: "5.5m", cost: "€2458.50" },
+    RallyPlus: { name: "Logitech Rally Plus", type: "Large", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "12+ persone", maxPickup: "7m", cost: "€1844.25" },
+    MicExpansion: { name: "Logitech Microfono Espansione", type: "Additional Microphone", modes: ["Wired"], capacity: "Expansion", maxPickup: "2.2m", cost: "€246.00" }
 },
 poly: {
-    X32: { name: "Poly X32", type: "Small", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "3-6 persone", maxPickup: "3.5m" },
-    X52: { name: "Poly X52", type: "Medium/Large", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "6-12 persone", maxPickup: "5m" },
-    X72: { name: "Poly X72", type: "Medium/Large", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "6-16 persone", maxPickup: "6m" },
-    SYNC: { name: "Poly SYNC", type: "Additional Microphone", modes: ["Wireless"], capacity: "Expansion", maxPickup: "2m" }
+    X32: { name: "Poly X32", type: "Small", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "3-6 persone", maxPickup: "3.5m", cost: "€1509.36" },
+    X52: { name: "Poly X52", type: "Medium/Large", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "6-12 persone", maxPickup: "5m", cost: "€2722.50" },
+    X72: { name: "Poly X72", type: "Medium/Large", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "6-16 persone", maxPickup: "6m", cost: "€4035.90" },
+    SYNC: { name: "Poly SYNC", type: "Additional Microphone", modes: ["Wireless"], capacity: "Expansion", maxPickup: "2m", cost: "€276.98" }
 },
 cisco: {
-    RoomBar: { name: "Cisco Room Bar", type: "Small/Huddle", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "1-5 persone", maxPickup: "3m" },
-    RoomBarPro: { name: "Cisco Room Bar Pro", type: "Medium/Large", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "6-16 persone", maxPickup: "5m" },
-    TableMicrophonePro: { name: "Cisco Table Microphone Pro", type: "Additional Microphone", modes: ["Wired"], capacity: "Expansion", maxPickup: "3.5m" },
-    CeilingMicrophonePro: { name: "Cisco Ceiling Microphone Pro", type: "Additional Microphone", modes: ["PoE"], capacity: "Expansion", maxPickup: "4m" }
+    RoomBar: { name: "Cisco Room Bar", type: "Small/Huddle", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "1-5 persone", maxPickup: "3m", cost: "€TBD" },
+    RoomBarPro: { name: "Cisco Room Bar Pro", type: "Medium/Large", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "6-16 persone", maxPickup: "5m", cost: "€TBD" },
+    TableMicrophonePro: { name: "Cisco Table Microphone Pro", type: "Additional Microphone", modes: ["Wired"], capacity: "Expansion", maxPickup: "3.5m", cost: "€TBD" },
+    CeilingMicrophonePro: { name: "Cisco Ceiling Microphone Pro", type: "Additional Microphone", modes: ["PoE"], capacity: "Expansion", maxPickup: "4m", cost: "€TBD" }
 },
 neat: {
-    NeatBar: { name: "Neat Bar", type: "Small/Medium", modes: ["MTR", "ZOOM", "GOOGLE MEET"], capacity: "4-8 persone", maxPickup: "4m" },
-    NeatBar2: { name: "Neat Bar 2", type: "Small/Medium", modes: ["MTR", "ZOOM", "GOOGLE MEET"], capacity: "4-10 persone", maxPickup: "4.5m" },
-    NeatBarPro: { name: "Neat Bar Pro", type: "Medium/Large", modes: ["MTR", "ZOOM", "GOOGLE MEET"], capacity: "8-16 persone", maxPickup: "5.5m" },
-    NeatPad: { name: "Neat Pad", type: "Touch Controller", modes: ["Room Controller"], capacity: "Controller", maxPickup: "N/A" },
-    NeatFrame: { name: "Neat Frame", type: "Personal Device", modes: ["Personal Video"], capacity: "1 persona", maxPickup: "1m" },
-    NeatBoard: { name: "Neat Board", type: "Interactive Whiteboard", modes: ["MTR", "ZOOM", "Whiteboard"], capacity: "6-12 persone", maxPickup: "3.5m" }
+    NeatBar: { name: "Neat Bar", type: "Small/Medium", modes: ["MTR", "ZOOM", "GOOGLE MEET"], capacity: "4-8 persone", maxPickup: "4m", cost: "€TBD" },
+    NeatBar2: { name: "Neat Bar 2", type: "Small/Medium", modes: ["MTR", "ZOOM", "GOOGLE MEET"], capacity: "4-10 persone", maxPickup: "4.5m", cost: "€TBD" },
+    NeatBarPro: { name: "Neat Bar Pro", type: "Medium/Large", modes: ["MTR", "ZOOM", "GOOGLE MEET"], capacity: "8-16 persone", maxPickup: "5.5m", cost: "€TBD" },
+    NeatPad: { name: "Neat Pad", type: "Touch Controller", modes: ["Room Controller"], capacity: "Controller", maxPickup: "N/A", cost: "€TBD" },
+    NeatFrame: { name: "Neat Frame", type: "Personal Device", modes: ["Personal Video"], capacity: "1 persona", maxPickup: "1m", cost: "€TBD" },
+    NeatBoard: { name: "Neat Board", type: "Interactive Whiteboard", modes: ["MTR", "ZOOM", "Whiteboard"], capacity: "6-12 persone", maxPickup: "3.5m", cost: "€TBD" }
 },
 jabra: {
-    PanaCast50: { name: "Jabra PanaCast 50", type: "Video Bar", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "6-12 persone", maxPickup: "4.5m" },
-    PanaCast20: { name: "Jabra PanaCast 20", type: "Personal Camera", modes: ["USB", "Personal Video"], capacity: "1 persona", maxPickup: "1.2m" }
+    PanaCast50: { name: "Jabra PanaCast 50", type: "Video Bar", modes: ["BYOD", "MTR", "ZOOM", "GOOGLE MEET"], capacity: "6-12 persone", maxPickup: "4.5m", cost: "€TBD" },
+    PanaCast20: { name: "Jabra PanaCast 20", type: "Personal Camera", modes: ["USB", "Personal Video"], capacity: "1 persona", maxPickup: "1.2m", cost: "€TBD" }
 },
 microsoft: {
-    SurfaceHub3_85: { name: "Microsoft Surface Hub 3 85\"", type: "Interactive Whiteboard", modes: ["MTR", "Teams Native", "Whiteboard"], capacity: "8-20 persone", maxPickup: "6m" },
-    SurfaceHub3_50: { name: "Microsoft Surface Hub 3 50\"", type: "Interactive Whiteboard", modes: ["MTR", "Teams Native", "Whiteboard"], capacity: "4-12 persone", maxPickup: "4m" }
+    SurfaceHub3_85: { name: "Microsoft Surface Hub 3 85\"", type: "Interactive Whiteboard", modes: ["MTR", "Teams Native", "Whiteboard"], capacity: "8-20 persone", maxPickup: "6m", cost: "€TBD" },
+    SurfaceHub3_50: { name: "Microsoft Surface Hub 3 50\"", type: "Interactive Whiteboard", modes: ["MTR", "Teams Native", "Whiteboard"], capacity: "4-12 persone", maxPickup: "4m", cost: "€TBD" }
 },
 owlLabs: {
-    MeetingOwlPro: { name: "Meeting Owl Pro", type: "360° Smart Camera", modes: ["BYOD", "USB"], capacity: "6-12 persone", maxPickup: "5.5m" },
-    MeetingOwl3: { name: "Meeting Owl 3", type: "360° Smart Camera", modes: ["BYOD", "USB", "AI Enhanced"], capacity: "6-16 persone", maxPickup: "6m" },
-    WhiteboardOwl: { name: "Whiteboard Owl", type: "Whiteboard Camera", modes: ["USB", "Whiteboard Enhancement"], capacity: "Whiteboard capture", maxPickup: "N/A" }
+    MeetingOwlPro: { name: "Meeting Owl Pro", type: "360° Smart Camera", modes: ["BYOD", "USB"], capacity: "6-12 persone", maxPickup: "5.5m", cost: "€TBD" },
+    MeetingOwl3: { name: "Meeting Owl 3", type: "360° Smart Camera", modes: ["BYOD", "USB", "AI Enhanced"], capacity: "6-16 persone", maxPickup: "6m", cost: "€TBD" },
+    WhiteboardOwl: { name: "Whiteboard Owl", type: "Whiteboard Camera", modes: ["USB", "Whiteboard Enhancement"], capacity: "Whiteboard capture", maxPickup: "N/A", cost: "€TBD" }
 },
 barco: {
-    ClickShareBarPro: { name: "Barco ClickShare Bar Pro", type: "Medium", modes: ["BYOD"], capacity: "6-12 persone", maxPickup: "4m" },
-    ClickShareBarCore: { name: "Barco ClickShare Bar Core", type: "Small/Huddle", modes: ["BYOD"], capacity: "1-6 persone", maxPickup: "3m" },
-    CX20_1: { name: "Barco ClickShare CX-20 (1 bottone)", type: "Wireless Sharing", modes: ["BYOD"], capacity: "Content Sharing", maxPickup: "N/A" },
-    CX20_2: { name: "Barco ClickShare CX-20 (2 bottoni)", type: "Wireless Sharing", modes: ["BYOD"], capacity: "Content Sharing", maxPickup: "N/A" },
-    CX50: { name: "Barco ClickShare CX-50 (2 bottoni)", type: "Wireless Sharing", modes: ["BYOD"], capacity: "Content Sharing", maxPickup: "N/A" }
+    ClickShareBarPro: { name: "Barco ClickShare Bar Pro", type: "Medium", modes: ["BYOD"], capacity: "6-12 persone", maxPickup: "4m", cost: "€2346.00" },
+    ClickShareBarCore: { name: "Barco ClickShare Bar Core", type: "Small/Huddle", modes: ["BYOD"], capacity: "1-6 persone", maxPickup: "3m", cost: "€1666.00" },
+    CX20_1: { name: "Barco ClickShare CX-20 (1 bottone)", type: "Wireless Sharing", modes: ["BYOD"], capacity: "Content Sharing", maxPickup: "N/A", cost: "€1394.00" },
+    CX20_2: { name: "Barco ClickShare CX-20 (2 bottoni)", type: "Wireless Sharing", modes: ["BYOD"], capacity: "Content Sharing", maxPickup: "N/A", cost: "€1751.00" },
+    CX50: { name: "Barco ClickShare CX-50 (2 bottoni)", type: "Wireless Sharing", modes: ["BYOD"], capacity: "Content Sharing", maxPickup: "N/A", cost: "€1548.75" }
 },
 samsung: {
-    QB13C: { name: "Samsung QB13C", type: "Small (13\")", modes: ["Digital Signage", "Tizen"], capacity: "Small spaces", maxPickup: "N/A" },
-    QB13R: { name: "Samsung QB13R", type: "Small (13\")", modes: ["Digital Signage", "Tizen"], capacity: "Small spaces", maxPickup: "N/A" },
-    QB24C: { name: "Samsung QB24C", type: "Small (24\")", modes: ["Digital Signage", "Tizen"], capacity: "Small spaces", maxPickup: "N/A" },
-    QB43C: { name: "Samsung QB43C", type: "Small (43\")", modes: ["Digital Signage", "Tizen"], capacity: "Small/Huddle", maxPickup: "N/A" },
-    QB50C: { name: "Samsung QB50C", type: "Huddle (50\")", modes: ["Digital Signage", "Tizen"], capacity: "Huddle rooms", maxPickup: "N/A" },
-    QB55C: { name: "Samsung QB55C", type: "Huddle (55\")", modes: ["Digital Signage", "Tizen"], capacity: "Huddle rooms", maxPickup: "N/A" },
-    QB65C: { name: "Samsung QB65C", type: "Medium (65\")", modes: ["Digital Signage", "Tizen"], capacity: "Medium rooms", maxPickup: "N/A" },
-    QB75C: { name: "Samsung QB75C", type: "Large (75\")", modes: ["Digital Signage", "Tizen"], capacity: "Large rooms", maxPickup: "N/A" },
-    QB85C: { name: "Samsung QB85C", type: "Large (85\")", modes: ["Digital Signage", "Tizen"], capacity: "Large rooms", maxPickup: "N/A" },
-    QB98T: { name: "Samsung QB98T-B", type: "Large (98\")", modes: ["Digital Signage", "Tizen"], capacity: "Extra large rooms", maxPickup: "N/A" },
-    QM32C: { name: "Samsung QM32C", type: "Small (32\")", modes: ["Digital Signage", "Tizen"], capacity: "Small spaces", maxPickup: "N/A" },
-    QM43C: { name: "Samsung QM43C", type: "Small (43\")", modes: ["Digital Signage", "Tizen"], capacity: "Small/Huddle", maxPickup: "N/A" },
-    QM50C: { name: "Samsung QM50C", type: "Huddle (50\")", modes: ["Digital Signage", "Tizen"], capacity: "Huddle rooms", maxPickup: "N/A" },
-    QM55C: { name: "Samsung QM55C", type: "Huddle (55\")", modes: ["Digital Signage", "Tizen"], capacity: "Huddle rooms", maxPickup: "N/A" },
-    QM65C: { name: "Samsung QM65C", type: "Medium (65\")", modes: ["Digital Signage", "Tizen"], capacity: "Medium rooms", maxPickup: "N/A" },
-    QM75C: { name: "Samsung QM75C", type: "Large (75\")", modes: ["Digital Signage", "Tizen"], capacity: "Large rooms", maxPickup: "N/A" },
-    QM85C: { name: "Samsung QM85C", type: "Large (85\")", modes: ["Digital Signage", "Tizen"], capacity: "Large rooms", maxPickup: "N/A" },
-    QM98C: { name: "Samsung QM98C", type: "Large (98\")", modes: ["Digital Signage", "Tizen"], capacity: "Extra large rooms", maxPickup: "N/A" },
-    QB13RT: { name: "Samsung QB13R-T", type: "Small Touch (13\")", modes: ["Digital Signage", "Touch", "Tizen"], capacity: "Interactive small spaces", maxPickup: "N/A" },
-    QB24CT: { name: "Samsung QB24C-T", type: "Small Touch (24\")", modes: ["Digital Signage", "Touch", "Tizen"], capacity: "Interactive small spaces", maxPickup: "N/A" },
-    QM32RT: { name: "Samsung QM32R-T", type: "Small Touch (32\")", modes: ["Digital Signage", "Touch", "Tizen"], capacity: "Interactive small spaces", maxPickup: "N/A" },
-    QM43BT: { name: "Samsung QM43B-T", type: "Small Touch (43\")", modes: ["Digital Signage", "Touch", "Tizen"], capacity: "Interactive small/huddle", maxPickup: "N/A" },
-    QM55BT: { name: "Samsung QM55B-T", type: "Huddle Touch (55\")", modes: ["Digital Signage", "Touch", "Tizen"], capacity: "Interactive huddle rooms", maxPickup: "N/A" },
-    LAEC015: { name: "Samsung LAEC015-GN2", type: "Large AIO (136\")", modes: ["All-in-One", "Digital Signage"], capacity: "Extra large spaces", maxPickup: "N/A" },
-    LAEC018: { name: "Samsung LAEC018-GN2", type: "Large AIO (163\")", modes: ["All-in-One", "Digital Signage"], capacity: "Extra large spaces", maxPickup: "N/A" }
+    QB13C: { name: "Samsung QB13C", type: "Small (13\")", modes: ["Digital Signage", "Tizen"], capacity: "Small spaces", maxPickup: "N/A", cost: "€279.90" },
+    QB13R: { name: "Samsung QB13R", type: "Small (13\")", modes: ["Digital Signage", "Tizen"], capacity: "Small spaces", maxPickup: "N/A", cost: "€383.68" },
+    QB24C: { name: "Samsung QB24C", type: "Small (24\")", modes: ["Digital Signage", "Tizen"], capacity: "Small spaces", maxPickup: "N/A", cost: "€587.37" },
+    QB43C: { name: "Samsung QB43C", type: "Small (43\")", modes: ["Digital Signage", "Tizen"], capacity: "Small/Huddle", maxPickup: "N/A", cost: "€468.95" },
+    QB50C: { name: "Samsung QB50C", type: "Huddle (50\")", modes: ["Digital Signage", "Tizen"], capacity: "Huddle rooms", maxPickup: "N/A", cost: "€554.21" },
+    QB55C: { name: "Samsung QB55C", type: "Huddle (55\")", modes: ["Digital Signage", "Tizen"], capacity: "Huddle rooms", maxPickup: "N/A", cost: "€667.89" },
+    QB65C: { name: "Samsung QB65C", type: "Medium (65\")", modes: ["Digital Signage", "Tizen"], capacity: "Medium rooms", maxPickup: "N/A", cost: "€918.95" },
+    QB75C: { name: "Samsung QB75C", type: "Large (75\")", modes: ["Digital Signage", "Tizen"], capacity: "Large rooms", maxPickup: "N/A", cost: "€1321.58" },
+    QB85C: { name: "Samsung QB85C", type: "Large (85\")", modes: ["Digital Signage", "Tizen"], capacity: "Large rooms", maxPickup: "N/A", cost: "€2088.95" },
+    QB98T: { name: "Samsung QB98T-B", type: "Large (98\")", modes: ["Digital Signage", "Tizen"], capacity: "Extra large rooms", maxPickup: "N/A", cost: "€4736.84" },
+    QM32C: { name: "Samsung QM32C", type: "Small (32\")", modes: ["Digital Signage", "Tizen"], capacity: "Small spaces", maxPickup: "N/A", cost: "€407.37" },
+    QM43C: { name: "Samsung QM43C", type: "Small (43\")", modes: ["Digital Signage", "Tizen"], capacity: "Small/Huddle", maxPickup: "N/A", cost: "€511.58" },
+    QM50C: { name: "Samsung QM50C", type: "Huddle (50\")", modes: ["Digital Signage", "Tizen"], capacity: "Huddle rooms", maxPickup: "N/A", cost: "€587.70" },
+    QM55C: { name: "Samsung QM55C", type: "Huddle (55\")", modes: ["Digital Signage", "Tizen"], capacity: "Huddle rooms", maxPickup: "N/A", cost: "€710.53" },
+    QM65C: { name: "Samsung QM65C", type: "Medium (65\")", modes: ["Digital Signage", "Tizen"], capacity: "Medium rooms", maxPickup: "N/A", cost: "€966.32" },
+    QM75C: { name: "Samsung QM75C", type: "Large (75\")", modes: ["Digital Signage", "Tizen"], capacity: "Large rooms", maxPickup: "N/A", cost: "€1473.16" },
+    QM85C: { name: "Samsung QM85C", type: "Large (85\")", modes: ["Digital Signage", "Tizen"], capacity: "Large rooms", maxPickup: "N/A", cost: "€2458.42" },
+    QM98C: { name: "Samsung QM98C", type: "Large (98\")", modes: ["Digital Signage", "Tizen"], capacity: "Extra large rooms", maxPickup: "N/A", cost: "€5175.00" },
+    QB13RT: { name: "Samsung QB13R-T", type: "Small Touch (13\")", modes: ["Digital Signage", "Touch", "Tizen"], capacity: "Interactive small spaces", maxPickup: "N/A", cost: "€383.68" },
+    QB24CT: { name: "Samsung QB24C-T", type: "Small Touch (24\")", modes: ["Digital Signage", "Touch", "Tizen"], capacity: "Interactive small spaces", maxPickup: "N/A", cost: "€587.37" },
+    QM32RT: { name: "Samsung QM32R-T", type: "Small Touch (32\")", modes: ["Digital Signage", "Touch", "Tizen"], capacity: "Interactive small spaces", maxPickup: "N/A", cost: "€407.37" },
+    QM43BT: { name: "Samsung QM43B-T", type: "Small Touch (43\")", modes: ["Digital Signage", "Touch", "Tizen"], capacity: "Interactive small/huddle", maxPickup: "N/A", cost: "€511.58" },
+    QM55BT: { name: "Samsung QM55B-T", type: "Huddle Touch (55\")", modes: ["Digital Signage", "Touch", "Tizen"], capacity: "Interactive huddle rooms", maxPickup: "N/A", cost: "€710.53" },
+    LAEC015: { name: "Samsung LAEC015-GN2", type: "Large AIO (136\")", modes: ["All-in-One", "Digital Signage"], capacity: "Extra large spaces", maxPickup: "N/A", cost: "€21168.04" },
+    LAEC018: { name: "Samsung LAEC018-GN2", type: "Large AIO (163\")", modes: ["All-in-One", "Digital Signage"], capacity: "Extra large spaces", maxPickup: "N/A", cost: "€27681.29" }
 },
 lg: {
-    UH7_43: { name: "LG 43UH7N-E", type: "Small (43\")", modes: ["Digital Signage", "webOS"], capacity: "Small/Huddle", maxPickup: "N/A" },
-    UH7_49: { name: "LG 49UH7N-E", type: "Small (49\")", modes: ["Digital Signage", "webOS"], capacity: "Huddle rooms", maxPickup: "N/A" },
-    UH7_55: { name: "LG 55UH7N-E", type: "Huddle (55\")", modes: ["Digital Signage", "webOS"], capacity: "Huddle rooms", maxPickup: "N/A" },
-    UH7_65: { name: "LG 65UH7N-E", type: "Medium (65\")", modes: ["Digital Signage", "webOS"], capacity: "Medium rooms", maxPickup: "N/A" },
-    UH7_75: { name: "LG 75UH7N-E", type: "Large (75\")", modes: ["Digital Signage", "webOS"], capacity: "Large rooms", maxPickup: "N/A" },
-    UH7_86: { name: "LG 86UH7N-E", type: "Large (86\")", modes: ["Digital Signage", "webOS"], capacity: "Large rooms", maxPickup: "N/A" },
-    UL3_43: { name: "LG 43UL3J-M", type: "Small (43\")", modes: ["Digital Signage", "webOS"], capacity: "Small/Huddle", maxPickup: "N/A" },
-    UL3_50: { name: "LG 50UL3J-M", type: "Huddle (50\")", modes: ["Digital Signage", "webOS"], capacity: "Huddle rooms", maxPickup: "N/A" },
-    UL3_55: { name: "LG 55UL3J-M", type: "Huddle (55\")", modes: ["Digital Signage", "webOS"], capacity: "Huddle rooms", maxPickup: "N/A" },
-    UL3_65: { name: "LG 65UL3J-E", type: "Medium (65\")", modes: ["Digital Signage", "webOS"], capacity: "Medium rooms", maxPickup: "N/A" },
-    UL3_75: { name: "LG 75UL3J-E", type: "Large (75\")", modes: ["Digital Signage", "webOS"], capacity: "Large rooms", maxPickup: "N/A" },
-    UL3_86: { name: "LG 86UL3J-B", type: "Large (86\")", modes: ["Digital Signage", "webOS"], capacity: "Large rooms", maxPickup: "N/A" }
+    UH7_43: { name: "LG 43UH7N-E", type: "Small (43\")", modes: ["Digital Signage", "webOS"], capacity: "Small/Huddle", maxPickup: "N/A", cost: "€775.59" },
+    UH7_49: { name: "LG 49UH7N-E", type: "Small (49\")", modes: ["Digital Signage", "webOS"], capacity: "Huddle rooms", maxPickup: "N/A", cost: "€934.10" },
+    UH7_55: { name: "LG 55UH7N-E", type: "Huddle (55\")", modes: ["Digital Signage", "webOS"], capacity: "Huddle rooms", maxPickup: "N/A", cost: "€1030.34" },
+    UH7_65: { name: "LG 65UH7N-E", type: "Medium (65\")", modes: ["Digital Signage", "webOS"], capacity: "Medium rooms", maxPickup: "N/A", cost: "€1302.08" },
+    UH7_75: { name: "LG 75UH7N-E", type: "Large (75\")", modes: ["Digital Signage", "webOS"], capacity: "Large rooms", maxPickup: "N/A", cost: "€2250.00" },
+    UH7_86: { name: "LG 86UH7N-E", type: "Large (86\")", modes: ["Digital Signage", "webOS"], capacity: "Large rooms", maxPickup: "N/A", cost: "€3369.57" },
+    UL3_43: { name: "LG 43UL3J-M", type: "Small (43\")", modes: ["Digital Signage", "webOS"], capacity: "Small/Huddle", maxPickup: "N/A", cost: "€456.52" },
+    UL3_50: { name: "LG 50UL3J-M", type: "Huddle (50\")", modes: ["Digital Signage", "webOS"], capacity: "Huddle rooms", maxPickup: "N/A", cost: "€548.91" },
+    UL3_55: { name: "LG 55UL3J-M", type: "Huddle (55\")", modes: ["Digital Signage", "webOS"], capacity: "Huddle rooms", maxPickup: "N/A", cost: "€608.70" },
+    UL3_65: { name: "LG 65UL3J-E", type: "Medium (65\")", modes: ["Digital Signage", "webOS"], capacity: "Medium rooms", maxPickup: "N/A", cost: "€869.57" },
+    UL3_75: { name: "LG 75UL3J-E", type: "Large (75\")", modes: ["Digital Signage", "webOS"], capacity: "Large rooms", maxPickup: "N/A", cost: "€1195.65" },
+    UL3_86: { name: "LG 86UL3J-B", type: "Large (86\")", modes: ["Digital Signage", "webOS"], capacity: "Large rooms", maxPickup: "N/A", cost: "€1913.50" }
 }
         };
 
