@@ -86,6 +86,20 @@
         </div>
     </div>
 
+    <!-- Error Modal -->
+<div id="errorModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <div class="text-center">
+            <i data-lucide="alert-circle" class="w-12 h-12 text-red-500 mx-auto mb-4"></i>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Errore di Generazione</h3>
+            <p id="errorMessage" class="text-gray-600 text-sm mb-4"></p>
+            <button onclick="closeErrorModal()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                Chiudi
+            </button>
+        </div>
+    </div>
+</div>
+
     <script>
         // Configuration - SOSTITUIRE CON LA PROPRIA API KEY GOOGLE GEMINI
         const API_KEY = "AIzaSyCwtjsNaWLh28_bXrHJOHaMgzFDVjOHXiQ";
@@ -355,6 +369,14 @@ Manufacturing, Fashion & Luxury, Retail & GDO, Food & Beverage, Pharma & Chemica
                 modal.classList.add('hidden');
             }, 2000);
         }
+        function showErrorModal(message) {
+    document.getElementById('errorMessage').textContent = message;
+    document.getElementById('errorModal').classList.remove('hidden');
+}
+
+function closeErrorModal() {
+    document.getElementById('errorModal').classList.add('hidden');
+}
 
         function createCopyButton(text, label = 'Copia') {
             return `<button onclick="copyToClipboard(\`${text.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" 
@@ -999,52 +1021,62 @@ Sistema di integrazione leader in Italia, parte del Gruppo SeSa quotato. 4.297 d
 `;
 
         async function generateCSWOT() {
-            // Optimized prompt for faster generation
-            const prompt = `Agisci come analista business Var Group.
+    if (!appData.companyName.trim()) {
+        showErrorModal("Nome azienda cliente richiesto per generare l'analisi C-SWOT");
+        return;
+    }
 
-CONTESTO VAR GROUP (essenziale):
-${VAR_GROUP_CONTEXT_SHORT}
+    const prompt = `Agisci come analista di business intelligence d'elite di Var Group.
 
-DATI CLIENTE:
-- Azienda: ${appData.companyName}
-- Servizio: ${appData.serviceName}
-- Info Cliente: ${appData.clientFiles.content.substring(0, 2000)}${appData.clientFiles.content.length > 2000 ? '...' : ''}
-- Info Nostra: ${appData.internalFiles.content.substring(0, 1000)}${appData.internalFiles.content.length > 1000 ? '...' : ''}
+${VAR_GROUP_CONTEXT}
 
-Genera C-SWOT concisa per ${appData.companyName}. Per ogni punto (max 3 per categoria):
-1. Elemento specifico
-2. Impatto business
-3. Collegamento strategia Var Group (cita BU specifica)
+CONTESTO SPECIFICO:
+- Azienda Cliente: ${appData.companyName}
+- Servizio: ${appData.serviceName || "Soluzioni digitali"}
+- Info Cliente: ${appData.clientFiles.content || "Informazioni limitate disponibili"}
+- Info Nostra: ${appData.internalFiles.content || "Portfolio standard Var Group"}
 
-# PUNTI DI FORZA (C-S)
-[3 punti max]
+Genera un'analisi C-SWOT completa e dettagliata. Per ogni punto descrivi:
+1. L'elemento specifico
+2. L'IMPATTO sul business del cliente
+3. Le IMPLICAZIONI per la strategia Var Group
 
-# PUNTI DI DEBOLEZZA (C-W)  
-[3 punti max]
+Struttura richiesta:
+## PUNTI DI FORZA (Customer Strengths)
+[Almeno 3 punti con dettagli]
 
-# OPPORTUNITÀ (C-O)
-[3 punti max]
+## PUNTI DI DEBOLEZZA (Customer Weaknesses) 
+[Almeno 3 punti con dettagli]
 
-# MINACCE (C-T)
-[3 punti max]
+## OPPORTUNITÀ (Customer Opportunities)
+[Almeno 3 punti con dettagli]
 
-Formato Markdown, sintetico e actionable.`;
+## MINACCE (Customer Threats)
+[Almeno 3 punti con dettagli]
 
-            try {
-                isGenerating = true;
-                renderCurrentStep();
-                
-                appData.cswotAnalysis = await generateContent(prompt);
-                
-                renderCurrentStep();
-                updateNavigation();
-            } catch (error) {
-                console.error("Errore C-SWOT:", error);
-                alert("Errore durante la generazione: " + error.message);
-            } finally {
-                isGenerating = false;
-            }
-        }
+Sii specifico e orientato all'azione. Usa formato Markdown.`;
+
+    try {
+        isGenerating = true;
+        renderCurrentStep();
+        
+        console.log("Iniziando generazione C-SWOT per:", appData.companyName);
+        
+        appData.cswotAnalysis = await generateContent(prompt);
+        
+        console.log("C-SWOT generata con successo");
+        renderCurrentStep();
+        updateNavigation();
+        
+    } catch (error) {
+        console.error("Errore C-SWOT:", error);
+        showErrorModal(`Errore durante la generazione dell'analisi C-SWOT: ${error.message}`);
+        isGenerating = false;
+        renderCurrentStep();
+    } finally {
+        isGenerating = false;
+    }
+}
 
         async function generateValueAreas() {
             // Also optimized for speed
@@ -1596,6 +1628,9 @@ Sii chirurgico e orientato all'azione. Formato Markdown.`;
                 if (window.pdfjsLib) {
                     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
                 }
+                // Global functions for inline event handlers
+window.showErrorModal = showErrorModal;
+window.closeErrorModal = closeErrorModal;
                 initApp();
             } else {
                 setTimeout(waitForLibrariesAndInit, 100);
