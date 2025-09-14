@@ -86,20 +86,6 @@
         </div>
     </div>
 
-    <!-- Error Modal -->
-<div id="errorModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-        <div class="text-center">
-            <i data-lucide="alert-circle" class="w-12 h-12 text-red-500 mx-auto mb-4"></i>
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Errore di Generazione</h3>
-            <p id="errorMessage" class="text-gray-600 text-sm mb-4"></p>
-            <button onclick="closeErrorModal()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                Chiudi
-            </button>
-        </div>
-    </div>
-</div>
-
     <script>
         // Configuration - SOSTITUIRE CON LA PROPRIA API KEY GOOGLE GEMINI
         const API_KEY = "AIzaSyCwtjsNaWLh28_bXrHJOHaMgzFDVjOHXiQ";
@@ -241,74 +227,34 @@ Manufacturing, Fashion & Luxury, Retail & GDO, Food & Beverage, Pharma & Chemica
         }
 
         async function generateContent(prompt, isJson = false) {
-    const modelName = "gemini-1.5-pro";  // Cambia da "gemini-2.5-pro" a "gemini-1.5-pro"
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`;
+            const modelName = "gemini-2.5-pro";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`;
 
-    const requestBody = {
-        contents: [{ 
-            role: "user", 
-            parts: [{ text: prompt }] 
-        }],
-        generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 8192,
-            ...(isJson && { responseMimeType: "application/json" })
-        },
-        safetySettings: [
-            {
-                category: "HARM_CATEGORY_HARASSMENT",
-                threshold: "BLOCK_NONE"
-            },
-            {
-                category: "HARM_CATEGORY_HATE_SPEECH", 
-                threshold: "BLOCK_NONE"
-            },
-            {
-                category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                threshold: "BLOCK_NONE"
-            },
-            {
-                category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-                threshold: "BLOCK_NONE"
+            const requestBody = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig: isJson ? { responseMimeType: "application/json" } : {},
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody),
+            });
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`API Error (${response.status}): ${errorText}`);
             }
-        ]
-    };
 
-    try {
-        console.log("Invio richiesta API:", { modelName, promptLength: prompt.length });
-        
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'User-Agent': 'VarGroupWizard/1.0'
-            },
-            body: JSON.stringify(requestBody),
-        });
-        
-        console.log("Status risposta:", response.status);
-        
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Errore API completo:", errorText);
-            throw new Error(`API Error (${response.status}): ${errorText}`);
+            const result = await response.json();
+            
+            if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
+                let rawText = result.candidates[0].content.parts[0].text;
+                return rawText.replace(/^\s*```(json|html|markdown)?\n?/, '').replace(/\n?```\s*$/, '');
+            } else {
+                throw new Error("Formato risposta AI non valido");
+            }
         }
-
-        const result = await response.json();
-        console.log("Risposta API ricevuta:", result);
-        
-        if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
-            let rawText = result.candidates[0].content.parts[0].text;
-            return rawText.replace(/^\s*```(json|html|markdown)?\n?/, '').replace(/\n?```\s*$/, '');
-        } else {
-            console.error("Struttura risposta non valida:", result);
-            throw new Error("Formato risposta AI non valido");
-        }
-    } catch (error) {
-        console.error("Errore nella chiamata API:", error);
-        throw error;
-    }
-}
 
         async function parseFile(file) {
             try {
@@ -369,14 +315,6 @@ Manufacturing, Fashion & Luxury, Retail & GDO, Food & Beverage, Pharma & Chemica
                 modal.classList.add('hidden');
             }, 2000);
         }
-        function showErrorModal(message) {
-    document.getElementById('errorMessage').textContent = message;
-    document.getElementById('errorModal').classList.remove('hidden');
-}
-
-function closeErrorModal() {
-    document.getElementById('errorModal').classList.add('hidden');
-}
 
         function createCopyButton(text, label = 'Copia') {
             return `<button onclick="copyToClipboard(\`${text.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" 
@@ -1002,106 +940,62 @@ Fornisci ESCLUSIVAMENTE il prompt di ricerca, dettagliato e pronto all'uso.`;
             }
         }
 
-        // Optimized Var Group Context (abbreviated for speed)
-        const VAR_GROUP_CONTEXT_SHORT = `
-# Var Group - Digital Soul Company
-Sistema di integrazione leader in Italia, parte del Gruppo SeSa quotato. 4.297 dipendenti, 882M€ fatturato 2025.
-
-## Business Unit Principali:
-- **7Circle**: Cloud, servitizzazione, IoT
-- **Data Science**: 180 risorse, 40+ Data Scientist, AI/ML
-- **Yarix**: Cybersecurity, 230 specialisti, 3 SOC
-- **Var Industries**: Digital Engineering, 13 nazioni
-- **Enterprise Platform**: SAP/Microsoft, 500+ consulenti
-- **Digital Experience (Ubics)**: Web, app, e-commerce
-- **iSquared**: Nuova iniziativa AI strategica
-
-## Partnership: Microsoft Gold, SAP Platinum, AWS, IBM, HPE, Cisco
-## Settori: Manufacturing, Fashion, Retail, Food, Pharma, Finance, PA
-`;
-
         async function generateCSWOT() {
-    if (!appData.companyName.trim()) {
-        showErrorModal("Nome azienda cliente richiesto per generare l'analisi C-SWOT");
-        return;
-    }
-
-    const prompt = `Agisci come analista di business intelligence d'elite di Var Group.
+            const prompt = `Agisci come analista di business intelligence d'elite di Var Group.
 
 ${VAR_GROUP_CONTEXT}
 
 CONTESTO SPECIFICO:
 - Azienda Cliente: ${appData.companyName}
-- Servizio: ${appData.serviceName || "Soluzioni digitali"}
-- Info Cliente: ${appData.clientFiles.content || "Informazioni limitate disponibili"}
-- Info Nostra: ${appData.internalFiles.content || "Portfolio standard Var Group"}
+- Servizio: ${appData.serviceName}
+- Info Cliente: ${appData.clientFiles.content}
+- Info Nostra: ${appData.internalFiles.content}
 
-Genera un'analisi C-SWOT completa e dettagliata. Per ogni punto descrivi:
+Genera un'analisi C-SWOT completa. Per ogni punto descrivi:
 1. L'elemento specifico
 2. L'IMPATTO sul business del cliente
 3. Le IMPLICAZIONI per la strategia Var Group
 
-Struttura richiesta:
-## PUNTI DI FORZA (Customer Strengths)
-[Almeno 3 punti con dettagli]
+Struttura:
+- PUNTI DI FORZA (C-S)
+- PUNTI DI DEBOLEZZA (C-W) 
+- OPPORTUNITÀ (C-O)
+- MINACCE (C-T)
 
-## PUNTI DI DEBOLEZZA (Customer Weaknesses) 
-[Almeno 3 punti con dettagli]
+Sii specifico e orientato all'azione. Formato Markdown.`;
 
-## OPPORTUNITÀ (Customer Opportunities)
-[Almeno 3 punti con dettagli]
-
-## MINACCE (Customer Threats)
-[Almeno 3 punti con dettagli]
-
-Sii specifico e orientato all'azione. Usa formato Markdown.`;
-
-    try {
-        isGenerating = true;
-        renderCurrentStep();
-        
-        console.log("Iniziando generazione C-SWOT per:", appData.companyName);
-        
-        appData.cswotAnalysis = await generateContent(prompt);
-        
-        console.log("C-SWOT generata con successo");
-        renderCurrentStep();
-        updateNavigation();
-        
-    } catch (error) {
-        console.error("Errore C-SWOT:", error);
-        showErrorModal(`Errore durante la generazione dell'analisi C-SWOT: ${error.message}`);
-        isGenerating = false;
-        renderCurrentStep();
-    } finally {
-        isGenerating = false;
-    }
-}
+            try {
+                isGenerating = true;
+                renderCurrentStep();
+                
+                appData.cswotAnalysis = await generateContent(prompt);
+                
+                renderCurrentStep();
+                updateNavigation();
+            } catch (error) {
+                console.error("Errore C-SWOT:", error);
+                alert("Errore durante la generazione: " + error.message);
+            } finally {
+                isGenerating = false;
+            }
+        }
 
         async function generateValueAreas() {
-            // Also optimized for speed
-            const prompt = `Consulente strategico Var Group.
+            const prompt = `Agisci come consulente strategico di Var Group.
 
-CONTESTO:
-${VAR_GROUP_CONTEXT_SHORT}
+${VAR_GROUP_CONTEXT}
 
-C-SWOT: ${appData.cswotAnalysis.substring(0, 1500)}${appData.cswotAnalysis.length > 1500 ? '...' : ''}
+Partendo dall'analisi C-SWOT:
+${appData.cswotAnalysis}
 
-Identifica 3 Aree Valore per ${appData.companyName}:
+Identifica 3-4 Aree di Valore chiave per ${appData.companyName}. Per ciascuna area:
 
-## Area 1: [Nome Area]
-**Problema**: [mal di pancia specifico]
-**Soluzione Var Group**: [BU specifica + approccio con ${appData.serviceName}]  
-**Target**: [ruolo GDEUA]
-**Benefici**: 2 quantitativi, 2 qualitativi
+1. **Problema/Opportunità**: Descrivi il "mal di pancia" collegandola alla C-SWOT
+2. **Come Supportiamo (Var Group)**: Spiega il nostro approccio con ${appData.serviceName}, citando BU specifiche
+3. **Persona Target (GDEUA)**: Il ruolo che beneficerebbe di più
+4. **Benefici**: 2 quantitativi e 2 qualitativi
 
-## Area 2: [Nome Area]
-[stessa struttura]
-
-## Area 3: [Nome Area]  
-[stessa struttura]
-
-Conciso e specifico.`;
+Formato Markdown, chiaro e actionable.`;
 
             try {
                 isGenerating = true;
@@ -1114,168 +1008,6 @@ Conciso e specifico.`;
             } catch (error) {
                 console.error("Errore Aree Valore:", error);
                 alert("Errore durante la generazione: " + error.message);
-            } finally {
-                isGenerating = false;
-            }
-        }
-
-        async function generateOnePager() {
-            // Streamlined for speed
-            const prompt = `One Pager strategico Var Group.
-
-Cliente: ${appData.companyName}
-Servizio: ${appData.serviceName}
-C-SWOT: ${appData.cswotAnalysis.substring(0, 800)}
-Aree Valore: ${appData.valueAreas.substring(0, 800)}
-
-Var Group: Leader system integration, BU specializzate (Data Science AI, Yarix Security, Industries Engineering, etc), partnership Microsoft/SAP/AWS.
-
-<sezione_titolo>
-[Titolo impattante per ${appData.companyName}]
-</sezione_titolo>
-
-<sezione_business>
-[2-3 frasi comprensione settore cliente]
-</sezione_business>
-
-<sezione_sfide>
-[Top 3 sfide cliente, una per riga]
-</sezione_sfide>
-
-<sezione_valore>
-[Come ${appData.serviceName} aiuta, 2-3 frasi benefici]
-</sezione_valore>
-
-<sezione_perchenoi>
-[3 differenziatori Var Group, uno per riga]
-</sezione_perchenoi>
-
-<sezione_agenda>
-[3-4 punti agenda meeting]
-</sezione_agenda>
-
-Solo XML format.`;
-
-            try {
-                isGenerating = true;
-                renderCurrentStep();
-                
-                appData.onePager = await generateContent(prompt);
-                
-                renderCurrentStep();
-                updateNavigation();
-            } catch (error) {
-                console.error("Errore One-Pager:", error);
-                alert("Errore durante la generazione: " + error.message);
-            } finally {
-                isGenerating = false;
-            }
-        }
-
-        async function generateEmail() {
-            // Simplified email generation
-            const prompt = `Email B2B Var Group per ${appData.companyName}.
-
-One-Pager da incorporare: ${appData.onePager.substring(0, 1200)}
-
-Regole:
-- Oggetto incuriosente
-- Intro personalizzata 2 frasi  
-- "--- SINTESI STRATEGICA ${appData.companyName.toUpperCase()} ---"
-- Traduci XML in testo leggibile (NO tag)
-- "--- FINE SINTESI ---"
-- CTA per incontro
-
-Inizia con "OGGETTO: [oggetto qui]"`;
-
-            try {
-                isGenerating = true;
-                renderCurrentStep();
-                
-                appData.contactEmail = await generateContent(prompt);
-                
-                renderCurrentStep();
-                updateNavigation();
-            } catch (error) {
-                console.error("Errore Email:", error);
-                alert("Errore durante la generazione: " + error.message);
-            } finally {
-                isGenerating = false;
-            }
-        }
-
-        async function generateDiscoveryQuestions() {
-            // Faster discovery generation
-            const challengerNote = appData.challengerMode ? 'CHALLENGER MODE: Domande provocatorie che sfidano assunzioni.' : '';
-            
-            const prompt = `Sales Coach Var Group. ${challengerNote}
-
-Cliente: ${appData.companyName}
-C-SWOT: ${appData.cswotAnalysis.substring(0, 1000)}
-Aree Valore: ${appData.valueAreas.substring(0, 1000)}
-
-15 domande SPICED${appData.challengerMode ? ' provocatorie' : ''}:
-
-## S - Situation (3)
-[domande contesto${appData.challengerMode ? ' + sfida assunzioni' : ''}]
-
-## P - Pain (3)  
-[domande difficoltà${appData.challengerMode ? ' + problemi nascosti' : ''}]
-
-## I - Impact (3)
-[domande impatto economico${appData.challengerMode ? ' + costo inazione' : ''}]
-
-## CE - Critical Event (3)
-[domande urgenza/scadenze]
-
-## D - Decision (3)
-[domande processo decisionale GDEUA]
-
-Contestualizzate su ${appData.companyName}.`;
-
-            try {
-                isGenerating = true;
-                renderCurrentStep();
-                
-                appData.discoveryQuestions = await generateContent(prompt);
-                
-                renderCurrentStep();
-                updateNavigation();
-            } catch (error) {
-                console.error("Errore Discovery:", error);
-                alert("Errore durante la generazione: " + error.message);
-            } finally {
-                isGenerating = false;
-            }
-        }
-
-        async function generateFinalBriefing() {
-            // Quick briefing generation
-            const prompt = `Briefing veloce Sales Director per ${appData.companyName}.
-
-Dati: C-SWOT + Aree Valore + One-Pager (${appData.cswotAnalysis.substring(0, 600)} | ${appData.valueAreas.substring(0, 600)})
-
-MAX 150 parole:
-
-**OBIETTIVO**: [1 frase misurabile]
-**LEVA PRINCIPALE**: [area valore top]  
-**OBIEZIONE**: [da C-SWOT + come gestire]
-**AZIONE CHIUSURA**: [next step concreto]
-**3 PUNTI CHIAVE**: 
-- [punto 1]
-- [punto 2] 
-- [punto 3]
-
-Chirurgico e actionable.`;
-
-            try {
-                isGenerating = true;
-                renderCurrentStep();
-                
-                appData.finalBriefing = await generateContent(prompt);
-                
-                renderCurrentStep();
-                updateNavigation();
             } finally {
                 isGenerating = false;
             }
@@ -1628,9 +1360,6 @@ Sii chirurgico e orientato all'azione. Formato Markdown.`;
                 if (window.pdfjsLib) {
                     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
                 }
-                // Global functions for inline event handlers
-window.showErrorModal = showErrorModal;
-window.closeErrorModal = closeErrorModal;
                 initApp();
             } else {
                 setTimeout(waitForLibrariesAndInit, 100);
