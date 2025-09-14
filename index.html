@@ -227,34 +227,74 @@ Manufacturing, Fashion & Luxury, Retail & GDO, Food & Beverage, Pharma & Chemica
         }
 
         async function generateContent(prompt, isJson = false) {
-            const modelName = "gemini-2.5-pro";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`;
+    const modelName = "gemini-1.5-pro";  // Cambia da "gemini-2.5-pro" a "gemini-1.5-pro"
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`;
 
-            const requestBody = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }],
-                generationConfig: isJson ? { responseMimeType: "application/json" } : {},
-            };
-
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestBody),
-            });
-            
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`API Error (${response.status}): ${errorText}`);
+    const requestBody = {
+        contents: [{ 
+            role: "user", 
+            parts: [{ text: prompt }] 
+        }],
+        generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 8192,
+            ...(isJson && { responseMimeType: "application/json" })
+        },
+        safetySettings: [
+            {
+                category: "HARM_CATEGORY_HARASSMENT",
+                threshold: "BLOCK_NONE"
+            },
+            {
+                category: "HARM_CATEGORY_HATE_SPEECH", 
+                threshold: "BLOCK_NONE"
+            },
+            {
+                category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                threshold: "BLOCK_NONE"
+            },
+            {
+                category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                threshold: "BLOCK_NONE"
             }
+        ]
+    };
 
-            const result = await response.json();
-            
-            if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
-                let rawText = result.candidates[0].content.parts[0].text;
-                return rawText.replace(/^\s*```(json|html|markdown)?\n?/, '').replace(/\n?```\s*$/, '');
-            } else {
-                throw new Error("Formato risposta AI non valido");
-            }
+    try {
+        console.log("Invio richiesta API:", { modelName, promptLength: prompt.length });
+        
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'User-Agent': 'VarGroupWizard/1.0'
+            },
+            body: JSON.stringify(requestBody),
+        });
+        
+        console.log("Status risposta:", response.status);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Errore API completo:", errorText);
+            throw new Error(`API Error (${response.status}): ${errorText}`);
         }
+
+        const result = await response.json();
+        console.log("Risposta API ricevuta:", result);
+        
+        if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
+            let rawText = result.candidates[0].content.parts[0].text;
+            return rawText.replace(/^\s*```(json|html|markdown)?\n?/, '').replace(/\n?```\s*$/, '');
+        } else {
+            console.error("Struttura risposta non valida:", result);
+            throw new Error("Formato risposta AI non valido");
+        }
+    } catch (error) {
+        console.error("Errore nella chiamata API:", error);
+        throw error;
+    }
+}
 
         async function parseFile(file) {
             try {
