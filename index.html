@@ -88,7 +88,7 @@
 
     <script>
         // Configuration - SOSTITUIRE CON LA PROPRIA API KEY GOOGLE GEMINI
-        const API_KEY = "AIzaSyCwtjsNaWLh28_bXrHJOHaMgzFDVjOHXiQ";
+        const API_KEY = "AIzaSyDjlVWJIzGCa5CnXbj_nQEj1aG2aHlLwnQ";
         
         // Application State
         let currentStep = 0;
@@ -940,29 +940,55 @@ Fornisci ESCLUSIVAMENTE il prompt di ricerca, dettagliato e pronto all'uso.`;
             }
         }
 
+        // Optimized Var Group Context (abbreviated for speed)
+        const VAR_GROUP_CONTEXT_SHORT = `
+# Var Group - Digital Soul Company
+Sistema di integrazione leader in Italia, parte del Gruppo SeSa quotato. 4.297 dipendenti, 882M€ fatturato 2025.
+
+## Business Unit Principali:
+- **7Circle**: Cloud, servitizzazione, IoT
+- **Data Science**: 180 risorse, 40+ Data Scientist, AI/ML
+- **Yarix**: Cybersecurity, 230 specialisti, 3 SOC
+- **Var Industries**: Digital Engineering, 13 nazioni
+- **Enterprise Platform**: SAP/Microsoft, 500+ consulenti
+- **Digital Experience (Ubics)**: Web, app, e-commerce
+- **iSquared**: Nuova iniziativa AI strategica
+
+## Partnership: Microsoft Gold, SAP Platinum, AWS, IBM, HPE, Cisco
+## Settori: Manufacturing, Fashion, Retail, Food, Pharma, Finance, PA
+`;
+
         async function generateCSWOT() {
-            const prompt = `Agisci come analista di business intelligence d'elite di Var Group.
+            // Optimized prompt for faster generation
+            const prompt = `Agisci come analista business Var Group.
 
-${VAR_GROUP_CONTEXT}
+CONTESTO VAR GROUP (essenziale):
+${VAR_GROUP_CONTEXT_SHORT}
 
-CONTESTO SPECIFICO:
-- Azienda Cliente: ${appData.companyName}
+DATI CLIENTE:
+- Azienda: ${appData.companyName}
 - Servizio: ${appData.serviceName}
-- Info Cliente: ${appData.clientFiles.content}
-- Info Nostra: ${appData.internalFiles.content}
+- Info Cliente: ${appData.clientFiles.content.substring(0, 2000)}${appData.clientFiles.content.length > 2000 ? '...' : ''}
+- Info Nostra: ${appData.internalFiles.content.substring(0, 1000)}${appData.internalFiles.content.length > 1000 ? '...' : ''}
 
-Genera un'analisi C-SWOT completa. Per ogni punto descrivi:
-1. L'elemento specifico
-2. L'IMPATTO sul business del cliente
-3. Le IMPLICAZIONI per la strategia Var Group
+Genera C-SWOT concisa per ${appData.companyName}. Per ogni punto (max 3 per categoria):
+1. Elemento specifico
+2. Impatto business
+3. Collegamento strategia Var Group (cita BU specifica)
 
-Struttura:
-- PUNTI DI FORZA (C-S)
-- PUNTI DI DEBOLEZZA (C-W) 
-- OPPORTUNITÀ (C-O)
-- MINACCE (C-T)
+# PUNTI DI FORZA (C-S)
+[3 punti max]
 
-Sii specifico e orientato all'azione. Formato Markdown.`;
+# PUNTI DI DEBOLEZZA (C-W)  
+[3 punti max]
+
+# OPPORTUNITÀ (C-O)
+[3 punti max]
+
+# MINACCE (C-T)
+[3 punti max]
+
+Formato Markdown, sintetico e actionable.`;
 
             try {
                 isGenerating = true;
@@ -981,21 +1007,29 @@ Sii specifico e orientato all'azione. Formato Markdown.`;
         }
 
         async function generateValueAreas() {
-            const prompt = `Agisci come consulente strategico di Var Group.
+            // Also optimized for speed
+            const prompt = `Consulente strategico Var Group.
 
-${VAR_GROUP_CONTEXT}
+CONTESTO:
+${VAR_GROUP_CONTEXT_SHORT}
 
-Partendo dall'analisi C-SWOT:
-${appData.cswotAnalysis}
+C-SWOT: ${appData.cswotAnalysis.substring(0, 1500)}${appData.cswotAnalysis.length > 1500 ? '...' : ''}
 
-Identifica 3-4 Aree di Valore chiave per ${appData.companyName}. Per ciascuna area:
+Identifica 3 Aree Valore per ${appData.companyName}:
 
-1. **Problema/Opportunità**: Descrivi il "mal di pancia" collegandola alla C-SWOT
-2. **Come Supportiamo (Var Group)**: Spiega il nostro approccio con ${appData.serviceName}, citando BU specifiche
-3. **Persona Target (GDEUA)**: Il ruolo che beneficerebbe di più
-4. **Benefici**: 2 quantitativi e 2 qualitativi
+## Area 1: [Nome Area]
+**Problema**: [mal di pancia specifico]
+**Soluzione Var Group**: [BU specifica + approccio con ${appData.serviceName}]  
+**Target**: [ruolo GDEUA]
+**Benefici**: 2 quantitativi, 2 qualitativi
 
-Formato Markdown, chiaro e actionable.`;
+## Area 2: [Nome Area]
+[stessa struttura]
+
+## Area 3: [Nome Area]  
+[stessa struttura]
+
+Conciso e specifico.`;
 
             try {
                 isGenerating = true;
@@ -1008,6 +1042,168 @@ Formato Markdown, chiaro e actionable.`;
             } catch (error) {
                 console.error("Errore Aree Valore:", error);
                 alert("Errore durante la generazione: " + error.message);
+            } finally {
+                isGenerating = false;
+            }
+        }
+
+        async function generateOnePager() {
+            // Streamlined for speed
+            const prompt = `One Pager strategico Var Group.
+
+Cliente: ${appData.companyName}
+Servizio: ${appData.serviceName}
+C-SWOT: ${appData.cswotAnalysis.substring(0, 800)}
+Aree Valore: ${appData.valueAreas.substring(0, 800)}
+
+Var Group: Leader system integration, BU specializzate (Data Science AI, Yarix Security, Industries Engineering, etc), partnership Microsoft/SAP/AWS.
+
+<sezione_titolo>
+[Titolo impattante per ${appData.companyName}]
+</sezione_titolo>
+
+<sezione_business>
+[2-3 frasi comprensione settore cliente]
+</sezione_business>
+
+<sezione_sfide>
+[Top 3 sfide cliente, una per riga]
+</sezione_sfide>
+
+<sezione_valore>
+[Come ${appData.serviceName} aiuta, 2-3 frasi benefici]
+</sezione_valore>
+
+<sezione_perchenoi>
+[3 differenziatori Var Group, uno per riga]
+</sezione_perchenoi>
+
+<sezione_agenda>
+[3-4 punti agenda meeting]
+</sezione_agenda>
+
+Solo XML format.`;
+
+            try {
+                isGenerating = true;
+                renderCurrentStep();
+                
+                appData.onePager = await generateContent(prompt);
+                
+                renderCurrentStep();
+                updateNavigation();
+            } catch (error) {
+                console.error("Errore One-Pager:", error);
+                alert("Errore durante la generazione: " + error.message);
+            } finally {
+                isGenerating = false;
+            }
+        }
+
+        async function generateEmail() {
+            // Simplified email generation
+            const prompt = `Email B2B Var Group per ${appData.companyName}.
+
+One-Pager da incorporare: ${appData.onePager.substring(0, 1200)}
+
+Regole:
+- Oggetto incuriosente
+- Intro personalizzata 2 frasi  
+- "--- SINTESI STRATEGICA ${appData.companyName.toUpperCase()} ---"
+- Traduci XML in testo leggibile (NO tag)
+- "--- FINE SINTESI ---"
+- CTA per incontro
+
+Inizia con "OGGETTO: [oggetto qui]"`;
+
+            try {
+                isGenerating = true;
+                renderCurrentStep();
+                
+                appData.contactEmail = await generateContent(prompt);
+                
+                renderCurrentStep();
+                updateNavigation();
+            } catch (error) {
+                console.error("Errore Email:", error);
+                alert("Errore durante la generazione: " + error.message);
+            } finally {
+                isGenerating = false;
+            }
+        }
+
+        async function generateDiscoveryQuestions() {
+            // Faster discovery generation
+            const challengerNote = appData.challengerMode ? 'CHALLENGER MODE: Domande provocatorie che sfidano assunzioni.' : '';
+            
+            const prompt = `Sales Coach Var Group. ${challengerNote}
+
+Cliente: ${appData.companyName}
+C-SWOT: ${appData.cswotAnalysis.substring(0, 1000)}
+Aree Valore: ${appData.valueAreas.substring(0, 1000)}
+
+15 domande SPICED${appData.challengerMode ? ' provocatorie' : ''}:
+
+## S - Situation (3)
+[domande contesto${appData.challengerMode ? ' + sfida assunzioni' : ''}]
+
+## P - Pain (3)  
+[domande difficoltà${appData.challengerMode ? ' + problemi nascosti' : ''}]
+
+## I - Impact (3)
+[domande impatto economico${appData.challengerMode ? ' + costo inazione' : ''}]
+
+## CE - Critical Event (3)
+[domande urgenza/scadenze]
+
+## D - Decision (3)
+[domande processo decisionale GDEUA]
+
+Contestualizzate su ${appData.companyName}.`;
+
+            try {
+                isGenerating = true;
+                renderCurrentStep();
+                
+                appData.discoveryQuestions = await generateContent(prompt);
+                
+                renderCurrentStep();
+                updateNavigation();
+            } catch (error) {
+                console.error("Errore Discovery:", error);
+                alert("Errore durante la generazione: " + error.message);
+            } finally {
+                isGenerating = false;
+            }
+        }
+
+        async function generateFinalBriefing() {
+            // Quick briefing generation
+            const prompt = `Briefing veloce Sales Director per ${appData.companyName}.
+
+Dati: C-SWOT + Aree Valore + One-Pager (${appData.cswotAnalysis.substring(0, 600)} | ${appData.valueAreas.substring(0, 600)})
+
+MAX 150 parole:
+
+**OBIETTIVO**: [1 frase misurabile]
+**LEVA PRINCIPALE**: [area valore top]  
+**OBIEZIONE**: [da C-SWOT + come gestire]
+**AZIONE CHIUSURA**: [next step concreto]
+**3 PUNTI CHIAVE**: 
+- [punto 1]
+- [punto 2] 
+- [punto 3]
+
+Chirurgico e actionable.`;
+
+            try {
+                isGenerating = true;
+                renderCurrentStep();
+                
+                appData.finalBriefing = await generateContent(prompt);
+                
+                renderCurrentStep();
+                updateNavigation();
             } finally {
                 isGenerating = false;
             }
